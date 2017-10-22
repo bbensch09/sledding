@@ -11,8 +11,7 @@ class Lesson < ActiveRecord::Base
   accepts_nested_attributes_for :students, reject_if: :all_blank, allow_destroy: true
 
   validates :requested_location, :lesson_time, presence: true
-  validates :phone_number, :lift_ticket_status,
-            presence: true, on: :update
+  validates :phone_number, presence: true, on: :update
   # validates :duration, :start_time, presence: true, on: :update
   validates :gear, inclusion: { in: [true, false] }, on: :update
   validates :terms_accepted, inclusion: { in: [true], message: 'must accept terms' }, on: :update
@@ -96,9 +95,6 @@ class Lesson < ActiveRecord::Base
 
   def date
     lesson_time.date
-  end
-
-  def requested_date
   end
 
   def self.set_all_lessons_to_Homewood
@@ -323,16 +319,10 @@ def price
       return self.lesson_price.to_s
     elsif self.lesson_cost
       return self.lesson_cost.to_s     
-    elsif self.location.id == 24
-      if self.slot == 'Early Bird (9-10am)'
-        product = Product.where(location_id:self.location.id,length:"1.00",calendar_period:"Regular",product_type:"private_lesson").first
-      elsif self.slot == 'Half-day Morning (10am-1pm)'
-        product = Product.where(location_id:self.location.id,length:"3.00",calendar_period:"Regular",product_type:"private_lesson").first
-      elsif self.slot == 'Half-day Afternoon (1pm-4pm)'
-        product = Product.where(location_id:self.location.id,length:"3.00",calendar_period:"Regular",product_type:"private_lesson").first
-      elsif self.slot == 'Full-day (10am-4pm)'
-        product = Product.where(location_id:self.location.id,length:"6.00",calendar_period:"Regular",product_type:"private_lesson").first
-      end
+    elsif self.product_name == "1hr Learn to Ski Package (rental included)"
+        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"learn_to_ski").first
+    elsif self.product_name == "1hr Group Lesson (lesson + lift only)"
+        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"group_lesson").first
     end
     puts "!!!!!!!! lesson.product is #{product}"
     if product.nil?
@@ -679,7 +669,7 @@ def price
       auth_token = ENV['TWILIO_AUTH']
       snow_schoolers_twilio_number = ENV['TWILIO_NUMBER']
       recipient = instructor.phone_number
-      body = "Hi #{instructor.first_name}, we have a customer who is eager to find a #{self.activity} instructor. #{self.requester.name} wants a lesson at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
+      body = "Hi #{instructor.first_name}, we have a customer who is eager to find a #{self.activity} instructor. #{self.requester.name} wants a lesson at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
       @client = Twilio::REST::Client.new account_sid, auth_token
           @client.account.messages.create({
           :to => recipient,

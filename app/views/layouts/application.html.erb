@@ -162,10 +162,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <% end %>
 
-<div class="cl-b">
+<!-- <div class="cl-b">
       <h3><%= debug(params) if Rails.env.development? %></h3>
       <h3>lesson: <%= params[:lesson] if Rails.env.development? %></h3>
-</div>
+</div> -->
 
 <header id="header">
   <div class="container">
@@ -186,7 +186,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="navbar-collapse nav-main-collapse collapse pull-right">
       <nav class="nav-main">
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
-          <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner") %>
+          <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
            <!-- <li>  <a href="/"> <span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span> </a></li> -->
            <!-- <li> <a href="/search" class="btn-success"> Search</a></li> -->
            <li> <a href="/instructors" class="btn-success"> Admin</a></li>
