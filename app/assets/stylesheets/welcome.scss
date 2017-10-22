@@ -76,8 +76,9 @@ section {
   display: block;
   min-height: 450px;
 }
-#how-it-works{
-    background-color: #fff;
+#how-it-works h2, #how-it-works h3, #how-it-works p {
+    /*background-color: #fff;*/
+    color: #fff
 }
 #contact{
     background-color: #715845;
