@@ -92,6 +92,7 @@ class LessonsController < ApplicationController
   def new
     @lesson = Lesson.new
     @promo_location = session[:lesson].nil? ? nil : session[:lesson]["requested_location"]
+    @package_info = session[:lesson].nil? ? nil : session[:lesson]["package_info"]
     @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]
     @slot = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?) ? nil : session[:lesson]["lesson_time"]["slot"]
     @date = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?)  ? nil : session[:lesson]["lesson_time"]["date"]
@@ -99,9 +100,9 @@ class LessonsController < ApplicationController
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-lessons-new')
   end
 
-  def new_backup_oct22
-    @lesson = Lesson.new
-  end
+  # def new_backup_oct22
+  #   @lesson = Lesson.new
+  # end
 
   def new_request
     puts "!!! processing instructor request; Session variable is: #{session[:lesson]}"
@@ -118,6 +119,7 @@ class LessonsController < ApplicationController
 
   def create
     if params["commit"] == "Book Lesson"
+      puts "!!!!!!!!! Lesson params are \n #{params}"
       create_lesson_and_redirect
     else
       session[:lesson] = params[:lesson]
@@ -343,9 +345,9 @@ class LessonsController < ApplicationController
   end
 
   def validate_new_lesson_params
-    if params[:lesson].nil? || params[:package_info].nil? ||  params[:lesson][:lesson_time][:date].length < 10
+    if params[:lesson].nil? || params[:lesson][:package_info].nil? || params[:lesson][:activity].nil? ||  params[:lesson][:lesson_time][:date].length < 10
       session[:lesson] = params[:lesson]
-      flash[:alert] = "Please first select a location and date."
+      flash[:alert] = "Please first select a lesson type, date, and time."
       redirect_to new_lesson_path
     else
       session[:lesson] = params[:lesson]
@@ -353,6 +355,12 @@ class LessonsController < ApplicationController
   end
 
   def save_lesson_params_and_redirect
+    puts "!!!!! params are below: #{params}"
+    puts params[:lesson][:activity]
+    puts params[:lesson][:package_info]
+    puts params[:lesson][:lesson_time][:date]
+    puts params[:lesson][:lesson_time][:slot]
+    puts "!!!!!!! end params"
     # if current_user.nil?
     #   session[:lesson] = params[:lesson]
     #   flash[:alert] = 'You need to sign in or sign up before continuing.'
@@ -370,7 +378,7 @@ class LessonsController < ApplicationController
       create_lesson_and_redirect
     else
       # session[:lesson] = params[:lesson]
-      # puts "!!!!! params are: #{params[:lesson]}"
+      puts "!!!!! params are: #{params[:lesson]}"
       # debugger
       redirect_to '/browse'
     end
