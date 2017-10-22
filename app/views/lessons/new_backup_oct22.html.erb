@@ -50,9 +50,20 @@
 <!-- /PreSeason Modal -->
 
     
-<%= semantic_form_for @lesson do |f| %>
+<%= form_for @lesson do |f| %>
   <div class="lesson-form-container">
 
+      <% if @lesson.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
+
+          <ul>
+          <% @lesson.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
       <div class="new-lesson-call-cta hidden-unless-desktop">
                     <h1 class="center">QUESTIONS?</h1>                    
                     <p class="white-text center">Call Us Today! 
@@ -76,50 +87,37 @@
           <!-- <p class="cta-subtext">Reserve your lesson with one of our <a href="/browse">certified instructors</a> today!</p> -->
         </div>
 
-        <%= f.semantic_errors :instructor %>
         <div class="block inputs">
           <p>
             <div class="col-md-2">
-              <%= f.input :activity, as: :select, collection: ['Ski', 'Snowboard'], selected:@activity, include_blank: 'Lesson Type', label: false %>
+              <%= f.select :activity, ['Ski', 'Snowboard'], {selected:@activity}, {class: 'form-control', include_blank: 'Lesson Type', required:true} %>
+              
+              <!-- %= f.select :how_did_you_hear, [['From a Friend',1],['Facebook',2],['Google',3],['From a Flyer',4],['Linkedin',5],['Other',100]], {}, {class: 'form-control', required:true, include_blank:false} %> -->
             </div>
 
             <div class="col-md-3">
-              <%= f.input :package_info, as: :select, collection: ['Lesson Only', 'Learn to Ski Package (with rentals)'], selected:@package_info, include_blank: 'Select Package Type', label: false %>
+              <%= f.select :package_info, ['Lesson Only', 'Learn to Ski Package (with rentals)'], {selected:@package_info}, { class: "form-control", include_blank: 'Select Package Type', required: true} %>
             </div>
 
-            <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
+            <div class="col-md-3">
+              <%= f.text_field :requested_date, { id: 'datepicker',  class: "form-control", include_blank: 'Date', required: true} %>
+            </div>
 
-            <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
-              <div class="col-md-3">
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date }, placeholder: 'Date', label: false %>
-                <span class="search-area-icon"></span>
-              </div>
-
-              <div class="time-slot-input">
-                <!-- <%= lt_f.input :slot, as: :select, collection: ['Morning', 'Afternoon', 'Full Day'], include_blank: 'Time', label: false %> -->
-                <%= lt_f.input :slot, as: :select, collection: ['9:00  -  10:00am', '10:10 - 11:10am','11:20 -  12:20pm','12:30 -1:30pm','2:20  -  3:20pm','3:30  -  4:30pm'], selected: @slot, include_blank: 'Time', label: false %>
-              </div>
-              <% if current_user.nil? %>
-              <div class="guest-email-input">
-                <%= f.input :guest_email, as: :string, placeholder: "your_email@example.com", label: false %>
-              </div>
-              <% end %>
-            <% end %>
+            <div class="col-md-3">
+              <%= f.select :time, ['9:00  -  10:00am', '10:10 - 11:10am','11:20 -  12:20pm','12:30 -1:30pm','2:20  -  3:20pm','3:30  -  4:30pm'], {selected:@time}, { class: "form-control", include_blank: 'Time', required: true} %>
+            </div>
           </p>
-        </div>
-
-        <%= f.input :state, as: :hidden, input_html: { value: 'new' } %>
+      
+          <% if current_user.nil? %>
+            <div class="guest-email-input">
+              <%= f.input :guest_email, as: :string, placeholder: "your_email@example.com", label: false %>
+            </div>
+          <% end %>
+    
         <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
         <ul class="new-lesson-ctas-list">
           <li class="center">
-            <%= f.actions do %>
-              <!-- %= f.action :submit, as: :input, button_html: { class: 'btn btn-default btn-lg', value: 'Book Lesson' } %> -->
-              <%= f.action :submit, :label => "Book Lesson", as: :input, button_html: { class: 'btn btn-default btn-lg' } %>
-                <% if @instructor_requested.nil? %>
-                <!-- <li>  OR </li> -->
-                <!-- <li> <button id='browser-instructors-cta' href="/browse" value="Browse Instructors" class="btn btn-default btn-lg">Browse instructors</button></li> -->
-                <% end %>
-            <% end %>
+              <%= f.submit "Book Lesson", class: "btn btn-primary btn-xl page-scroll pull-right push-bottom" %>          
           </li>
         </ul>
 

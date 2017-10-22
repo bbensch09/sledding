@@ -162,6 +162,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <% end %>
 
+<div class="cl-b">
+      <h3><%= debug(params) if Rails.env.development? %></h3>
+      <h3>lesson: <%= params[:lesson] if Rails.env.development? %></h3>
+</div>
+
 <header id="header">
   <div class="container">
   <h2>

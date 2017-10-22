@@ -157,6 +157,7 @@ Rails.application.routes.draw do
 
 
   resources :sections
+  get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons
   # get 'new_request' => 'lessons#new_request'
   get 'new_request/:id' => 'lessons#new_request'

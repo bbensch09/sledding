@@ -99,6 +99,10 @@ class LessonsController < ApplicationController
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-lessons-new')
   end
 
+  def new_backup_oct22
+    @lesson = Lesson.new
+  end
+
   def new_request
     puts "!!! processing instructor request; Session variable is: #{session[:lesson]}"
     @lesson = Lesson.new
@@ -339,7 +343,8 @@ class LessonsController < ApplicationController
   end
 
   def validate_new_lesson_params
-    if params[:lesson].nil? || params[:lesson][:requested_location].to_i < 1 || params[:lesson][:lesson_time][:date].length < 10
+    if params[:lesson].nil? || params[:package_info].nil? ||  params[:lesson][:lesson_time][:date].length < 10
+      session[:lesson] = params[:lesson]
       flash[:alert] = "Please first select a location and date."
       redirect_to new_lesson_path
     else
@@ -374,6 +379,7 @@ class LessonsController < ApplicationController
   def create_lesson_and_redirect
     @lesson = Lesson.new(lesson_params)
     @lesson.requester = current_user
+    @lesson.requested_location = Location.find(24).id
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     if @lesson.save
       redirect_to complete_lesson_path(@lesson)
