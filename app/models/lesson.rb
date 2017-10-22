@@ -22,7 +22,7 @@ class Lesson < ActiveRecord::Base
 
   #Check to ensure an instructor is available before booking
   # validate :instructors_must_be_available, unless: :no_instructors_post_instructor_drop?, on: :create
-  # after_save :send_lesson_request_to_instructors
+  after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
   
@@ -586,11 +586,11 @@ def price
         when 'new'
           body = "A lesson booking was begun and not finished. Please contact an admin or email info@snowschoolers.com if you intended to complete the lesson booking."
         when 'booked'
-          body = "#{self.available_instructors.first.first_name}, You have a new lesson request from #{self.requester.name} at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. They are a level #{self.level.to_s} #{self.athlete}. Are you available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
+          body = "#{self.available_instructors.first.first_name}, You have a new lesson request from #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. They are a level #{self.level.to_s} #{self.athlete}. Are you available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'seeking replacement instructor'
-          body = "We need your help! Another instructor unfortunately had to cancel. Are you available to teach #{self.requester.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name} at #{self.product.start_time}? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
+          body = "We need your help! Another instructor unfortunately had to cancel. Are you available to teach #{self.requester.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name} at #{self.lesson_time.slot}? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'pending instructor'
-          body =  "#{self.available_instructors.first.first_name}, There has been a change in your previously confirmed lesson request. #{self.requester.name} would now like their lesson to be at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you still available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
+          body =  "#{self.available_instructors.first.first_name}, There has been a change in your previously confirmed lesson request. #{self.requester.name} would now like their lesson to be at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you still available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'Payment complete, waiting for review.'
           if self.transactions.last.tip_amount == 0.0009            
             body = "#{self.requester.name} has completed their lesson review and reported that they gave you a cash tip. Great work!"
@@ -642,7 +642,7 @@ def price
           @client.account.messages.create({
           :to => "408-315-2900",
           :from => ENV['TWILIO_NUMBER'],
-          :body => "ALERT - #{self.available_instructors.first.name} is the only instructor available and they have not responded after 10 minutes. No other instructors are available to teach #{self.requester.name} at #{self.product.start_time} on #{self.lesson_time.date} at #{self.location.name}."
+          :body => "ALERT - #{self.available_instructors.first.name} is the only instructor available and they have not responded after 10 minutes. No other instructors are available to teach #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}."
       })
     end
     # identify recipients to be notified as all available instructors except for the first instructor, who has been not responsive
@@ -650,7 +650,7 @@ def price
       account_sid = ENV['TWILIO_SID']
       auth_token = ENV['TWILIO_AUTH']
       snow_schoolers_twilio_number = ENV['TWILIO_NUMBER']
-      body = "#{instructor.first_name}, we have a customer who is eager to find an instructor. #{self.requester.name} wants a lesson at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
+      body = "#{instructor.first_name}, we have a customer who is eager to find an instructor. #{self.requester.name} wants a lesson at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
       @client = Twilio::REST::Client.new account_sid, auth_token
             @client.account.messages.create({
             :to => instructor.phone_number,
@@ -688,7 +688,7 @@ def price
       recipient = self.phone_number.gsub(/[^0-9a-z ]/i,"")
       case self.state
         when 'confirmed'
-        body = "Congrats! Your Snow Schoolers lesson has been confirmed. #{self.instructor.name} will be your instructor at #{self.location.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.product.start_time}. Please check your email for more details about meeting location & to review your pre-lesson checklist."
+        body = "Congrats! Your Snow Schoolers lesson has been confirmed. #{self.instructor.name} will be your instructor at #{self.location.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.lesson_time.slot}. Please check your email for more details about meeting location & to review your pre-lesson checklist."
         when 'seeking replacement instructor'
         body = "Bad news! Your instructor has unfortunately had to cancel your lesson. Don't worry, we are finding you a new instructor right now."
         when 'finalizing payment & reviews'
@@ -713,7 +713,7 @@ def price
           @client.account.messages.create({
           :to => "408-315-2900",
           :from => ENV['TWILIO_NUMBER'],
-          :body => "ALERT - no instructors are available to teach #{self.requester.name} at #{self.product.start_time} on #{self.lesson_time.date} at #{self.location.name}. The last person to decline was #{Instructor.find(LessonAction.last.instructor_id).username}."
+          :body => "ALERT - no instructors are available to teach #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}. The last person to decline was #{Instructor.find(LessonAction.last.instructor_id).username}."
       })
       LessonMailer.notify_admin_sms_logs(self,body).deliver
   end
@@ -723,7 +723,7 @@ def price
           @client.account.messages.create({
           :to => "408-315-2900",
           :from => ENV['TWILIO_NUMBER'],
-          :body => "ALERT - A private 1:1 request was made and declined. #{self.requester.name} had requested #{self.instructor.name} but they are unavailable at #{self.product.start_time} on #{self.lesson_time.date} at #{self.location.name}."
+          :body => "ALERT - A private 1:1 request was made and declined. #{self.requester.name} had requested #{self.instructor.name} but they are unavailable at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}."
       })
       LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end

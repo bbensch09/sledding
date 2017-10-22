@@ -34,7 +34,7 @@ gem 'puma'
 gem 'pg', '~> 0.15'
 
 #twilio for SMS notifications
-gem 'twilio-ruby'
+gem 'twilio-ruby', '4.13.0'
 
 #AWS SDK's for storing images
 # gem 'aws-sdk-v1'
