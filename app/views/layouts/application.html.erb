@@ -117,6 +117,26 @@
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- Facebook SDK used for login(?) -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '126893308011822',
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
 <% if current_user %>  
 
   <h3 id="current_user_info" class="hidden admin-viewable">
@@ -231,7 +251,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="modal-body">
           <h3 class="center">
             <%= link_to image_tag("fb-login.png", class:"fb-login-btn"), user_facebook_omniauth_authorize_path %>
-          </h3>
+          </h3>                
+
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
             <%= devise_error_messages! %>
             <div class="field center">

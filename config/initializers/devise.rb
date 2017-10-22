@@ -4,8 +4,14 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.omniauth :facebook, ENV['FB_APP_ID'], ENV['FB_APP_SECRET'],
-      scope: "email,user_location,public_profile,user_birthday", image_size: "large", info_fields: 'id,first_name,last_name,about,birthday,age_range,gender,email,location'
+  
+
+# FB Omniauth; fixed by forcing gemfile to load omniauth-facebook v4.0.0
+
+config.omniauth :facebook, ENV['FB_APP_ID'], ENV['FB_APP_SECRET'],
+      scope: "email,user_location,public_profile,user_birthday", image_size: "large", info_fields: 'id,first_name,last_name,about,birthday,age_range,gender,email,location',
+      token_params: { parse: :json }
+
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
