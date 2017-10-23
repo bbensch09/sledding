@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   belongs_to :location
   has_many :lesson_times, through: :lessons
   after_create :send_admin_notification
+  after_create :set_email_as_name
 
   def self.to_csv(options = {})
     desired_columns = %w{id email name user_type resort_affiliation created_at}
@@ -40,6 +41,11 @@ class User < ActiveRecord::Base
     else
       ltv = 0
     end
+  end
+
+  def set_email_as_name
+    self.name = self.email
+    self.save
   end
 
   def username_for_admin
