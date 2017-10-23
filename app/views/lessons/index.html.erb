@@ -175,9 +175,9 @@
 
 <h1 class="center"><b>---Lessons for <%= day.date.strftime("%A %b %e, %Y") %>---</b></h1>
 
-  <% Section.where(date:"2017-10-23").sort{ |a,b| a.slot <=> b.slot }.each do |section| %>
+  <% Section.where(date:day.date).sort{ |a,b| a.slot <=> b.slot }.each do |section| %>
 
-    <h3><%= section.slot %> - <%= section.sport_name %> <em> (Additional capacity: <%= section.remaining_capacity %>)</em>
+    <h3><%= section.slot %> - <%= section.sport_name %> <em> (spots remaining: <%= section.remaining_capacity %>)</em>
      | Instructor: 
       <% if section.instructor %>
         <%= image_tag(section.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %> - 
@@ -185,6 +185,7 @@
           <% else %>
           TBD
         <% end %>
+      <%= link_to 'Edit shift', edit_section_path(section), class: 'btn btn-sm btn-warning' %>
     </h3>
     <!-- <h3><%= section.id %></h3> -->
     <table class="instructors-table">

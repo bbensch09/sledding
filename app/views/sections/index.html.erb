@@ -1,7 +1,12 @@
 <div class='container'>
 <p id="notice"><%= notice %></p>
 
-<h1>Sections</h1>
+<h1 class='center'>Manage Shifts</h1>
+
+<h1 class='center'>
+  <a href="/assign_all_instructors_to_sections" class="btn btn-lg btn-default"> Assign instructors to all empty shifts</a>  
+</h1>
+
 
 <table class="instructors-table">
   <thead>
@@ -10,10 +15,9 @@
       <th>Date</th>
       <th>Instructor</th>
       <th>Time Slot</th>
-      <th>Sport ID</th>
       <th>Sport</th>
       <th>Capacity</th>
-      <th>Current head count</th>
+      <th>Current Student Count</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -25,8 +29,6 @@
         <td><%= section.date %></td>
         <td><%= section.instructor ? section.instructor.name : "TBD" %></td>
         <td><%= section.slot %></td>
-        <!-- <td><%= section.level %></td> -->
-        <td><%= section.sport_id %></td>
         <td><%= section.sport_name %></td>
         <td><%= section.capacity %></td>
         <td><%= section.student_count %></td>
@@ -40,5 +42,5 @@
 
 <br>
 
-<%= link_to 'New Section', new_section_path %>
+<%= link_to 'New Shift', new_section_path %>
 </div>
