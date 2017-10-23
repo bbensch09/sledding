@@ -329,9 +329,9 @@ def price
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
     else      
-      price = (product.price * self.students.count).to_s
+      price = product.price * [1,self.students.count].max      
     end
-    return price
+    return price.to_s
   end
 
   def visible_lesson_cost
