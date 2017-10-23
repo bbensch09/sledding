@@ -9,8 +9,32 @@ class Section < ApplicationRecord
 	# 	return "#{self.age_group} #{self.lesson_type} - #{self.sport.activity_name}"
 	# end
 
+ def available_instructors
+    if self.instructor_id && self.instructor_id.to_i > 0
+      return [self.instructor]
+    else
+    resort_instructors = Location.find(24).instructors
+    puts "!!!!!!! - Step #1 Filtered for Granlibakken, found #{resort_instructors.count} instructors."
+    active_resort_instructors = resort_instructors.where(status:'Active')
+    puts "!!!!!!! - Step #2 Filtered for active status, found #{active_resort_instructors.count} instructors."
+    
+    if self.sport_name == 'Skiing'
+        active_resort_instructors = active_resort_instructors.to_a.keep_if {|instructor| instructor.ski_instructor? }
+      elsif self.sport_name == "Snowboarding"
+        active_resort_instructors = active_resort_instructors.to_a.keep_if {|instructor| instructor.snowboard_instructor? }
+    end
+    puts "!!!!!!! - Step 3 Filtered for correct sport."
+    already_booked_instructors = []#self.lesson.booked_instructors(lesson_time)
+    busy_instructors = [] #self.lesson.instructors_with_calendar_blocks(lesson_time)
+    available_instructors = active_resort_instructors - already_booked_instructors - busy_instructors
+    puts "!!!!!!! - Step #5 after all filters, found #{available_instructors.count} instructors."
+    available_instructors.sort! {|a,b| b.overall_score <=> a.overall_score }
+    return available_instructors
+    end
+  end
+
 	def instructor_name_for_section
-		if self.instructor_id
+		if self.instructor_id && self.instructor_id.to_i > 0
 			return self.instructor.name
 		else
 			return "Not yet assigned"
@@ -23,6 +47,14 @@ class Section < ApplicationRecord
 
 	def parametized_date
 		return "#{self.date.strftime("%m")}%2F#{self.date.strftime("%d")}%2F#{self.date.strftime("%Y")}"
+	end
+
+	def sport_name
+		if self.sport.name == "Ski Instructor"
+			return "Skiing"
+		else
+			return "Snowboarding"
+		end
 	end
 
 	def self.seed_sections(date = Date.today)
@@ -120,7 +152,14 @@ class Section < ApplicationRecord
 	end
 
 	def student_count
-		Lesson.where(section_id:self.id).count
+		count = 0
+		lessons = Lesson.where(section_id:self.id)
+		lessons.each do |lesson|
+			lesson.students.each do |student|
+				count += 1
+			end
+		end
+		return count
 	end
 
 	def remaining_capacity

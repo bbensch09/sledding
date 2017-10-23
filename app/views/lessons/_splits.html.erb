@@ -4,7 +4,7 @@
   </h4>
   <h4 class="center section-instructor-info">
     <%= form_tag(assign_instructor_to_section_path, :method => "put", class: "form-control") do %>              
-            <%= select_tag :instructor_id, options_from_collection_for_select(Instructor.scheduled_for_date(section.date), :id, :name, selected:section.instructor_id), include_blank:"Select instructor" %>
+            <%= select_tag :instructor_id, options_from_collection_for_select(Instructor.all, :id, :name, selected:section.instructor_id), include_blank:"Select instructor" %>
             <br>
             <div class="hidden">              
               <%= text_field_tag :section_id, params[:section_id], value: section.id %>

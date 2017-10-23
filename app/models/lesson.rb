@@ -11,8 +11,7 @@ class Lesson < ActiveRecord::Base
   accepts_nested_attributes_for :students, reject_if: :all_blank, allow_destroy: true
 
   validates :requested_location, :lesson_time, presence: true
-  validates :phone_number, :lift_ticket_status,
-            presence: true, on: :update
+  validates :phone_number, presence: true, on: :update
   # validates :duration, :start_time, presence: true, on: :update
   validates :gear, inclusion: { in: [true, false] }, on: :update
   validates :terms_accepted, inclusion: { in: [true], message: 'must accept terms' }, on: :update
@@ -22,8 +21,10 @@ class Lesson < ActiveRecord::Base
   validate :student_exists, on: :update
 
   #Check to ensure an instructor is available before booking
-  # validate :instructors_must_be_available, unless: :no_instructors_post_instructor_drop?, on: :create
-  # after_save :send_lesson_request_to_instructors
+  validate :instructors_must_be_available, on: :create
+  validate :add_lesson_to_section
+  before_save :add_lesson_to_section
+  after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
   
@@ -315,19 +316,22 @@ class Lesson < ActiveRecord::Base
     waiting_for_payment?
   end
 
-  def price
+def price
     if self.lesson_price
       return self.lesson_price.to_s
-    elsif self.lesson_cost
-      return self.lesson_cost.to_s
-    else
-      product = Product.where(location_id:self.location.id,name:self.lesson_time.slot,calendar_period:self.location.calendar_status).first
-      if product.nil?
-        return "Error - lesson price not found" #99 #default lesson price - temporary
-      else
-        return product.price.to_s
-      end
+    elsif self.lesson_cost && self.lesson_cost > 0
+      return self.lesson_cost.to_s     
+    elsif self.product_name == "1hr Learn to Ski Package (rental included)"
+        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"learn_to_ski").first
+    elsif self.product_name == "1hr Group Lesson (lesson + lift only)"
+        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"group_lesson").first
     end
+    if product.nil?
+      return "Error - lesson price not found" #99 #default lesson price - temporary
+    else      
+      price = (product.price * self.students.count).to_s
+    end
+    return price
   end
 
   def visible_lesson_cost
@@ -389,6 +393,48 @@ class Lesson < ActiveRecord::Base
       return "skier"
     else
       return "snowboarder"
+    end
+  end
+
+  def sport_id
+    if self.activity == "Ski"
+      Sport.where(name:"Ski Instructor").first.id
+    else
+      Sport.where(name:"Snowboard Instructor").first.id
+    end
+  end
+
+  def add_lesson_to_section
+    existing_sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
+    if existing_sections.empty?
+      Section.find_or_create_by!({
+        sport_id: self.sport_id,
+        date: self.lesson_time.date,
+        slot: self.lesson_time.slot,
+        capacity: 3,
+        lesson_type: 'group_lesson'
+        })
+      self.section_id = Section.last.id
+    elsif existing_sections.first.student_count <= existing_sections.first.capacity
+      self.section_id = existing_sections.first.id
+    else
+      puts "!!!!!!!! The requested time slot is full!!!!!"
+      self.state = 'This section is now full, please choose another time slot.'
+      errors.add(:instructor, "There is unfortunately no more room in this lesson, please choose another time slot.")
+    end
+  end
+
+  def self.assign_all_instructors_to_sections
+    unassigned_sections = Section.where(instructor_id:"")
+    unassigned_sections.each do |section|
+      section.instructor_id = section.available_instructors.first.id
+      section.save!
+    end
+    unassigned_lessons = Lesson.where(instructor_id:nil)  
+    puts "!!!!!!!!! there are #{unassigned_lessons.count} unassigned lessons"
+    unassigned_lessons.each do |lesson|
+      lesson.instructor_id = lesson.section.instructor_id
+      lesson.save
     end
   end
 
@@ -584,11 +630,11 @@ class Lesson < ActiveRecord::Base
         when 'new'
           body = "A lesson booking was begun and not finished. Please contact an admin or email info@snowschoolers.com if you intended to complete the lesson booking."
         when 'booked'
-          body = "#{self.available_instructors.first.first_name}, You have a new lesson request from #{self.requester.name} at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. They are a level #{self.level.to_s} #{self.athlete}. Are you available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
+          body = "#{self.available_instructors.first.first_name}, You have a new lesson request from #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. They are a level #{self.level.to_s} #{self.athlete}. Are you available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'seeking replacement instructor'
-          body = "We need your help! Another instructor unfortunately had to cancel. Are you available to teach #{self.requester.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name} at #{self.product.start_time}? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
+          body = "We need your help! Another instructor unfortunately had to cancel. Are you available to teach #{self.requester.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name} at #{self.lesson_time.slot}? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'pending instructor'
-          body =  "#{self.available_instructors.first.first_name}, There has been a change in your previously confirmed lesson request. #{self.requester.name} would now like their lesson to be at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you still available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
+          body =  "#{self.available_instructors.first.first_name}, There has been a change in your previously confirmed lesson request. #{self.requester.name} would now like their lesson to be at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you still available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'Payment complete, waiting for review.'
           if self.transactions.last.tip_amount == 0.0009            
             body = "#{self.requester.name} has completed their lesson review and reported that they gave you a cash tip. Great work!"
@@ -640,7 +686,7 @@ class Lesson < ActiveRecord::Base
           @client.account.messages.create({
           :to => "408-315-2900",
           :from => ENV['TWILIO_NUMBER'],
-          :body => "ALERT - #{self.available_instructors.first.name} is the only instructor available and they have not responded after 10 minutes. No other instructors are available to teach #{self.requester.name} at #{self.product.start_time} on #{self.lesson_time.date} at #{self.location.name}."
+          :body => "ALERT - #{self.available_instructors.first.name} is the only instructor available and they have not responded after 10 minutes. No other instructors are available to teach #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}."
       })
     end
     # identify recipients to be notified as all available instructors except for the first instructor, who has been not responsive
@@ -648,7 +694,7 @@ class Lesson < ActiveRecord::Base
       account_sid = ENV['TWILIO_SID']
       auth_token = ENV['TWILIO_AUTH']
       snow_schoolers_twilio_number = ENV['TWILIO_NUMBER']
-      body = "#{instructor.first_name}, we have a customer who is eager to find an instructor. #{self.requester.name} wants a lesson at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
+      body = "#{instructor.first_name}, we have a customer who is eager to find an instructor. #{self.requester.name} wants a lesson at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
       @client = Twilio::REST::Client.new account_sid, auth_token
             @client.account.messages.create({
             :to => instructor.phone_number,
@@ -667,7 +713,7 @@ class Lesson < ActiveRecord::Base
       auth_token = ENV['TWILIO_AUTH']
       snow_schoolers_twilio_number = ENV['TWILIO_NUMBER']
       recipient = instructor.phone_number
-      body = "Hi #{instructor.first_name}, we have a customer who is eager to find a #{self.activity} instructor. #{self.requester.name} wants a lesson at #{self.product.start_time} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
+      body = "Hi #{instructor.first_name}, we have a customer who is eager to find a #{self.activity} instructor. #{self.requester.name} wants a lesson at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you available? The lesson is now available to the first instructor that claims it by visiting #{ENV['HOST_DOMAIN']}/lessons/#{self.id} and accepting the request."
       @client = Twilio::REST::Client.new account_sid, auth_token
           @client.account.messages.create({
           :to => recipient,
@@ -686,7 +732,7 @@ class Lesson < ActiveRecord::Base
       recipient = self.phone_number.gsub(/[^0-9a-z ]/i,"")
       case self.state
         when 'confirmed'
-        body = "Congrats! Your Snow Schoolers lesson has been confirmed. #{self.instructor.name} will be your instructor at #{self.location.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.product.start_time}. Please check your email for more details about meeting location & to review your pre-lesson checklist."
+        body = "Congrats! Your Snow Schoolers lesson has been confirmed. #{self.instructor.name} will be your instructor at #{self.location.name} on #{self.lesson_time.date.strftime("%b %d")} at #{self.lesson_time.slot}. Please check your email for more details about meeting location & to review your pre-lesson checklist."
         when 'seeking replacement instructor'
         body = "Bad news! Your instructor has unfortunately had to cancel your lesson. Don't worry, we are finding you a new instructor right now."
         when 'finalizing payment & reviews'
@@ -711,7 +757,7 @@ class Lesson < ActiveRecord::Base
           @client.account.messages.create({
           :to => "408-315-2900",
           :from => ENV['TWILIO_NUMBER'],
-          :body => "ALERT - no instructors are available to teach #{self.requester.name} at #{self.product.start_time} on #{self.lesson_time.date} at #{self.location.name}. The last person to decline was #{Instructor.find(LessonAction.last.instructor_id).username}."
+          :body => "ALERT - no instructors are available to teach #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}. The last person to decline was #{Instructor.find(LessonAction.last.instructor_id).username}."
       })
       LessonMailer.notify_admin_sms_logs(self,body).deliver
   end
@@ -721,7 +767,7 @@ class Lesson < ActiveRecord::Base
           @client.account.messages.create({
           :to => "408-315-2900",
           :from => ENV['TWILIO_NUMBER'],
-          :body => "ALERT - A private 1:1 request was made and declined. #{self.requester.name} had requested #{self.instructor.name} but they are unavailable at #{self.product.start_time} on #{self.lesson_time.date} at #{self.location.name}."
+          :body => "ALERT - A private 1:1 request was made and declined. #{self.requester.name} had requested #{self.instructor.name} but they are unavailable at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}."
       })
       LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end

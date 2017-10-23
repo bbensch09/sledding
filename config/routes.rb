@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'blog' => 'blogs#index'
   resources :pre_season_location_requests
 
-  mount ActionCable.server => '/cable'
+  # mount ActionCable.server => '/cable'
   resources :messages
   get 'start_conversation/:instructor_id' => 'messages#start_conversation'
   get 'conversations/:id' => 'messages#show_conversation', as: :show_conversation
@@ -148,7 +148,9 @@ Rails.application.routes.draw do
   delete 'users/:id' => 'welcome#admin_destroy', as: :admin_destroy
 
   #Snowschoolers as a Service scheduling views
-  get 'schedule' => 'lessons#schedule'  
+  # get 'schedule' => 'lessons#schedule'  
+  get 'assign_all_instructors_to_sections' => 'lessons#assign_all_instructors_to_sections'
+  get 'schedule' => 'lessons#lesson_schedule_results'
   get 'schedule-filtered' => 'lessons#lesson_schedule_results', as: :lesson_schedule_results
   # put 'lessons/:id/assign-to-section/:section_id' => 'lessons#assign_to_section', as: :assign_section
   put 'lessons/assign-to-section' => 'lessons#assign_to_section', as: :assign_section
@@ -157,6 +159,7 @@ Rails.application.routes.draw do
 
 
   resources :sections
+  get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons
   # get 'new_request' => 'lessons#new_request'
   get 'new_request/:id' => 'lessons#new_request'

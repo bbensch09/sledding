@@ -16,10 +16,10 @@
     <% end %>
 
     <%= semantic_form_for @lesson do |f| %>
-      <%= f.semantic_errors :instructor %>
+      <%= f.semantic_errors :lesson %>
       <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
       <% if current_user && (current_user.email == "brian@snowschoolers.com")%>
-        <div class="admin-viewable">
+        <div class="admin-viewable ">
           <div class="col-md-12 vertical-padding">
           <h4> ADMIN ONLY: Select user email to assign this lesson to a new requester.</h4>
               <div class="col-md-4">
@@ -86,12 +86,12 @@
 
             <div class="col-md-6">
               <label>Lesson Type</label>
-              <%= f.input :activity, as: :select, collection: ['Ski', 'Snowboard','Telemark'], include_blank: 'Lesson Type', label: false %>
+              <%= f.input :activity, as: :select, collection: ['Ski', 'Snowboard'], include_blank: 'Lesson Type', label: false %>
             </div>
 
             <div class="col-md-6">
-              <label>Location</label>
-                <%= f.input :requested_location , as: :select, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: Location.active_partners.first.id, include_blank: 'Location', label: false %>
+              <label>Package Type</label>
+              <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], include_blank: 'Package Type', label: false %>
             </div>
 
           </div>
@@ -105,7 +105,7 @@
 
               <div class="col-md-4">
                 <label>Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: ['Early Bird (9-10am)', 'Half-day Morning (10am-1pm)', 'Half-day Afternoon (1pm-4pm)','Full-day (10am-4pm)'], include_blank: 'Time', label: false %>
+                <%= lt_f.input :slot, as: :select, collection: ['09:00  -  10:00am', '10:10 - 11:10am','11:20 -  12:20pm','12:30 -1:30pm','2:20  -  3:20pm','3:30  -  4:30pm'], include_blank: 'Time', label: false %>
 
               </div>
           <% end %>
@@ -120,7 +120,7 @@
                 <%= f.input :requester_name, as: :string, value: current_user ? current_user.name : "", required: true, label: false %>
               </div>
               <div class="col-md-6">
-                <label>Cell Phone</label> <span class="text-smaller">(Shared only with your instructor).</span>
+                <label>Phone</label> <span class="text-smaller"></span>
                 <%= f.input :phone_number, as: :string, placeholder: 'xxx-xxx-xxxx', required: true, label: false %>
               </div>
             </div>
@@ -130,14 +130,11 @@
               <label>Do you have equipment?</label>
               <%= f.input :gear, as: :select, collection: [['Yes, I already have my equipment.', true], ['No, I will need to rent equipment.', false]], include_blank: '(Skis,boots,etc.)', label: false, required:true %>
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <label>Have a lift ticket or pass?</label>
               <%= f.input :lift_ticket_status, as: :select, collection: [['Yes, I have one.', true], ['No, I still need one.', false]], include_blank: 'Choose one', label: false, required:true %>
-            </div>
+            </div> -->
 
-            <div class="col-md-12">
-            <!-- Price ($75 per hour): $<span id="donation-amount"><%= @lesson.price %></span>.00 -->
-            </div>
           </div>
 
           <h4>Student <strong>Info</strong></h4>
@@ -193,6 +190,9 @@
           </div>
           <div class="col-md-3">
             <%= f.input :state, as: :hidden, input_html: { value: @state } %>
+            <% if @lesson.product_name.length !=0 %>
+            <%= f.input :product_id, as: :hidden, input_html: { value: Product.where(location_id:@lesson.requested_location,calendar_period:@lesson.location.calendar_status,name:@lesson.product_name).first.id } %>
+            <% end %>
             <%= f.submit button_text, class: 'btn sign-up-btn pull-right' %>
           </div>
 

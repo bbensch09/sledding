@@ -69,6 +69,14 @@ class Instructor < ActiveRecord::Base
     end
   end
 
+  def self.seed_instructor_levels
+    Instructor.all.each do |instructor|
+        instructor.ski_level_ids = [[1,2,3,4],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7,8,9]].sample
+        instructor.snowboard_level_ids = [[1,2,3,4],[1,2,3,4,5,6,7],[1,2,3,4,5,6,7,8,9]].sample
+        instructor.save
+    end
+  end
+
   def ski_instructor?
     return true if self.sports.include?(Sport.where(name:"Ski Instructor").first)
   end

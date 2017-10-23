@@ -14,6 +14,7 @@
           <li><p class="alert-danger">No instructors available!</p></li>
           <% end %>
           <li>Client phone number: <%= @lesson.phone_number %> </li>
+          <li>Lesson section ID: <%= @lesson.section_id %> </li>
       </ul>
         <%= link_to 'Edit Lesson', edit_lesson_path(@lesson), class: "btn btn-default" %>
         <%= link_to "Reconfirm state", admin_reconfirm_state_path, method: :put, class: "btn btn-default" %>
