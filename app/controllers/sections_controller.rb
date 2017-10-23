@@ -71,7 +71,8 @@ class SectionsController < ApplicationController
   def destroy
     @section.destroy
     respond_to do |format|
-      format.html {     redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}", notice: 'Section was successfully destroyed.' }
+      format.html {     redirect_to "/sections", notice: 'Section was successfully destroyed.' }
+      # format.html {     redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}", notice: 'Section was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

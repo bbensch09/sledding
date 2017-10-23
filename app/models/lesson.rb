@@ -21,7 +21,8 @@ class Lesson < ActiveRecord::Base
   validate :student_exists, on: :update
 
   #Check to ensure an instructor is available before booking
-  # validate :instructors_must_be_available, unless: :no_instructors_post_instructor_drop?, on: :create
+  validate :instructors_must_be_available, on: :create
+  validate :add_lesson_to_section
   after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
@@ -317,7 +318,7 @@ class Lesson < ActiveRecord::Base
 def price
     if self.lesson_price
       return self.lesson_price.to_s
-    elsif self.lesson_cost
+    elsif self.lesson_cost && self.lesson_cost > 0
       return self.lesson_cost.to_s     
     elsif self.product_name == "1hr Learn to Ski Package (rental included)"
         product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"learn_to_ski").first
@@ -327,9 +328,10 @@ def price
     puts "!!!!!!!! lesson.product is #{product}"
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
-    else
-      return product.price.to_s
+    else      
+      price = (product.price * self.students.count).to_s
     end
+    return price
   end
 
   def visible_lesson_cost
@@ -391,6 +393,34 @@ def price
       return "skier"
     else
       return "snowboarder"
+    end
+  end
+
+  def sport_id
+    if self.activity == "Ski"
+      Sport.where(name:"Ski Instructor").first.id
+    else
+      Sport.where(name:"Snowboard Instructor").first.id
+    end
+  end
+
+  def add_lesson_to_section
+    puts "!!!!!!!!!begin creating new section"
+    existing_sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
+    if existing_sections.empty?
+      Section.find_or_create_by!({
+        sport_id: self.sport_id,
+        date: self.lesson_time.date,
+        slot: self.lesson_time.slot,
+        capacity: 2,
+        lesson_type: 'group_lesson'
+        })
+      self.section_id = Section.last.id
+      puts "!!!!!added this lesson to a NEW section id: #{self.section_id}"
+    elsif existing_sections.first.student_count <= existing_sections.first.capacity
+      self.section_id = existing_sections.first.id
+    else
+      errors.add(:instructor, "There is unfortunately no more room in this lesson, please choose another time slot.")
     end
   end
 

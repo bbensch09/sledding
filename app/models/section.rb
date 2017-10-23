@@ -25,6 +25,14 @@ class Section < ApplicationRecord
 		return "#{self.date.strftime("%m")}%2F#{self.date.strftime("%d")}%2F#{self.date.strftime("%Y")}"
 	end
 
+	def sport_name
+		if self.sport.name == "Ski Instructor"
+			return "Skiing"
+		else
+			return "Snowboarding"
+		end
+	end
+
 	def self.seed_sections(date = Date.today)
 		Section.create!({
 			date: date,
@@ -120,7 +128,14 @@ class Section < ApplicationRecord
 	end
 
 	def student_count
-		Lesson.where(section_id:self.id).count
+		count = 0
+		lessons = Lesson.where(section_id:self.id)
+		lessons.each do |lesson|
+			lesson.students.each do |student|
+				count += 1
+			end
+		end
+		return count
 	end
 
 	def remaining_capacity

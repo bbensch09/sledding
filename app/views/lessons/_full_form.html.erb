@@ -19,7 +19,7 @@
       <%= f.semantic_errors :lesson %>
       <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
       <% if current_user && (current_user.email == "brian@snowschoolers.com")%>
-        <div class="admin-viewable hidden">
+        <div class="admin-viewable ">
           <div class="col-md-12 vertical-padding">
           <h4> ADMIN ONLY: Select user email to assign this lesson to a new requester.</h4>
               <div class="col-md-4">
@@ -91,7 +91,7 @@
 
             <div class="col-md-6">
               <label>Package Type</label>
-              <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], selected: @product_name, include_blank: 'Package Type', label: false %>
+              <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], include_blank: 'Package Type', label: false %>
             </div>
 
           </div>
@@ -190,6 +190,7 @@
           </div>
           <div class="col-md-3">
             <%= f.input :state, as: :hidden, input_html: { value: @state } %>
+            <%= f.input :product_id, as: :hidden, input_html: { value: Product.where(location_id:@lesson.requested_location,calendar_period:@lesson.location.calendar_status,name:@lesson.product_name).first.id } %>
             <%= f.submit button_text, class: 'btn sign-up-btn pull-right' %>
           </div>
 
