@@ -21,7 +21,7 @@
 //= require moment
 // = require bootstrap-datetimepicker
 //= require cocoon
-//= require_tree .
 //= require tinymce-jquery
 //= require_self
 //= require_tree ./channels
+//= require_tree .

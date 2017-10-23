@@ -1,3 +1,5 @@
+console.log("lessons.js loaded");
+
 var LESSON = {
   init: function(){
     // important objects
@@ -206,24 +208,20 @@ var abilityLevelWarningListener = function(){
 }
 
 var calculatePriceListener = function() {
-  var hourlyRate = 75;
-  $('.lesson-length-input').change(function(e){
-    e.preventDefault();
-    console.log("listening for changes to lesson_length");
-    var lesson_length = $('.lesson-length-input').val();
-      console.log("the input value is:" + lesson_length);
-    var lesson_price = lesson_length*hourlyRate;
-      console.log("the lesson price is:" +lesson_price);
-    $('#donation-amount').html(lesson_price);
-  });
-  $('.lesson-slot-input').change(function(e){
-    console.log("detected slot change.");
-    if ( $('.lesson-slot-input').val() == 'Full Day'){
-    console.log("the lesson slot is now full day.");
-    var lesson_price = 6*hourlyRate;
-    console.log("lesson price is: "+lesson_price)
-    $('#donation-amount').html(lesson_price);
+  console.log("Listening for price changes.");
+  $('#lesson_product_name').change(function(e){
+    
+    console.log("detected product_name change.");
+    if ( $('#lesson_product_name').val() == '1hr Learn to Ski Package (rental included)'){
+      console.log("the user has selected a rental package.");
+      var lesson_price = '$70.00';
     };
+    if ( $('#lesson_product_name').val() == '1hr Group Lesson (lesson + lift only)'){
+        console.log("the user has selected a rental package.");
+        var lesson_price = '$50.00';
+    };
+    console.log("lesson price is: "+lesson_price)
+    $('#lesson-price').html(lesson_price);
   });
 }
 
