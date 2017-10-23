@@ -424,6 +424,20 @@ def price
     end
   end
 
+  def self.assign_all_instructors_to_sections
+    unassigned_sections = Section.where(instructor_id:"")
+    unassigned_sections.each do |section|
+      section.instructor_id = section.available_instructors.first.id
+      section.save!
+    end
+    unassigned_lessons = Lesson.where(instructor_id:nil)  
+    puts "!!!!!!!!! there are #{unassigned_lessons.count} unassigned lessons"
+    unassigned_lessons.each do |lesson|
+      lesson.instructor_id = lesson.section.instructor_id
+      lesson.save
+    end
+  end
+
   def available_instructors
     if self.instructor_id
         if  Lesson.instructors_with_calendar_blocks(self.lesson_time).include?(self.instructor)

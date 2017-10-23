@@ -12,8 +12,8 @@
 
 <!-- SECTION 0 - AVAILABLE LESSON REQUESTS FOR INSTRUCTORS -->
 <% if current_user && current_user.active_instructor? %>
-<h3><a href="#hideLessons" class="btn btn-success" id="toggle-available-lessons">Show (hide) Lesson Requests</a></h3>
-<div id="available-lessons" class="">
+<h3><a href="#hideLessons" class="btn btn-success hidden" id="toggle-available-lessons">Show (hide) Lesson Requests</a></h3>
+<div id="available-lessons" class="hidden">
 <h1>Lessons Requests</h1>
 
 <table class="instructors-table">
@@ -54,7 +54,7 @@
 <% end %>
 
 <!-- SECTION 1 - PREVIOUS LESSONS -->
-<h3><a href="#hideLessons" class="btn btn-success" id="toggle-completed-lessons">Show (hide) Past Lessons</a></h3>
+<h3><a href="#hideLessons" class="btn btn-success " id="toggle-completed-lessons">Show (hide) Past Lessons</a></h3>
 <div id="completed-lessons" class="hidden">
 <h1>Previous Lessons</h1>
 
@@ -81,7 +81,7 @@
 
   <tbody>
     <% @lessons.each do |lesson| %>
-        <% if lesson.completed? || lesson.confirmed? %>
+        <% if lesson.completed? %>
           <tr>
             <% if lesson.instructor %>
             <td><%= image_tag(lesson.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %></td>
@@ -168,71 +168,67 @@
 
 <!-- SECTION 2 - ACTIVE LESSONS -->
 
-<h3><a href="#hideLessons" class="btn btn-success" id="toggle-upcoming-lessons">Show (hide) upcoming Lessons</a></h3>
+<h3><a href="#hideLessons" class="btn btn-success hidden" id="toggle-upcoming-lessons">Show (hide) upcoming Lessons</a></h3>
 <div id="upcoming-lessons" class="">
-<h1>Upcoming Lessons </h1>
 
-<table class="instructors-table">
-  <thead>
-    <tr>
-      <th>SID</th>
-      <th>Type</th>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Instructor</th>
-      <th>Product</th>
-      <th>Student</th>
-      <th>Status</th>
-      <% if current_user.user_type == "Snow Schoolers Employee" %>
-      <th>Price</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <% else %>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <% end %>
-    </tr>
-  </thead>
+<% @days.each do |day| %>
 
-  <tbody>
-    <% @lessons.each do |lesson| %>
-    <% if lesson.upcoming? %>
-    <tr>
-      <td><%= lesson.section_id %></td>
-      <td><%= lesson.activity %></td>
-      <td><%= lesson.lesson_time.date.strftime("%m/%d") %></td>
-      <td><%= lesson.lesson_time.slot %></td>
-      <% if lesson.instructor %>
-        <td><%= image_tag(lesson.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %><br>
-          <%= lesson.instructor.name %>
-        </td>
-      <% else %>
-        <td>TBD</td>
-      <% end %>
-      <td><%= link_to "#{lesson.product.name}", lesson, class: "btn btn-default" %></td>
-      <% if lesson.requester %>
-      <td class="lessons-table-cells lesson-student">Requester: <%= lesson.requester.email %></td>
-      <% else %>
-      <td class="lessons-table-cells lesson-student">Requester: <%= lesson.guest_email %></td>
-      <% end %>            <!-- <td><%= lesson.location.name %></td> -->
-      <td><%= lesson.state %></td>
-      <% if current_user.user_type == "Snow Schoolers Employee" %>
-      <td><%= number_to_currency(lesson.visible_lesson_cost) %></td>
-      <td><%= link_to "Send Instructor SMS", send_reminder_sms_to_instructor_path(lesson), class: "btn btn-default" %></td>
-      <% else %>
-      <td></td>
-      <td></td>
-      <% end %>
-      <td><%= link_to 'Edit', edit_lesson_path(lesson) %></td>
-      <td><%= link_to 'Cancel', lesson, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-    <%end%>
+<h1 class="center"><b>---Lessons for <%= day.date.strftime("%A %b %e, %Y") %>---</b></h1>
+
+  <% Section.where(date:"2017-10-23").sort{ |a,b| a.slot <=> b.slot }.each do |section| %>
+
+    <h3><%= section.slot %> - <%= section.sport_name %> <em> (Additional capacity: <%= section.remaining_capacity %>)</em>
+     | Instructor: 
+      <% if section.instructor %>
+        <%= image_tag(section.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %> - 
+          <%= section.instructor.name %>
+          <% else %>
+          TBD
+        <% end %>
+    </h3>
+    <!-- <h3><%= section.id %></h3> -->
+    <table class="instructors-table">
+      
+      <%= render partial: "lessons/lessons_column_headers" %>
+
+        <% Lesson.where(section_id:section.id).each do |lesson| %>
+
+          <% lesson.students. each do |student| %>
+      
+      <tbody>
+        <tr>         
+          <td><%= student.requester.name %></td>
+          <td><%= student.name %></td>
+          <td><%= student.age_range %></td>
+          <td><%= student.most_recent_level %></td>
+          <!-- <td><%= link_to "#{lesson.product.name}", lesson, class: "btn btn-default" %></td> -->
+          <% if lesson.requester %>
+          <td class="lessons-table-cells lesson-student"><%= lesson.requester.email %></td>
+          <% else %>
+          <td class="lessons-table-cells lesson-student"><%= lesson.guest_email %></td>
+          <% end %>            <!-- <td><%= lesson.location.name %></td> -->
+          <td><%= student.lesson.phone_number %></td>
+          <td><%= lesson.state %></td>
+          <td><%= number_to_currency(lesson.visible_lesson_cost) %></td>
+          <td></td>
+          <td></td>
+          <td><%= link_to 'Edit', edit_lesson_path(lesson), class: "btn btn-default" %></td>
+          <td><%= link_to 'Cancel', lesson, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %></td>
+        </tr>
+      </tbody>
+
+        <%end%>
+        
+        <%end%>
+      
+    </table>
+
     <% end %>
-  </tbody>
-</table>
+
+<% end %>
+
+<div class="buffer"></div>
+
 </div>
 
 </div>

@@ -22,7 +22,7 @@
       <tr>
         <td><%= section.id %></td>
         <td><%= section.date %></td>
-        <td><%= section.instructor_id %></td>
+        <td><%= section.instructor ? section.instructor.name : "TBD" %></td>
         <td><%= section.slot %></td>
         <!-- <td><%= section.level %></td> -->
         <td><%= section.sport_name %></td>

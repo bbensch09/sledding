@@ -35,7 +35,6 @@ gb_seed_accounts = [
   "brian+chris@snowschoolers.com",
   "brian+ron@snowschoolers.com",
   "brian+stephanie@snowschoolers.com",
-  "brian+other@snowschoolers.com"
 ]
 
 gb_seed_accounts.each do |email|
@@ -50,14 +49,14 @@ puts "User created: #{User.last.email}."
 
 Instructor.find_or_create_by!({
   user_id: User.last.id,
-  first_name: ['Chris','Ron','Stephanie','Brian'].sample,
-  last_name: 'Smith',
+  first_name: ['Chris','Ron','Stephanie'].sample,
+  last_name: 'Parsons',
   username: email,
   phone_number: "408-315-2900",
-  city: ['Tahoe City, CA', 'Truckee, CA','South Lake Tahoe, CA','Reno, NV','Tahoma, CA','San Francisco, CA','Berkeley, CA'].sample,
+  city: ['Tahoe City, CA', 'Truckee, CA','South Lake Tahoe, CA'].sample,
   certification: ['PSIA Level 1','PSIA Level 2','PSIA Level 3','AASI Level 1','AASI Level 2','AASI Level 3'].sample,
   intro: "I want to teach for Snow Schoolers!!!!",
-  bio: "John hails from New York where he learned to ski as a kid and first began teaching children's ski lessons in high school at the local resort. He later coached the traveling freestyle ski team, and eventually moved to Crested Butte to live the ski bum dream for awhile, which included competing in the U.S. Freeskiing Championships. He recently moved to Tahoe 5 years ago. With nearly three decades of instructor experience across all skill levels, he will happily share his local secrets and ensure you have a wonderful experience on the mountain..",
+  bio: "Chris hails from New York where he learned to ski as a kid and first began teaching children's ski lessons in high school at the local resort. He later coached the traveling freestyle ski team, and eventually moved to Crested Butte to live the ski bum dream for awhile, which included competing in the U.S. Freeskiing Championships. He recently moved to Tahoe 5 years ago. With nearly three decades of instructor experience across all skill levels, he will happily share his local secrets and ensure you have a wonderful experience on the mountain..",
   adults_initial_rank: rand(5..10),
   kids_initial_rank: rand(5..10),
   overall_initial_rank: rand(5..10),
