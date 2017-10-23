@@ -213,8 +213,9 @@
           <td><%= number_to_currency(lesson.visible_lesson_cost) %></td>
           <td></td>
           <td></td>
-          <td><%= link_to 'Edit', edit_lesson_path(lesson), class: "btn btn-default" %></td>
-          <td><%= link_to 'Cancel', lesson, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %></td>
+          <td><%= link_to 'Edit', edit_lesson_path(lesson), class: "btn btn-sm btn-warning" %></td>
+          <td><%= link_to 'Review', lesson, class: "btn btn-sm btn-default" %></td>
+          <td><%= link_to 'Cancel', lesson, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-sm btn-danger" %></td>
         </tr>
       </tbody>
 
