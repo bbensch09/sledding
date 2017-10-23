@@ -38,24 +38,11 @@ class LessonsController < ApplicationController
     render 'schedule'
   end
 
-  def index
-    if current_user.email == "brian@snowschoolers.com"
+  def index    
       @days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
       @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
       @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
-      @todays_lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date == Date.today }
-      elsif current_user.user_type == "Ski Area Partner"
-        lessons = Lesson.where(requested_location:current_user.location.id.to_s).sort_by { |lesson| lesson.id}
-        @todays_lessons = lessons.to_a.keep_if{|lesson| lesson.date == Date.today && lesson.state != 'new' }
-        @lessons = Lesson.where(requested_location:current_user.location.id.to_s).to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
-        @lessons.sort_by { |lesson| lesson.id}
-      elsif current_user.instructor
-        lessons = Lesson.visible_to_instructor?(current_user.instructor)
-        @todays_lessons = lessons.to_a.keep_if{|lesson| lesson.date == Date.today }
-        @lessons = Lesson.visible_to_instructor?(current_user.instructor)
-      else
-        @lessons = current_user.lessons
-        @todays_lessons = current_user.lessons.to_a.keep_if{|lesson| lesson.date == Date.today }
+      @todays_lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date == Date.today }      
     end
   end
 
