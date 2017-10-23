@@ -19,9 +19,8 @@ class SectionsController < ApplicationController
   # GET /sections
   # GET /sections.json
   def index
-    @sections = Section.all
+    @sections = Section.order(date: :asc, sport_id: :asc, slot: :asc)
   end
-
   # GET /sections/1
   # GET /sections/1.json
   def show

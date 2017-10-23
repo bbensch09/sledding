@@ -40,7 +40,7 @@ class LessonsController < ApplicationController
 
   def index
     if current_user.email == "brian@snowschoolers.com"
-      @days = Section.select(:date).uniq
+      @days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
       @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
       @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
       @todays_lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date == Date.today }
@@ -179,7 +179,7 @@ class LessonsController < ApplicationController
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Lesson deposit successfully charged"
     end
-    respond_with @lesson
+    redirect_to @lesson
   end
 
   def update
@@ -352,7 +352,7 @@ class LessonsController < ApplicationController
   end
 
   def validate_new_lesson_params
-    if params[:lesson].nil? || params[:lesson][:product_name].nil? || params[:lesson][:activity].nil? ||  params[:lesson][:lesson_time][:date].length < 10
+    if params[:lesson].nil? ||  params[:lesson] == "" || params[:lesson][:product_name].nil? || params[:lesson][:product_name] == "" || params[:lesson][:activity].nil? ||  params[:lesson][:lesson_time][:date].length < 10
       session[:lesson] = params[:lesson]
       flash[:alert] = "Please first select a lesson type, date, and time."
       redirect_to new_lesson_path

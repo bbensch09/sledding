@@ -10,9 +10,10 @@
       <th>Date</th>
       <th>Instructor</th>
       <th>Time Slot</th>
-      <!-- <th>Level</th> -->
+      <th>Sport ID</th>
       <th>Sport</th>
       <th>Capacity</th>
+      <th>Current head count</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -25,8 +26,10 @@
         <td><%= section.instructor ? section.instructor.name : "TBD" %></td>
         <td><%= section.slot %></td>
         <!-- <td><%= section.level %></td> -->
+        <td><%= section.sport_id %></td>
         <td><%= section.sport_name %></td>
         <td><%= section.capacity %></td>
+        <td><%= section.student_count %></td>
         <td><%= link_to 'Show', section %></td>
         <td><%= link_to 'Edit', edit_section_path(section) %></td>
         <td><%= link_to 'Destroy', section, method: :delete, data: { confirm: 'Are you sure?' } %></td>

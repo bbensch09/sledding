@@ -23,6 +23,7 @@ class Lesson < ActiveRecord::Base
   #Check to ensure an instructor is available before booking
   validate :instructors_must_be_available, on: :create
   validate :add_lesson_to_section
+  before_save :add_lesson_to_section
   after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
@@ -325,7 +326,6 @@ def price
     elsif self.product_name == "1hr Group Lesson (lesson + lift only)"
         product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"group_lesson").first
     end
-    puts "!!!!!!!! lesson.product is #{product}"
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
     else      
@@ -405,21 +405,21 @@ def price
   end
 
   def add_lesson_to_section
-    puts "!!!!!!!!!begin creating new section"
     existing_sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
     if existing_sections.empty?
       Section.find_or_create_by!({
         sport_id: self.sport_id,
         date: self.lesson_time.date,
         slot: self.lesson_time.slot,
-        capacity: 2,
+        capacity: 3,
         lesson_type: 'group_lesson'
         })
       self.section_id = Section.last.id
-      puts "!!!!!added this lesson to a NEW section id: #{self.section_id}"
     elsif existing_sections.first.student_count <= existing_sections.first.capacity
       self.section_id = existing_sections.first.id
     else
+      puts "!!!!!!!! The requested time slot is full!!!!!"
+      self.state = 'This section is now full, please choose another time slot.'
       errors.add(:instructor, "There is unfortunately no more room in this lesson, please choose another time slot.")
     end
   end

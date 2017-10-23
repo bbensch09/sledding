@@ -84,7 +84,7 @@
             </div>
 
             <div class="col-md-3">
-              <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], selected: @product_name, include_blank: 'Package Type', label: false %>
+              <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], include_blank: 'Package Type', label: false %>
             </div>
 
             <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
