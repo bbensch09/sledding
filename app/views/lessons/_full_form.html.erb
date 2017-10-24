@@ -75,7 +75,7 @@
         <div class="col-md-6">
           <h4>Book as a <strong>Guest</strong> | Or <a href="#" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Sign-in to your Account</a></h4>
               <label>Email</label>
-              <%= f.input :guest_email, as: :string, placeholder: "email@example.com", label: false %>
+              <%= f.text_field :guest_email, placeholder: "email@example.com", class: 'form-control', required:true, label: false %>
         </div>
       </div>
       <% end %>
@@ -87,12 +87,12 @@
 
             <div class="col-md-6">
               <label>Lesson Type</label>
-              <%= f.input :activity, as: :select, collection: ['Ski', 'Snowboard'], include_blank: 'Lesson Type', label: false %>
+              <%= f.select :activity, ['Ski', 'Snowboard'], {}, {class: 'form-control', required:true, include_blank:'Lesson Type'} %>
             </div>
 
             <div class="col-md-6">
               <label>Package Type</label>
-              <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], include_blank: 'Package Type', label: false %>
+              <%= f.select :product_name, ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], {}, {class: 'form-control', required:true, include_blank:"Package Type"} %>
             </div>
 
           </div>
@@ -100,13 +100,13 @@
             <div class='row'>
               <div class="col-md-4">
                 <label>Date</label>
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker' }, placeholder: 'Pick a date', label: false %>
+                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker' }, placeholder: 'Pick a date', required: true, label: false %>
                 <span class="search-area-icon"></span>
               </div>
 
               <div class="col-md-4">
                 <label>Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: ['09:00  -  10:00am', '10:10 - 11:10am','11:20 -  12:20pm','12:30 -1:30pm','2:20  -  3:20pm','3:30  -  4:30pm'], include_blank: 'Time', label: false %>
+                <%= lt_f.input :slot, as: :select, collection: ['09:00  -  10:00am', '10:10 - 11:10am','11:20 -  12:20pm','12:30 -1:30pm','2:20  -  3:20pm','3:30  -  4:30pm'], include_blank: 'Time', required: true, label: false %>
 
               </div>
           <% end %>
@@ -118,33 +118,24 @@
           <div class="row">
             <div class="col-md-6">
                 <label>Your Name</label>
-                <%= f.input :requester_name, as: :string, value: current_user ? current_user.name : "", required: true, label: false %>
+                <%= f.text_field :requester_name, value: current_user ? current_user.name : "", class: "form-control", required: true, label: false %>
               </div>
               <div class="col-md-6">
                 <label>Phone</label> <span class="text-smaller"></span>
-                <%= f.input :phone_number, as: :string, placeholder: 'xxx-xxx-xxxx', required: true, label: false %>
+                <%= f.text_field :phone_number, placeholder: 'xxx-xxx-xxxx', class: 'form-control', required:true, include_blank:false %>
               </div>
             </div>
 
           <div class='row'>
             <div class="col-md-6">
-              <label>Do you have equipment?</label>
-              <%= f.input :gear, as: :select, collection: [['Yes, I already have my equipment.', true], ['No, I will need to rent equipment.', false]], include_blank: '(Skis,boots,etc.)', label: false, required:true %>
+              <label>Do you already have equipment?</label>
+              <%= f.select :gear, options_for_select([['Yes, I already have my equipment.', true], ['No, I will need to rent equipment.', false]]), {}, {class: 'form-control', required:true,  include_blank:"(Skis,boots,etc.)"} %>
             </div>
-            <!-- <div class="col-md-6">
-              <label>Have a lift ticket or pass?</label>
-              <%= f.input :lift_ticket_status, as: :select, collection: [['Yes, I have one.', true], ['No, I still need one.', false]], include_blank: 'Choose one', label: false, required:true %>
-            </div> -->
 
           </div>
 
           <h4>Student <strong>Info</strong></h4>
-          <!-- <div id="previous_students">
-            % if current_user.students %>
-            <h4>This lesson is for the previously entered student(s) below.</h4>
-              %= f.select :id, options_from_collection_for_select(current_user.students, :id, :name), {}, {required: false, class: 'form-control'} %>
-            % end %>
-          </div> -->
+
           <div id='lesson_students_input'>
             <%= f.semantic_fields_for :students do |student| %>
               <%= render 'student_fields', f: student %>
@@ -160,16 +151,12 @@
         <div class="col-md-6">
           <h4>Lesson  <strong> Objectives</strong></h4>
 
-<!--           <div class='col-md-12'>
-            <label>If you had to choose one focus area for this lesson, what would it be?</label>
-            <%= f.input :focus_area, as: :select, collection: ['Basics (for beginners and intermediates)','Advanced Racing Technique', 'Moguls','Terrain Park','Powder Skiing','Big-Mountain Skiing'], include_blank: 'Select a focus area', input_html: {class: 'width100'}, required: false, label: false %>
-          </div> -->
          <div class='col-md-12'>
             <label>What is your primary objective for the lesson? <br> Is there anything specific you want your instructor to know?</label>
             <%= f.input :objectives, placeholder: 'i.e. my child has a fear of heights, my child has special needs, I tore my ACL three years ago, etc.', required: false, label: false %>
           </div>
           <div class="col-md-12">
-            <label>How did you first hear about Snow Schoolers?</label>
+            <label>How did you first hear about Granlibakken?</label>
             <%= f.select :how_did_you_hear, [['From a friend',1],['Facebook',2],['Google',3],['I took a previous lesson',10],['From a postcard',4],['From someone at Homewood',5],['Tahoe Daves',6],['Ski Butlers',7],['Yelp',8],['Snowglers',9],['Other',100]], {}, {class: 'form-control', required:true, include_blank:false} %>
           </div>
           <div class="col-md-12">
