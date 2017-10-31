@@ -31,6 +31,10 @@ class WelcomeController < ApplicationController
     render 'avantlink_confirmation.txt', :layout => false
   end
 
+  def ghost_click
+    render 'ghost_click', :layout => false 
+  end
+
   def index
     # @lesson = Lesson.new
     # @lesson_time = @lesson.lesson_time

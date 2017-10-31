@@ -57,97 +57,76 @@ class Section < ApplicationRecord
 		end
 	end
 
+# '10:10 - 11:10am (first-timers only)','11:20 -  12:20pm','12:30 -1:30pm  (first-timers only)','2:20  -  3:20pm','3:30  -  4:30pm'
 	def self.seed_sections(date = Date.today)
+		#9am - 10am
 		Section.create!({
 			date: date,
-			name: 'Snow Rangers - Ski',
-			lesson_type: 'Group Lesson',
-			age_group: 'Kids',
+			name: 'Beginner Skiing',
+			slot: '09:00  -  10:00am',
+			sport_id: 1,
+			level: 'Beginner',
+			capacity: 6
+			})
+		Section.create!({
+			date: date,
+			name: 'Beginner Snowboarding',
+			slot: '09:00  -  10:00am',
+			sport_id: 1,
+			level: 'Beginner',
+			capacity: 6
+			})
+		#1010am -- deliveries
+		Section.create!({
+			date: date,
+			name: 'First-timers: Skiing',
+			slot: '10:10 - 11:10am (first-timers only)',
 			sport_id: 1,
 			level: 'First-timer',
-			capacity: 5,
+			capacity: 6
 			})
 		Section.create!({
 			date: date,
-			name: 'Snow Rangers - Snowboard',
-			lesson_type: 'Group Lesson',
-			age_group: 'Kids',
-			sport_id: 3,
-			level: 'First-timer',
-			capacity: 5,
-			})
-		Section.create!({
-			date: date,
-			name: 'Mountain Rangers - Ski',
-			lesson_type: 'Group Lesson',
-			age_group: 'Kids',
+			name: 'First-timers: Snowboarding',
+			slot: '10:10 - 11:10am (first-timers only)',
 			sport_id: 1,
 			level: 'First-timer',
-			capacity: 8,
+			capacity: 6
+			})
+		#1120 - beginners
+		Section.create!({
+			date: date,
+			name: 'Beginner Skiing',
+			slot: '11:20  -  12:20pm',
+			sport_id: 1,
+			level: 'Beginner',
+			capacity: 6
 			})
 		Section.create!({
 			date: date,
-			name: 'Mountain Rangers - Snowboard',
-			lesson_type: 'Group Lesson',
-			age_group: 'Kids',
-			sport_id: 3,
-			level: 'First-timer',
-			capacity: 8,
-			})	
+			name: 'Beginner Snowboarding',
+			slot: '11:20  -  12:20pm',
+			sport_id: 1,
+			level: 'Beginner',
+			capacity: 6
+			})
+		#dashboard to compare by channels
 		Section.create!({
 			date: date,
-			name: 'Adult Groups - AM Ski',
-			lesson_type: 'Group Lesson',
-			age_group: 'Adults',
+			name: 'First-timers: Skiing',
+			slot: '10:10 - 11:10am (first-timers only)',
 			sport_id: 1,
 			level: 'First-timer',
-			capacity: 10,
-			})	
-		Section.create!({
-			date: date,
-			name: 'Adult Groups - AM Snowboard',
-			lesson_type: 'Group Lesson',
-			age_group: 'Adults',
-			sport_id: 3,
-			level: 'First-timer',
-			capacity: 10,
+			capacity: 6
 			})
 		Section.create!({
 			date: date,
-			name: 'Adult Groups - PM Ski',
-			lesson_type: 'Group Lesson',
-			age_group: 'Adults',
+			name: 'First-timers: Skiing',
+			slot: '10:10 - 11:10am (first-timers only)',
 			sport_id: 1,
 			level: 'First-timer',
-			capacity: 10,
-			})	
-		Section.create!({
-			date: date,
-			name: 'Adult Groups - PM Snowboard',
-			lesson_type: 'Group Lesson',
-			age_group: 'Adults',
-			sport_id: 3,
-			level: 'First-timer',
-			capacity: 10,
-			})
-		Section.create!({
-			date: date,
-			name: 'Private - Ski',
-			lesson_type: 'Private Lesson',
-			age_group: 'Adults',
-			sport_id: 1,
-			level: 'First-timer',
-			capacity: 1,
-			})
-		Section.create!({
-			date: date,
-			name: 'Private - Snowboard',
-			lesson_type: 'Private Lesson',
-			age_group: 'Adults',
-			sport_id: 3,
-			level: 'First-timer',
-			capacity: 1,
-			})									
+			capacity: 6		
+		})									
 
 	end
 
