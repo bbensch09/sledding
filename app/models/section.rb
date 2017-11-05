@@ -72,7 +72,7 @@ class Section < ApplicationRecord
 			date: date,
 			name: 'Beginner Snowboarding',
 			slot: '09:00  -  10:00am',
-			sport_id: 1,
+			sport_id: 2,
 			level: 'Beginner',
 			capacity: 6
 			})
@@ -89,7 +89,7 @@ class Section < ApplicationRecord
 			date: date,
 			name: 'First-timers: Snowboarding',
 			slot: '10:10 - 11:10am (first-timers only)',
-			sport_id: 1,
+			sport_id: 2,
 			level: 'First-timer',
 			capacity: 6
 			})
@@ -106,7 +106,7 @@ class Section < ApplicationRecord
 			date: date,
 			name: 'Beginner Snowboarding',
 			slot: '11:20  -  12:20pm',
-			sport_id: 1,
+			sport_id: 2,
 			level: 'Beginner',
 			capacity: 6
 			})
@@ -123,7 +123,7 @@ class Section < ApplicationRecord
 			date: date,
 			name: 'First-timers: Skiing',
 			slot: '10:10 - 11:10am (first-timers only)',
-			sport_id: 1,
+			sport_id: 2,
 			level: 'First-timer',
 			capacity: 6		
 		})									
