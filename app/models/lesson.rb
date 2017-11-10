@@ -415,12 +415,19 @@ def price
         lesson_type: 'group_lesson'
         })
       self.section_id = Section.last.id
-    elsif existing_sections.first.student_count <= existing_sections.first.capacity
-      self.section_id = existing_sections.first.id
+      puts "!!!!new section created"
     else
+      available_sections = existing_sections.select{|a| a.has_capcity?}
+      if available_sections.count >0 
+        puts "!!!!section available is #{available_sections.first }"
+        self.section_id = available_sections.first 
+        self.state = "ready_to_book"
+      else
       puts "!!!!!!!! The requested time slot is full!!!!!"
       self.state = 'This section is now full, please choose another time slot.'
       errors.add(:instructor, "There is unfortunately no more room in this lesson, please choose another time slot.")
+      return false if available_sections.count == 0
+      end
     end
   end
 

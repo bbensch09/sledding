@@ -145,6 +145,10 @@ class Section < ApplicationRecord
 		self.capacity - self.student_count
 	end
 
+	def has_capcity?
+		self.capacity > self.student_count
+	end
+
 	def no_double_booking_instructors
 		#TBD - tricky due to nature of AM & PM sections	
 	    # errors.add(:section, "cannot double book an instructor") unless Instructor.count == 0
