@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   get 'tahoe-season-passes' => 'products#pass_search_results'
   get 'tahoe-season-passes-search-results' => 'products#pass_search_results', as: :pass_search_results
   get 'search-results' => 'products#search_results', as: :search_results 
+  get 'filtered-schedule-results' => 'lessons#filtered_schedule_results', as: :filtered_schedule_results 
 
   get   'lessons/sugarbowl'               => 'lessons#sugarbowl'
   # get 'homewood' => "welcome#homewood"
@@ -166,7 +167,11 @@ Rails.application.routes.draw do
     end
   end
   post 'sections/generate_new_sections' => 'sections#generate_new_sections', as: :generate_new_sections
+  post 'sections/delete_all_sections_and_lessons' => 'sections#delete_all_sections_and_lessons', as: :delete_all_sections_and_lessons
+  post 'sections/:id/duplicate_ski_section' => 'sections#duplicate_ski_section', as: :duplicate_ski_section
+  post 'sections/:/id/duplicate_snowboard_section' => 'sections#duplicate_snowboard_section', as: :duplicate_snowboard_section
   post 'seed_lessons_with_students' => 'sections#fill_sections_with_lessons', as: :seed_lessons_with_students
+  post 'delete_all_lessons' => 'sections#delete_all_lessons', as: :delete_all_lessons
 
   get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons

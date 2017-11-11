@@ -25,18 +25,34 @@ class LessonsController < ApplicationController
 
   def assign_all_instructors_to_sections
     Lesson.assign_all_instructors_to_sections
-    redirect_to '/lessons'
+    redirect_to '/sections'
   end
 
-  def lesson_schedule_results
-      @date = Date.today.strftime("%m/%d/%Y")
-      @age_type = params[:age_type] ? params[:age_type] : ["Kids","Adults","Any"]
-      @lessons = Lesson.all.to_a.keep_if{ |lesson| lesson.lesson_time.date.to_date.strftime("%m/%d/%Y") >= @date }
-      @ski_sections = Section.all.to_a.keep_if {|section| section.date.strftime("%m/%d/%Y") >= @date && section.sport_id == 1}
-      @sb_sections = Section.all.to_a.keep_if {|section| section.date.strftime("%m/%d/%Y") >= @date && section.sport_id == 2}
-      @lessons.sort! { |a,b| a.id <=> b.id }
-    render 'schedule'
+  def filtered_schedule_results
+    @all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}    
+    if params[:date] != ""
+      # @search_params = {date: params[:date]}
+      # puts "!!!!! the search_params are: #{@search_params}"
+      @lessons = Lesson.all.select{|lesson| lesson.date == params[:date]}
+      @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+      @days = @all_days.select{|a| a.date.to_s == params[:date]}
+    else
+      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
+      @days = all_days.keep_if{|a| a.date >= Date.today}   
+    end
+    @new_date = Section.new
+    render 'index'
   end
+
+  # def lesson_schedule_results
+  #     @date = Date.today.strftime("%m/%d/%Y")
+  #     @age_type = params[:age_type] ? params[:age_type] : ["Kids","Adults","Any"]
+  #     @lessons = Lesson.all.to_a.keep_if{ |lesson| lesson.lesson_time.date.to_date.strftime("%m/%d/%Y") >= @date }
+  #     @ski_sections = Section.all.to_a.keep_if {|section| section.date.strftime("%m/%d/%Y") >= @date && section.sport_id == 1}
+  #     @sb_sections = Section.all.to_a.keep_if {|section| section.date.strftime("%m/%d/%Y") >= @date && section.sport_id == 2}
+  #     @lessons.sort! { |a,b| a.id <=> b.id }
+  #   render 'schedule'
+  # end
 
   def index    
       all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}      
@@ -112,13 +128,8 @@ class LessonsController < ApplicationController
   end
 
   def create
-    if params["commit"] == "Book Lesson"
       puts "!!!!!!!!! Lesson params are \n #{params}"
-      create_lesson_and_redirect
-    else
-      session[:lesson] = params[:lesson]
-      redirect_to '/browse'
-    end
+      create_lesson_and_redirect    
   end
 
   def complete
@@ -368,22 +379,20 @@ class LessonsController < ApplicationController
   end
 
   def create_lesson_from_session
-    return unless current_user && session[:lesson]
-    if params["commit"] == "Book Lesson"
+  #   unless params["commit"] == "request-an-instructor"
       create_lesson_and_redirect
-    else
-      # session[:lesson] = params[:lesson]
-      puts "!!!!! params are: #{params[:lesson]}"
-      # debugger
-      redirect_to '/browse'
-    end
+  #     session[:lesson] = params[:lesson]
+  #     puts "!!!!! params are: #{params[:lesson]}"
+  #   end
   end
 
   def create_lesson_and_redirect
     @lesson = Lesson.new(lesson_params)
+    puts "!!!!!!params are: #{lesson_params}"
     @lesson.requester = current_user
     @lesson.requested_location = Location.find(24).id
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+    @lesson.product_id = Product.where(name:params[:product_name]).first
     if @lesson.save
       redirect_to complete_lesson_path(@lesson)
       GoogleAnalyticsApi.new.event('lesson-requests', 'request-initiated', params[:ga_client_id])

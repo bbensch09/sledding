@@ -77,6 +77,14 @@
   padding-right: 10px;
   padding-left: 10px;
 }
+.ski-sections, .snowboard-sections{
+  min-height: 500px;
+}
+.slot-roster{
+  min-height: 250px;
+  /*border: 0.5px dotted black;*/
+  margin-bottom: 10px;
+}
 
 /*DESKTOP ONLY ADJUSTMENTS*/
 @media (min-width: 768px) {

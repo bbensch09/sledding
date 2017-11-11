@@ -12,7 +12,8 @@ class SectionsController < ApplicationController
     # @shift.update(status:"Assigned")
     # @section.shift_id = @shift.id
     @section.save!
-    redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}"    
+    # redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}"    
+    redirect_to "/sections"
 
   end
 
@@ -24,6 +25,10 @@ class SectionsController < ApplicationController
   # GET /sections/1
   # GET /sections/1.json
   def show
+  end
+
+  def browse_available_sections
+
   end
 
   # GET /sections/new
@@ -40,10 +45,32 @@ class SectionsController < ApplicationController
     redirect_to '/lessons'
   end
 
+  def delete_all_sections_and_lessons
+    Section.delete_all
+    Lesson.delete_all
+    redirect_to '/lessons'
+  end
+
   def generate_new_sections
     day = params[:section][:date]
     puts "!!!!!!! new section params are: #{params[:section][:date]}"
     Section.seed_sections(day)
+    redirect_to '/lessons'
+  end
+
+  def duplicate_ski_section
+    section = Section.find(params[:id])
+    date = section.date 
+    slot = section.slot
+    Section.duplicate_ski_section(date,slot)
+    redirect_to '/lessons'
+  end
+
+  def duplicate_snowboard_section
+    section = Section.find(params[:id])
+    date = section.date 
+    slot = section.slot
+    Section.duplicate_snowboard_section(date,slot)
     redirect_to '/lessons'
   end
 

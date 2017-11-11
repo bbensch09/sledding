@@ -57,10 +57,18 @@ class Section < ApplicationRecord
 		end
 	end
 
+	def self.delete_all_lessons
+		Section.all.each do |section|
+			section.lessons.each do |lesson|
+				lesson.destroy!
+			end
+		end
+	end
+
 	def self.fill_sections_with_lessons
 		Section.all.each do |section|
 			
-			until section.has_capacity? == false
+			until section.remaining_capacity <= 1
 				lt = LessonTime.find_or_create_by({
 					date: section.date,
 					slot: section.slot
@@ -97,7 +105,29 @@ class Section < ApplicationRecord
 			end
 		end
 	end
-# '10:10 - 11:10am (first-timers only)','11:20 -  12:20pm','12:30 -1:30pm  (first-timers only)','2:20  -  3:20pm','3:30  -  4:30pm'
+
+	def self.duplicate_ski_section(date,slot)
+		Section.create!({
+			date: date,
+			name: 'Beginner Skiing',
+			slot: slot,
+			sport_id: 1,
+			level: 'Beginner',
+			capacity: 6
+			})		
+	end
+
+	def self.duplicate_snowboard_section(date,slot)
+		Section.create!({
+			date: date,
+			name: 'Beginner Skiing',
+			slot: slot,
+			sport_id: 2,
+			level: 'Beginner',
+			capacity: 6
+			})		
+	end
+
 	def self.seed_sections(date = Date.today)
 		#9am - 10am
 		Section.create!({
