@@ -160,7 +160,14 @@ Rails.application.routes.draw do
 
 
 
-  resources :sections
+  resources :sections do 
+    member do
+      post :duplicate
+    end
+  end
+  post 'sections/generate_new_sections' => 'sections#generate_new_sections', as: :generate_new_sections
+  post 'seed_lessons_with_students' => 'sections#fill_sections_with_lessons', as: :seed_lessons_with_students
+
   get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons
   # get 'new_request' => 'lessons#new_request'

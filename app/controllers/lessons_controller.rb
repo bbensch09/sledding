@@ -43,6 +43,7 @@ class LessonsController < ApplicationController
       @days = all_days.keep_if{|a| a.date >= Date.today}      
       @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
       @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+      @new_date = Section.new
       # @todays_lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date == Date.today }      
   end
 
@@ -244,7 +245,7 @@ class LessonsController < ApplicationController
     @lesson.update(state: 'canceled')
     send_cancellation_email_to_instructor
     flash[:notice] = 'Your lesson has been canceled.'
-    redirect_to root_path
+    redirect_to lessons_path
   end
 
   def admin_reconfirm_state

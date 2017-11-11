@@ -3,9 +3,11 @@
 <h3> Current User ID: <%= current_user.id %> </h3>
 <h3> Current User.email: <%= current_user.email %> </h3>
  -->
-
 <% if current_user && current_user.email == "brian@snowschoolers.com" %>
-<div class="admin-viewable hidden">
+<div class="admin-viewable">
+ <div id="admin-testing" class="row vertical-padding container admin-viewable">
+    <%= link_to 'Fill lessons with sample students', seed_lessons_with_students_path, method: :post, class: "btn btn-default" %>
+</div>
   <a href='lessons/admin_index' class='btn btn-warning'>View Full Lesson Details</a>
 </div>
 <% end %>
@@ -50,7 +52,6 @@
 <% end %>
 
 <!-- SECTION 1 - PREVIOUS LESSONS -->
-<h3><a href="#createNewSections" class="btn btn-success " id="toggle-completed-lessons">Add a new section</a></h3>
 <h3><a href="#hideLessons" class="btn btn-success " id="toggle-completed-lessons">Show (hide) Past Lessons</a></h3>
 <div id="completed-lessons" class="hidden">
 <h1>Previous Lessons</h1>
@@ -131,6 +132,8 @@
           TBD
         <% end %>
       <%= link_to 'Edit shift', edit_section_path(section), class: 'btn btn-sm btn-warning' %>
+      <%= link_to 'Add new section', duplicate_section_path(section), method: :post, class: 'btn btn-sm btn-success' %>
+
     </h3>
     <!-- <h3><%= section.id %></h3> -->
     <table class="instructors-table">
@@ -173,6 +176,18 @@
     <% end %>
 
 <% end %>
+
+<h1 class="center">Generate sections for another date</h1>
+
+<%= semantic_form_for(@new_date, url: generate_new_sections_path) do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :date, as: :string, input_html: { id: 'datepicker' }, placeholder: 'Date', required: true, label: true %>    
+  <% end %>
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :input, :label => "Generate sections for this date" %>
+  <% end %>
+<% end %>
+
 
 <div class="buffer"></div>
 

@@ -321,10 +321,10 @@ def price
       return self.lesson_price.to_s
     elsif self.lesson_cost && self.lesson_cost > 0
       return self.lesson_cost.to_s     
-    elsif self.product_name == "1hr Learn to Ski Package (rental included)"
-        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"learn_to_ski").first
-    elsif self.product_name == "1hr Group Lesson (lesson + lift only)"
-        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"group_lesson").first
+    elsif self.product_id > 0
+        return Product.find(product_id).price
+    # elsif self.product_name == "1hr Group Lesson (lesson + lift only)"
+    #     product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"group_lesson").first
     end
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
@@ -404,31 +404,23 @@ def price
     end
   end
 
+  def available_sections
+    sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
+    sections = sections.select{|section| section.has_capacity?}
+  end
+
   def add_lesson_to_section
-    existing_sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
-    if existing_sections.empty?
-      Section.find_or_create_by!({
-        sport_id: self.sport_id,
-        date: self.lesson_time.date,
-        slot: self.lesson_time.slot,
-        capacity: 3,
-        lesson_type: 'group_lesson'
-        })
-      self.section_id = Section.last.id
-      puts "!!!!new section created"
-    else
-      available_sections = existing_sections.select{|a| a.has_capcity?}
-      if available_sections.count >0 
-        puts "!!!!section available is #{available_sections.first }"
-        self.section_id = available_sections.first 
-        self.state = "ready_to_book"
-      else
+    return true if self.section_id
+    existing_sections = self.available_sections
+     puts "!!!!section available is #{available_sections.first }"
+      self.section_id = available_sections.first 
+      self.state = "ready_to_book"
+      if self.available_sections.count == 0
       puts "!!!!!!!! The requested time slot is full!!!!!"
       self.state = 'This section is now full, please choose another time slot.'
       errors.add(:instructor, "There is unfortunately no more room in this lesson, please choose another time slot.")
-      return false if available_sections.count == 0
+      return false
       end
-    end
   end
 
   def self.assign_all_instructors_to_sections

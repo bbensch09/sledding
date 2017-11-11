@@ -35,6 +35,39 @@ class SectionsController < ApplicationController
   def edit
   end
 
+  def fill_sections_with_lessons
+    Section.fill_sections_with_lessons
+    redirect_to '/lessons'
+  end
+
+  def generate_new_sections
+    day = params[:section][:date]
+    puts "!!!!!!! new section params are: #{params[:section][:date]}"
+    Section.seed_sections(day)
+    redirect_to '/lessons'
+  end
+
+  def duplicate
+    section = Section.find(params[:id])
+    @section = Section.create({
+        sport_id: section.sport_id,
+        date: section.date,
+        slot: section.slot,
+        capacity: 6,
+        lesson_type: 'group_lesson'
+        })
+      puts "!!!!new section created"
+    respond_to do |format|
+      if @section.save
+        format.html { redirect_to "/lessons", notice: 'Section was successfully duplicated.' }
+        format.json { render :show, status: :created, location: @section }
+      else
+        format.html { render :new }
+        format.json { render json: @section.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # POST /sections
   # POST /sections.json
   def create
@@ -42,7 +75,7 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       if @section.save
-        format.html { redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}", notice: 'Section was successfully created.' }
+        format.html { redirect_to "/lessons", notice: 'Section was successfully created.' }
         format.json { render :show, status: :created, location: @section }
       else
         format.html { render :new }
