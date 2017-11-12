@@ -3,6 +3,7 @@
 <%if current_user && current_user.user_type == "Ski Area Partner" || (current_user.email == "brian@snowschoolers.com") %>
   <div class="row">
     <%= link_to "View Detailed Info (CRM)", "/admin_index", class: 'btn btn-primary' %>
+    <%= link_to 'Manage shift assignments', "/shifts", method: :get, class: "btn btn-success" %>
   </div>
 <div class="col-md-6">
     <h4>Total Instructor count: <%= Instructor.count %> </h4>

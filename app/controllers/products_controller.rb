@@ -24,7 +24,6 @@ class ProductsController < ApplicationController
           format.csv { send_data @products.to_csv, filename: "products-PROD-#{Date.today}.csv" }
           format.xls
     end
-
   end
 
   def sort_by_open_status(results)

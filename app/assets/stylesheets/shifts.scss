@@ -9,6 +9,8 @@
 }
 .calendar-heading{
 	font-size: 1.5em;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 table.table{
 	margin-bottom: 0px !important;
@@ -28,7 +30,6 @@ table.table{
 	font-size: 1em;
 }
 .daily-summary{
-	border-bottom: 3px dotted black;
 	padding-bottom: 10px;
 }
 .daily-summary h2{

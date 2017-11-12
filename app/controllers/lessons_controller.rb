@@ -57,10 +57,14 @@ class LessonsController < ApplicationController
   def index    
       all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}      
       @days = all_days.keep_if{|a| a.date >= Date.today}      
-      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
+      @days = @days.first(10)
+      # Need to remove restriction after 100 lessons are booked
+      @lessons = Lesson.first(100).to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
       @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
       @new_date = Section.new
-      # @todays_lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date == Date.today }      
+      if session[:notice] 
+        flash.now[:notice] = session[:notice]
+      end
   end
 
   def send_reminder_sms_to_instructor
@@ -248,7 +252,9 @@ class LessonsController < ApplicationController
     if @lesson.state == "ready_to_book"
       GoogleAnalyticsApi.new.event('lesson-requests', 'ready-for-deposit')
     end
-    check_user_permissions
+    if @lesson.date <= Date.today && @lesson.review.nil?
+      @lesson.state = 'Lesson complete, waiting for review.'
+    end
   end
 
   def destroy

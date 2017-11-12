@@ -19,8 +19,10 @@ class SectionsController < ApplicationController
 
   def available_lessons
     # @sections = Section.all.select{|section| section.has_capacity? }
-    @sections = Section.all
+    @ski_sections = Section.where(sport_id:1)
+    @snowboard_sections = Section.where(sport_id:2)
   end
+
   # GET /sections
   # GET /sections.json
   def index
@@ -58,7 +60,14 @@ class SectionsController < ApplicationController
   def generate_new_sections
     day = params[:section][:date]
     puts "!!!!!!! new section params are: #{params[:section][:date]}"
-    Section.seed_sections(day)
+    Section.seed_sections(day)    
+    session[:notice] = "Lesson sections created for specified day."
+    redirect_to '/lessons'
+  end
+
+  def generate_all_sections
+    Section.generate_all_sections
+    session[:notice] = "Lesson sections created for all eligible days."
     redirect_to '/lessons'
   end
 

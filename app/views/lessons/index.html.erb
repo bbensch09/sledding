@@ -6,12 +6,9 @@
 <% if current_user && current_user.email == "brian@snowschoolers.com" %>
 <div class="admin-viewable">
  <div id="admin-testing" class="row vertical-padding container admin-viewable">
-    <%= link_to 'Fill lessons with sample students', seed_lessons_with_students_path, method: :post, class: "btn btn-warning" %>
+    <%= link_to 'Fill first 100 lessons with sample students', seed_lessons_with_students_path, method: :post, class: "btn btn-success" %>
     <%= link_to 'Clear sample lessons', delete_all_lessons_path, method: :post, class: "btn btn-warning" %>
     <%= link_to 'Delete all sections & lessons', delete_all_sections_and_lessons_path, method: :post, class: "btn btn-danger" %>
-    <a href='lessons/admin_index' class='btn btn-success'>View Full Lesson Details</a>
-    <a href="#hideLessons" class="btn btn-success hidden" id="toggle-upcoming-lessons">Show (hide) upcoming Lessons</a>
-    <a href="#hideLessons" class="btn btn-success " id="toggle-completed-lessons">Show (hide) Past Lessons</a>
 </div>
 <div class="col-md-6">
   <h3>Generate sections for a specific date</h3>
@@ -20,6 +17,10 @@
       <%= f.action :submit, :as => :input, :label => "Generate sections for this date" %>
   <% end %>
 </div>
+    <a href='lessons/admin_index' class='btn btn-default hidden'>View Full Lesson Details</a>
+    <a href="#hideLessons" class="btn btn-default hidden" id="toggle-upcoming-lessons">Show (hide) upcoming Lessons</a>
+    <a href="#hideLessons" class="btn btn-default hidden" id="toggle-completed-lessons">Show (hide) Past Lessons</a>
+    <%= link_to 'Generate sections for all dates', generate_all_sections_path, method: :post, class: "btn btn-success" %>
 </div>
 <% end %>
 
@@ -97,7 +98,7 @@
 <div id="upcoming-lessons" class="">
 
 <% if @days.count == 0 %>
-<h1 class="center warning">Please search again.</h1>
+<h1 class="center warning">Please search again. <a href='/lessons' class='btn btn-lg btn-default'>SEE ALL DATES</a></h1>
 <% end %>
 
 <% @days.each do |day| %>

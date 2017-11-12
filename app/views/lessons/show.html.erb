@@ -50,7 +50,7 @@
       <% end %>
 
       <% if @lesson.confirmable? || @lesson.completable? || @lesson.active? %>
-      <%= render partial: 'lesson_actions_active' %>
+        <!-- <%= render partial: 'lesson_actions_active' %> -->
       <% end %>
 
       <%= render partial: 'lesson_details' %>

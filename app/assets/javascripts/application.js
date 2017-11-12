@@ -12,7 +12,6 @@
 //
 //= require bootstrap
 //= require bootstrap-sprockets
-//= require rails-ujs
 //= require jquery
 //= require jquery-ui/datepicker
 //= require datetimepicker

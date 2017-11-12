@@ -250,7 +250,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def waiting_for_review?
-    state == 'Payment complete, waiting for review.'
+    state == 'Lesson complete, waiting for review.'
   end
 
   def completed?
@@ -416,7 +416,7 @@ def price
       if self.available_sections.count == 0
       puts "!!!!!!!! The requested time slot is full!!!!!"
       self.state = 'This section is now full, please choose another time slot.'
-      errors.add(:lesson, "There is unfortunately no more room in this lesson, please choose another time slot.")
+      errors.add(:lesson, "There is unfortunately no more room in this lesson, please review the available times below and choose another slot.")
       return false
       end
       puts "!!!!section available is #{available_sections.first }"
@@ -427,7 +427,7 @@ def price
   def confirm_section_valid
     if self.section.nil?
       if self.available_sections.count == 0
-          errors.add(:lesson, "There is unfortunately no more room in this lesson, please choose another time slot.")
+          errors.add(:lesson, "There is unfortunately no more room in this lesson, please review the available times below and choose another slot.")
           return false
       end
       self.section_id = self.available_sections.first.id 
@@ -814,7 +814,7 @@ def price
     if self.active? && self.confirmable? && self.deposit_status == 'confirmed' && self.state != "pending instructor" #&& self.deposit_status == 'verified'
       LessonMailer.send_lesson_request_to_instructors(self).deliver
       self.send_sms_to_instructor
-    elsif self.available_instructors.any? == false
+    elsif self.state != "Lesson Complete" && self.available_instructors.any? == false
       self.send_sms_to_admin
     end
   end

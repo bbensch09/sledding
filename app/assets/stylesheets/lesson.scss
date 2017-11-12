@@ -81,9 +81,12 @@
   min-height: 500px;
 }
 .slot-roster{
-  min-height: 250px;
-  /*border: 0.5px dotted black;*/
+  min-height: 350px;
+  border-bottom: 1px solid #55C9B2;
   margin-bottom: 10px;
+}
+.slot-instructor{
+  height: 100px;
 }
 
 /*DESKTOP ONLY ADJUSTMENTS*/

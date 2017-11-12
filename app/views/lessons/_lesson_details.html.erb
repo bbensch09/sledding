@@ -1,17 +1,8 @@
 <header class="page-header">
-  <h2>Full Lesson Details</h2>
+  <h2>Review Lesson Details</h2>
 </header>
 <p>Requester: <%= @lesson.requester ? @lesson.requester.name : @lesson.guest_email %>
 <br>Contact Email: <%= @lesson.requester ? @lesson.requester.email : @lesson.guest_email %>
-<% if @lesson.instructor %>
-  <br> Instructor: <%= @lesson.instructor.name %>
-<% else %>
-  <% if @lesson.pending_requester? %>
-    <br> No instructors available for this date and time. Please edit or cancel
-  <% else %>
-    <br> No instructor assigned yet
-  <% end %>
-<% end %>
 <br> Status: <%= @lesson.state %>
 <% if @lesson.review %>
 <br>

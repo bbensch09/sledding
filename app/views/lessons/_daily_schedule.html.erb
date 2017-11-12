@@ -1,17 +1,16 @@
 <div class="slot-roster">
-<h4>Slot: <%= section.slot %> <em> (spots remaining: <%= section.remaining_capacity %>)</em>
-<br>
- Assigned Instructor: 
- <% if section.instructor %>
- <%= section.instructor.name %>
- <%= image_tag(section.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %>
- <% else %>
- TBD
- <% end %>
- <%= link_to 'Re-assign', edit_section_path(section), class: 'btn btn-sm btn-warning' %>
-<!--  <%= link_to 'Add new section', duplicate_section_path(section), method: :post, class: 'btn btn-sm btn-success' %>
- -->
-</h4>
+<div class="slot-instructor">
+  <h4>Slot: <%= section.slot %> <em> (spots remaining: <%= section.remaining_capacity %>)</em></h4>  
+  Instructor: 
+   <% if section.instructor %>
+   <%= section.instructor.name %>
+   <%= image_tag(section.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %>
+   <%= link_to 'Re-assign', edit_section_path(section), class: 'btn btn-sm btn-warning' %>
+   <% else %>
+   TBD
+   <%= link_to 'Assign', edit_section_path(section), class: 'btn btn-sm btn-success' %>
+   <% end %>
+</div>
 <!-- <h3><%= section.id %></h3> -->
 <table class="instructors-table">
 
@@ -61,5 +60,5 @@
 
 </table>
       <%= link_to 'Create new section for this date & time', duplicate_ski_section_path(section.id), method: :post, class: "btn btn-default" %>
-  <hr class="hr-full">
+  <!-- <hr class="hr-full"> -->
 </div>
