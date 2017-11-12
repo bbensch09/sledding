@@ -9,8 +9,8 @@
 
 <div class="calendar-container">
   <%= month_calendar(sections: :date, events:@sections) do |date, sections| %>
-    <div class="day-within-week">
-      <div class="daily-summary">
+    <div class="">
+      <div class="y">
         <!-- Count: <%= sections.count %> -->
         <!-- <h2 class=" <%= Shift.capacity_status_color(date) %>">Est.Capacity: <%= number_to_percentage(Shift.capacity(date), precision:0) %></h2> -->
         <!-- <h2><a href="/schedule-filtered?utf8=✓&search_date=<%=Shift.parametized_date(date)%>" class="btn btn-default">Manage Splits</a></h2> -->

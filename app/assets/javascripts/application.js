@@ -12,6 +12,7 @@
 //
 //= require bootstrap
 //= require bootstrap-sprockets
+//= require rails-ujs
 //= require jquery
 //= require jquery-ui/datepicker
 //= require datetimepicker
@@ -19,7 +20,6 @@
 //= require jquery.timepicker.js
 //= require jquery.raty
 //= require moment
-// = require bootstrap-datetimepicker
 //= require cocoon
 //= require tinymce-jquery
 //= require_self

@@ -78,11 +78,12 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails', '5.0.5'
 gem 'jquery-timepicker-rails'
 #added to try to replace bootstrap datetimepicker(?)
+gem 'bootstrap-datepicker-rails'
+gem 'bootstrap3-datetimepicker-rails'#, '~> 4.17.47'
 gem 'rails-assets-datetimepicker', source: 'https://rails-assets.org'
 
 #new datetimepicker gem for shifts
 gem 'momentjs-rails', '>= 2.9.0'
-gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
