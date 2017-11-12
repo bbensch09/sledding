@@ -1,7 +1,7 @@
 <div id="middle" class="container">
   <div class="white row">
 
-    <% if current_user && current_user.email == "brian@snowschoolers.com"%>
+    <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
     <a href="#hideLessons" class="btn btn-success" id="toggle-available-lessons">Show (hide) Admin</a>
     <div id="available-lessons" class="row vertical-padding container admin-viewable">
       <h4> (ADMIN ONLY) Eligible instructors are:</h4>
