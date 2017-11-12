@@ -1,0 +1,57 @@
+<h3 class="center">Filter Lesson Schedule for a Specific Date</h3>
+  <div id="search-widget" class="center">
+    <%= form_tag(filtered_schedule_results_path, :method => "get") do %>
+    <%= text_field_tag :date, params[:date], placeholder: "Select a date", id:"datepicker2", class:'navy-text form-control search-form' %>
+    <%= submit_tag "Filter Lessons", class:"btn btn-primary btn-lg page-scroll" %>
+    <% end %>
+</div>
+
+
+<div class="calendar-container">
+  <%= month_calendar(sections: :date, events:@sections) do |date, sections| %>
+    <div class="day-within-week">
+      <div class="daily-summary">
+        <!-- Count: <%= sections.count %> -->
+        <!-- <h2 class=" <%= Shift.capacity_status_color(date) %>">Est.Capacity: <%= number_to_percentage(Shift.capacity(date), precision:0) %></h2> -->
+        <!-- <h2><a href="/schedule-filtered?utf8=✓&search_date=<%=Shift.parametized_date(date)%>" class="btn btn-default">Manage Splits</a></h2> -->
+      </div>
+    <% sections.sort_by{| section | section.slot }.to_a.each do | section | %>
+        <p class=""><%= section.slot %>: <span class="<%= section.section_status_color %> instructor-section"> <%= section.status %></span></p>
+        <!-- <%= link_to section, edit_section_path(section) %> - <span class="smaller-text"><%= section.status %></span> -->
+    <% end %>
+    </div>
+  <% end %>
+
+</div>
+
+
+
+<div id="upcoming-lessons" class="">
+
+<% if @sections.count == 0 %>
+<h1 class="center warning">Please search again.</h1>
+<% end %>
+
+<% @sections.each do |section| %>
+
+
+<h1 class="center clear-both"><b>---Lessons for <%= section.date.strftime("%A %b %e, %Y") %>---</b></h1>
+
+  <div class="col-md-6 ski-sections">
+    <h2 class="center bold">Ski Lessons</h2>
+    <% Section.where(date:section.date,sport_id:1).sort{ |a,b| a.slot <=> b.slot }.each do |section| %>
+      <%= render partial: 'lessons/daily_schedule', locals: {section: section} %>
+    <% end %>
+  </div>
+  <div class="col-md-6 snowboard-sections">
+    <h2 class="center bold">Snowboard Lessons</h2>
+    <% Section.where(date:section.date,sport_id:2).sort{ |a,b| a.slot <=> b.slot }.each do |section| %>
+      <%= render partial: 'lessons/daily_schedule', locals: {section: section} %>
+    <% end %>
+  </div>
+
+<% end %>
+
+<div class="buffer"></div>
+
+</div>

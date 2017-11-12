@@ -8,6 +8,28 @@ class Section < ApplicationRecord
 	# def name
 	# 	return "#{self.age_group} #{self.lesson_type} - #{self.sport.activity_name}"
 	# end
+	def start_time
+		self.date
+	end
+
+	def status
+		if self.has_capacity?
+			return 'Available'
+		else
+			return 'Full'
+		end
+	end
+
+	def section_status_color
+	  	case self.status
+	  	when 'Full'
+	  		return 'red-shift'
+	  	when 'Available'
+	  		return 'green-shift'
+		else
+	  		return 'blue-shift'
+	  	end
+  	end
 
 	 def available_instructors
 	    if self.instructor_id && self.instructor_id.to_i > 0

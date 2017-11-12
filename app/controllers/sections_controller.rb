@@ -14,9 +14,13 @@ class SectionsController < ApplicationController
     @section.save!
     # redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}"    
     redirect_to "/sections"
-
   end
 
+
+  def available_lessons
+    # @sections = Section.all.select{|section| section.has_capacity? }
+    @sections = Section.all
+  end
   # GET /sections
   # GET /sections.json
   def index

@@ -166,6 +166,7 @@ Rails.application.routes.draw do
       post :duplicate
     end
   end
+  get 'lessons-availability' => 'sections#available_lessons', as: :available_lessons
   post 'sections/generate_new_sections' => 'sections#generate_new_sections', as: :generate_new_sections
   post 'sections/delete_all_sections_and_lessons' => 'sections#delete_all_sections_and_lessons', as: :delete_all_sections_and_lessons
   post 'sections/:id/duplicate_ski_section' => 'sections#duplicate_ski_section', as: :duplicate_ski_section
