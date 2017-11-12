@@ -2,7 +2,9 @@
 <%= semantic_form_for @lesson.review do |f| %>
   <%= f.inputs do %>
   <div class="review-id-inputs hidden">
+    <% if @lesson.section.instructor %>
     <%= f.input :instructor_id, :input_html => {value: @lesson.section.instructor.id, class:'form-control'}, label: false %>
+    <% end %>
     <%= f.input :lesson_id,  :input_html => {value: @lesson.id, class:'form-control'}, label: false %>
     <%= f.input :reviewer_id,  :input_html => {value: @lesson.requester.id, class:'form-control'}, label: false %>
   </div>
