@@ -1,0 +1,56 @@
+<!-- <h3 class="center">Filter Lesson Schedule for a Specific Date</h3>
+  <div id="search-widget" class="center">
+    <%= form_tag(filtered_schedule_results_path, :method => "get") do %>
+    <%= text_field_tag :date, params[:date], placeholder: "Select a date", id:"datepicker2", class:'navy-text form-control search-form' %>
+    <%= submit_tag "Filter Lessons", class:"btn btn-primary btn-lg page-scroll" %>
+    <% end %>
+</div> -->
+
+<% if @ski_sections.count == 0 %>
+<h1 class="center warning">Please search again.</h1>
+<% end %>
+
+<div class="buffer"></div>
+
+<h2 class='center'>SKI LESSON AVAILABILITY</h2>
+<div class="calendar-container">
+  <%= month_calendar(sections: :date, events:@ski_sections) do |date, sections| %>
+    <div class="day-within-week">
+    	<%= date.strftime('%-d') %>
+      <div class="daily-summary">        
+      </div>
+    <% sections.sort_by{| section | section.slot }.to_a.each do | section | %>
+        <% if section.remaining_capacity > 0 %>
+       		 <%= link_to "Book at #{section.slot_short} - #{section.capacity_text}", section, class: 'btn btn-xs btn-default' %>
+			<br>
+        <% else %>
+        	<a href="#soldOut" class='btn btn-xs btn-warning'><%= section.slot_short %> - SOLD OUT</a>
+        <% end %>
+    <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="buffer"></div>
+
+<h2 class='center'>SNOWBOARD LESSON AVAILABILITY</h2>
+<div class="calendar-container">
+  <%= month_calendar(sections: :date, events:@snowboard_sections) do |date, sections| %>
+    <div class="day-within-week">
+    	<%= date.strftime('%-d') %>
+      <div class="daily-summary">
+      </div>
+    <% sections.sort_by{| section | section.slot }.to_a.each do | section | %>
+        <% if section.remaining_capacity > 0 %>
+       		 <%= link_to "Book at #{section.slot_short} - #{section.capacity_text}", section, class: 'btn btn-xs btn-default' %>
+			<br>
+        <% else %>
+        	<a href="#soldOut" class='btn btn-xs btn-warning'><%= section.slot_short %> - SOLD OUT</a>
+        <% end %>
+    <% end %>
+    </div>
+  <% end %>
+</div>
+<div class="buffer"></div>
+
+</div>

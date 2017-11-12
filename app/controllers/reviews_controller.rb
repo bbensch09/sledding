@@ -52,6 +52,7 @@ class ReviewsController < ApplicationController
     respond_to do |format|
       if @review.update(review_params)
         @review.lesson.state = "Lesson Complete"
+        puts "!!!!!!!!lesson state updated to #{@review.lesson.state}"
         LessonMailer.new_review_submitted(@review).deliver
         @review.lesson.save
         format.html { redirect_to @review.lesson, notice: 'Thanks for updating your review! Hope to see you back on the mountain soon.' }

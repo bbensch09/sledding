@@ -2,12 +2,11 @@
 <%= semantic_form_for @lesson.review do |f| %>
   <%= f.inputs do %>
   <div class="review-id-inputs hidden">
-    <%= f.input :instructor_id, :input_html => {value: @lesson.instructor.id, class:'form-control'}, label: false %>
+    <%= f.input :instructor_id, :input_html => {value: @lesson.section.instructor.id, class:'form-control'}, label: false %>
     <%= f.input :lesson_id,  :input_html => {value: @lesson.id, class:'form-control'}, label: false %>
     <%= f.input :reviewer_id,  :input_html => {value: @lesson.requester.id, class:'form-control'}, label: false %>
   </div>
     <!-- %= f.input :rating %> -->
-
 
 <div class="nps-field col-md-12" >
   <h2 class="nps-question">How likely is it that you would recommend Snow Schoolers to a friend?</h2>

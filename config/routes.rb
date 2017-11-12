@@ -71,6 +71,7 @@ Rails.application.routes.draw do
   get 'tahoe-season-passes' => 'products#pass_search_results'
   get 'tahoe-season-passes-search-results' => 'products#pass_search_results', as: :pass_search_results
   get 'search-results' => 'products#search_results', as: :search_results 
+  get 'filtered-schedule-results' => 'lessons#filtered_schedule_results', as: :filtered_schedule_results 
 
   get   'lessons/sugarbowl'               => 'lessons#sugarbowl'
   # get 'homewood' => "welcome#homewood"
@@ -117,6 +118,7 @@ Rails.application.routes.draw do
   get '/soda-springs' => 'welcome#soda_springs_referral'
   get '/donner-ski-ranch' => 'welcome#donner_ski_ranch_referral'
   get '/granlibakken' => 'welcome#granlibakken_referral'
+  get '/granlibakken-lessons' => 'welcome#granlibakken_lesssons_referral'
   get '/sky-tavern' => 'welcome#sky_tavern_referral'
 
   #Avantlink site verification
@@ -159,7 +161,20 @@ Rails.application.routes.draw do
 
 
 
-  resources :sections
+  resources :sections do 
+    member do
+      post :duplicate
+    end
+  end
+  get 'lessons-availability' => 'sections#available_lessons', as: :available_lessons
+  post 'sections/generate_all_sections' => 'sections#generate_all_sections', as: :generate_all_sections
+  post 'sections/generate_new_sections' => 'sections#generate_new_sections', as: :generate_new_sections
+  post 'sections/delete_all_sections_and_lessons' => 'sections#delete_all_sections_and_lessons', as: :delete_all_sections_and_lessons
+  post 'sections/:id/duplicate_ski_section' => 'sections#duplicate_ski_section', as: :duplicate_ski_section
+  post 'sections/:/id/duplicate_snowboard_section' => 'sections#duplicate_snowboard_section', as: :duplicate_snowboard_section
+  post 'seed_lessons_with_students' => 'sections#fill_sections_with_lessons', as: :seed_lessons_with_students
+  post 'delete_all_lessons' => 'sections#delete_all_lessons', as: :delete_all_lessons
+
   get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons
   # get 'new_request' => 'lessons#new_request'

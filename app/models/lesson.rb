@@ -24,6 +24,7 @@ class Lesson < ActiveRecord::Base
   validate :instructors_must_be_available, on: :create
   validate :add_lesson_to_section
   before_save :add_lesson_to_section
+  after_save :confirm_section_valid
   after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
@@ -249,7 +250,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def waiting_for_review?
-    state == 'Payment complete, waiting for review.'
+    state == 'Lesson complete, waiting for review.'
   end
 
   def completed?
@@ -321,10 +322,10 @@ def price
       return self.lesson_price.to_s
     elsif self.lesson_cost && self.lesson_cost > 0
       return self.lesson_cost.to_s     
-    elsif self.product_name == "1hr Learn to Ski Package (rental included)"
-        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"learn_to_ski").first
-    elsif self.product_name == "1hr Group Lesson (lesson + lift only)"
-        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,product_type:"group_lesson").first
+    # elsif self.product_id > 0
+        # return Product.find(product_id).price
+    elsif self.product_name
+        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,name:self.product_name).first
     end
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
@@ -404,37 +405,54 @@ def price
     end
   end
 
+  def available_sections
+    sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
+    sections = sections.select{|section| section.has_capacity?}
+  end
+
   def add_lesson_to_section
-    existing_sections = Section.where(sport_id:self.sport_id,date:self.lesson_time.date,slot:self.lesson_time.slot)
-    if existing_sections.empty?
-      Section.find_or_create_by!({
-        sport_id: self.sport_id,
-        date: self.lesson_time.date,
-        slot: self.lesson_time.slot,
-        capacity: 3,
-        lesson_type: 'group_lesson'
-        })
-      self.section_id = Section.last.id
-    elsif existing_sections.first.student_count <= existing_sections.first.capacity
-      self.section_id = existing_sections.first.id
-    else
+    return true if self.section_id
+    existing_sections = self.available_sections
+      if self.available_sections.count == 0
       puts "!!!!!!!! The requested time slot is full!!!!!"
       self.state = 'This section is now full, please choose another time slot.'
-      errors.add(:instructor, "There is unfortunately no more room in this lesson, please choose another time slot.")
-    end
+      errors.add(:lesson, "There is unfortunately no more room in this lesson, please review the available times below and choose another slot.")
+      return false
+      end
+      puts "!!!!section available is #{available_sections.first }"
+      self.section_id = available_sections.first.id
+      self.state = "ready_to_book"
+  end
+
+  def confirm_section_valid
+    if self.section.nil?
+      if self.available_sections.count == 0
+          errors.add(:lesson, "There is unfortunately no more room in this lesson, please review the available times below and choose another slot.")
+          return false
+      end
+      self.section_id = self.available_sections.first.id 
+      self.save
+    elsif self.section.remaining_capacity <= 0
+      puts "!!!!warning, at capcity"
+    else self.section.remaining_capacity >= 1
+      return true
+    end      
   end
 
   def self.assign_all_instructors_to_sections
-    unassigned_sections = Section.where(instructor_id:"")
+    unassigned_sections = Section.all.select{|section| section.instructor_id.nil?}
     unassigned_sections.each do |section|
       section.instructor_id = section.available_instructors.first.id
       section.save!
     end
     unassigned_lessons = Lesson.where(instructor_id:nil)  
-    puts "!!!!!!!!! there are #{unassigned_lessons.count} unassigned lessons"
+    puts "!!!!!!!!! there are #{unassigned_lessons.count} unassigned lessons"    
     unassigned_lessons.each do |lesson|
-      lesson.instructor_id = lesson.section.instructor_id
-      lesson.save
+      if lesson.section.nil?
+        lesson.section_id = lesson.available_sections.first ? lesson.available_sections.first.id : Section.first.id
+        lesson.instructor_id = lesson.section.instructor_id
+        lesson.save
+      end
     end
   end
 
@@ -796,7 +814,7 @@ def price
     if self.active? && self.confirmable? && self.deposit_status == 'confirmed' && self.state != "pending instructor" #&& self.deposit_status == 'verified'
       LessonMailer.send_lesson_request_to_instructors(self).deliver
       self.send_sms_to_instructor
-    elsif self.available_instructors.any? == false
+    elsif self.state != "Lesson Complete" && self.available_instructors.any? == false
       self.send_sms_to_admin
     end
   end

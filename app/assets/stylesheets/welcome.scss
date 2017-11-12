@@ -227,10 +227,17 @@ aside {
 }
 .deposit-hr-navy{
 border-top: 3px solid #715845 !important;
-margin-left: auto !important;;
-margin-right: auto !important;;
-
+margin-left: auto !important;
+margin-right: auto !important;
 }
+.hr-full{
+border-top: 1px dotted #000 !important;
+width: 80% !important;
+max-width: 100%;
+margin-left: auto !important;
+margin-right: auto !important;
+}
+
 #header-creative .header-content .header-content-inner p {
   font-weight: 300;
   color: white;
@@ -970,11 +977,19 @@ text-align: center;
   margin-right: auto;
   margin-left: auto;
 }
+.homepage-lesson-container{
+  margin-top: 50px;
+  width: 1150px;
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: white;
+}
 .lesson-form-container{
   width: 100%;
 }
 .new-lesson-pricing-container{
-  width: 80%;
+  width: 100%;
 }
 .new-lesson-call-cta{
   width: 20%;
@@ -994,12 +1009,13 @@ section.pricing-new-lesson{
 }
 .new-lesson-caption{
   color:#fff !important;
-  width: 80%;
+  width: 100%;
   min-height: 230px;
   font-size:2em; 
   line-height:70px;
   padding:6px;
-  background:rgba(0,0,0,0.5);
+  /*background:rgba(0,0,0,0.5);*/
+  background-color: #715845;
   margin:0; 
   clear:both !important;
   display:inline-block;
