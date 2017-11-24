@@ -88,7 +88,7 @@ class Section < ApplicationRecord
 	end
 
 	def self.fill_sections_with_lessons
-		Section.first(100).each do |section|
+		Section.first(2).each do |section|		
 			
 			until section.remaining_capacity <= 1
 				lt = LessonTime.find_or_create_by({
@@ -113,7 +113,8 @@ class Section < ApplicationRecord
 					requester_name: 'John Parent',
 					product_id: Product.where(location_id:24,length:"1.00",product_type:'learn_to_ski',calendar_period:"Regular").first.id,
 					section_id: section.id,
-					product_name: ['Group Package','Group Lesson Only'].sample
+					product_name: ['Group Package','Group Lesson Only'].sample,
+					state: "test_lesson"
 					})
 				Student.create!({
 					lesson_id: Lesson.last.id,

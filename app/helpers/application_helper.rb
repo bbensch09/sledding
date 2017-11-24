@@ -16,15 +16,15 @@ def devise_mapping
 end
 
 def confirm_admin_permissions
-  return if current_user.email == 'brian@snowschoolers.com' || current_user.email == 'bbensch@gmail.com'
+  return if current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == 'Snow Schoolers Employee'
   redirect_to root_path, notice: 'You do not have permission to view that page.'
 end
 
 def title(title = nil)
     if title.present?
-      content_for :title, title + ' | Snow Schoolers '
+      content_for :title, title + ' | Granlibakken '
     else
-      content_for?(:title) ? content_for(:title) : 'Snow Schoolers'
+      content_for?(:title) ? content_for(:title) : 'Granlibakken'
     end
 end
 

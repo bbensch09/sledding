@@ -1,5 +1,6 @@
 class SectionsController < ApplicationController
   before_action :set_section, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:available_lessons]
 
   def assign_instructor_to_section
     puts "the params are #{params}"
@@ -47,6 +48,7 @@ class SectionsController < ApplicationController
   end
 
   def fill_sections_with_lessons
+    session[:disable_notifications] == true
     Section.fill_sections_with_lessons
     redirect_to '/lessons'
   end

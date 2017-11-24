@@ -809,6 +809,7 @@ def price
   end
 
   def send_lesson_request_to_instructors
+    return if self.state == "test_lesson"
     #currently testing just to see whether lesson is active and deposit has gone through successfully.
     #need to replace with logic that tests whether lesson is newly complete, vs. already booked, etc.
     if self.active? && self.confirmable? && self.deposit_status == 'confirmed' && self.state != "pending instructor" #&& self.deposit_status == 'verified'
