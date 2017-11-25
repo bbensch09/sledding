@@ -12,7 +12,9 @@
 
 <div class="buffer"></div>
 
-<h2 class='center'>SKI LESSON AVAILABILITY</h2>
+<section id="desktop-view" class="hidden-unless-desktop">
+
+<h2 id='ski-availability' class='center'>SKI LESSON AVAILABILITY <br> <span><a href="#snowboard-availability" class="btn btn-warning btn-sm">Jump to Snowboard Availability</a> </span></h2>
 <div class="calendar-container">
   <%= month_calendar(sections: :date, events:@ski_sections) do |date, sections| %>
     <div class="day-within-week">
@@ -21,8 +23,10 @@
       </div>
     <% sections.sort_by{| section | section.slot }.to_a.each do | section | %>
         <% if section.remaining_capacity > 0 %>
-       		 <%= link_to "Book at #{section.slot_short} - #{section.capacity_text}", section, class: 'btn btn-xs btn-default' %>
-			<br>
+       		 <%= link_to "#{section.slot_short}", section, class: 'btn btn-xs btn-calendar btn-default' %>
+           <% if section.remaining_capacity <= 2 %>
+              <div class="remaining-capacity center"> <span class="smaller-text"><%= section.capacity_text %></span> </div>
+            <% end %>
         <% else %>
         	<a href="#soldOut" class='btn btn-xs btn-warning'><%= section.slot_short %> - SOLD OUT</a>
         <% end %>
@@ -33,7 +37,7 @@
 
 <div class="buffer"></div>
 
-<h2 class='center'>SNOWBOARD LESSON AVAILABILITY</h2>
+<h2 id="snowboard-availability" class='center'>SNOWBOARD LESSON AVAILABILITY<br> <span><a href="#ski-availability" class="btn btn-warning btn-sm">Jump to Ski Lesson Availability</a> </span></h2>
 <div class="calendar-container">
   <%= month_calendar(sections: :date, events:@snowboard_sections) do |date, sections| %>
     <div class="day-within-week">
@@ -42,8 +46,10 @@
       </div>
     <% sections.sort_by{| section | section.slot }.to_a.each do | section | %>
         <% if section.remaining_capacity > 0 %>
-       		 <%= link_to "Book at #{section.slot_short} - #{section.capacity_text}", section, class: 'btn btn-xs btn-default' %>
-			<br>
+       		 <%= link_to "#{section.slot_short}", section, class: 'btn btn-xs btn-default' %>
+           <% if section.remaining_capacity <= 2 %>
+              <div class="remaining-capacity center"> <span class="smaller-text"><%= section.capacity_text %></span> </div>
+          <% end %>
         <% else %>
         	<a href="#soldOut" class='btn btn-xs btn-warning'><%= section.slot_short %> - SOLD OUT</a>
         <% end %>
@@ -53,4 +59,10 @@
 </div>
 <div class="buffer"></div>
 
-</div>
+</section>
+
+<section id="mobile-view" class="hidden-unless-mobile">
+
+<div id="calendar"></div>
+
+</section>

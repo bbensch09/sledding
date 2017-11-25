@@ -24,6 +24,7 @@ class Lesson < ActiveRecord::Base
   validate :instructors_must_be_available, on: :create
   validate :add_lesson_to_section
   before_save :add_lesson_to_section
+  before_save :confirm_valid_email, if: :just_created?
   after_save :confirm_section_valid
   after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
@@ -317,6 +318,10 @@ class Lesson < ActiveRecord::Base
     waiting_for_payment?
   end
 
+  def just_created?
+    return true if self.id == Lesson.last.id
+  end
+
 def price
     if self.lesson_price
       return self.lesson_price.to_s
@@ -415,13 +420,13 @@ def price
     existing_sections = self.available_sections
       if self.available_sections.count == 0
       puts "!!!!!!!! The requested time slot is full!!!!!"
-      self.state = 'This section is now full, please choose another time slot.'
+      self.state = 'This section is unfortunately full, please choose another time slot.'
       errors.add(:lesson, "There is unfortunately no more room in this lesson, please review the available times below and choose another slot.")
       return false
       end
       puts "!!!!section available is #{available_sections.first }"
       self.section_id = available_sections.first.id
-      self.state = "ready_to_book"
+      self.state = "new"
   end
 
   def confirm_section_valid
@@ -437,6 +442,32 @@ def price
     else self.section.remaining_capacity >= 1
       return true
     end      
+  end
+
+  def confirm_valid_email
+    if self.guest_email
+      puts "!!! user guest emails is: #{self.guest_email.downcase}"
+      if self.requester_id 
+        return true
+      elsif User.find_by_email(self.guest_email.downcase)
+          self.requester_id = User.find_by_email(self.guest_email.downcase).id
+          puts "!!!! user is checking out as guest; found matching email from previous entry"
+          return true
+      elsif self.guest_email.include?("@")
+          User.create!({
+          email: self.guest_email,
+          password: 'sstemp2017',
+          user_type: "Student",
+          name: "#{self.guest_email}"
+          })
+         self.requester_id = User.last.id
+         return true
+         puts "!!!! user is checking out as guest; create a temp email for them that must be confirmed"
+       else
+        errors.add(:lesson, "Please enter a valid email, or sign-into your account.")
+        return false
+      end
+    end
   end
 
   def self.assign_all_instructors_to_sections
@@ -809,6 +840,7 @@ def price
   end
 
   def send_lesson_request_to_instructors
+    return if self.state == "test_lesson"
     #currently testing just to see whether lesson is active and deposit has gone through successfully.
     #need to replace with logic that tests whether lesson is newly complete, vs. already booked, etc.
     if self.active? && self.confirmable? && self.deposit_status == 'confirmed' && self.state != "pending instructor" #&& self.deposit_status == 'verified'

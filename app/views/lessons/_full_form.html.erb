@@ -9,10 +9,9 @@
       <h1>Update Your Lesson</h1>
     </header>
 
-    <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
+    <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
     <div id="autofill-container" class="admin-viewable">
-      <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autofill Form</a>  
-      <a href="#hideLessons" class="btn btn-success" id="toggle-available-lessons">Show (hide) Admin</a>
+      <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a>  
     </div>
     <% end %>
 
@@ -106,7 +105,7 @@
 
               <div class="col-md-4">
                 <label>Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: ['09:00  -  10:00am', '10:10 - 11:10am (first-timers only)','11:20 -  12:20pm','12:30 -1:30pm  (first-timers only)','2:20  -  3:20pm','3:30  -  4:30pm'], selected: @slot, include_blank: 'Time', :input_html => { :class => 'slot'}, label: false %>
+                <%= lt_f.input :slot, as: :select, collection: LESSON_SLOTS, selected: @slot, include_blank: 'Time', :input_html => { :class => 'slot'}, label: false %>
               </div>
           <% end %>
             <div class="col-md-4">
@@ -172,7 +171,7 @@
             <% button_text = "Continue to Payment" %>
             <% else %>
             <h4>Update <strong> Lesson Request</strong></h4>
-            <% button_text = "Update Lesson Request" %>
+            <% button_text = "Finalize Reservation" %>
           <% end %>
           </div>
           <div class="col-md-3">

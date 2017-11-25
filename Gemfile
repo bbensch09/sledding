@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 ruby "~> 2.3.0"
 
+#Gems for new mobile-friendly calendar w/ gCal support
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+
 #gem for server-side API calls for from Heap
 gem 'heap', '~> 1.0'
 #calendar views
@@ -82,8 +86,6 @@ gem 'bootstrap-datepicker-rails'
 gem 'bootstrap3-datetimepicker-rails'#, '~> 4.17.47'
 gem 'rails-assets-datetimepicker', source: 'https://rails-assets.org'
 
-#new datetimepicker gem for shifts
-gem 'momentjs-rails', '>= 2.9.0'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'

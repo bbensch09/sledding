@@ -168,27 +168,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div> -->
 
 <header id="header">
+  
   <div class="container">
   <h2>
     <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> LESSONS</span>"), root_path, class: 'logo' %>
 
-  <!-- <%= link_to image_tag("https://s3.amazonaws.com/snowschoolers/SNOW+SCHOOLERS-logo-2017.jpeg", class:"ss-logo"), root_path, class: 'logo' %> -->
-
     <ul id="topOptions">
       <li>
-        <button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+        <button class="btn btn-mobile hidden-unless-mobile" data-toggle="collapse" data-target=".nav-collapse">
           <i class="fa fa-bars"></i>
         </button>
       </li>
     </ul>
   </h2>
 
-    <div class="navbar-collapse nav-main-collapse collapse pull-right">
+    <div class="nav-collapse hidden-unless-desktop nav-main-collapse pull-right">
       <nav class="nav-main">
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
           <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
-           <!-- <li>  <a href="/"> <span class="glyphicon glyphicon glyphicon-home" aria-hidden="true"></span> </a></li> -->
-           <!-- <li> <a href="/search" class="btn-success"> Search</a></li> -->
            <li> <a href="/instructors" class="btn-success"> Manage Instructors</a></li>
            <li> <a href="/lessons-availability" class="btn-success"> Availability</a></li>
             <li><a href="/lessons" class="btn-success"> Schedule </a></li>
@@ -227,14 +224,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </li>
             <% else %>
               <li><a href="/blog" target="_blank" class="sign-up-btn">Blog</a></li>
-              <!-- <li><a href="/tahoe-season-passes" class="sign-up-btn">Shop Deals</a></li> -->
               <li><a href="/browse" class="sign-up-btn">Instructors</a></li>
               <li> <%= link_to 'Teach with Us', '/apply', class: 'sign-up-btn' %></li>
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#registerModal">Register</a></li>
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#loginModal">Log In</a></li>
-<!--               <li>
-                <%= link_to 'Join the Beta - First hour free!', "/beta_users/new", class: 'btn btn-default' %>
-              </li> -->
             <% end %>
           <% end %>
         </ul>

@@ -1,5 +1,5 @@
 class LessonMailer < ActionMailer::Base
-  default from: 'Granlibakken.com <info@snowschoolers.com>'
+  default from: 'Granlibakken.com <info@snowschoolers.com>' #, cc: 'Brian Bensch <brian@snowschoolers.com>, Chris Parson <chrisparson@granlibakken.com>'
 
   def track_apply_visits(email="Unknown user")
       @email = email
@@ -164,11 +164,11 @@ class LessonMailer < ActionMailer::Base
     available_instructors = (lesson.available_instructors - [excluded_instructor])
     @available_instructors = []
     #select only the first instructor in the array that is available to email.
-    instructors_to_email = available_instructors[0...1]
-    #load email addresses for instructors to email
-    instructors_to_email.each do |instructor|
+    # instructors_to_email = available_instructors[0...1]
+    available_instructors.each do |instructor|
       @available_instructors << instructor.user.email
     end
+    puts "!!!available instructors to email are: #{@available_instructors}"
     mail(to: 'notify@snowschoolers.com', bcc: @available_instructors, subject: "You have a new Snow Schoolers lesson request on #{@lesson.date.strftime("%b %-d")}")
   end
 

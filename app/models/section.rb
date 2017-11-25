@@ -12,6 +12,14 @@ class Section < ApplicationRecord
 		self.date
 	end
 
+	def activity
+		if self.sport_id == 1
+			return 'Ski'
+		elsif self.sport_id == 2
+			return 'Snowboard'
+		end			
+	end
+
 	def status
 		if self.has_capacity?
 			return 'Available'
@@ -88,13 +96,16 @@ class Section < ApplicationRecord
 	end
 
 	def self.fill_sections_with_lessons
-		Section.first(100).each do |section|
+		puts "!!!!!Begin method: self.fill_sections_with_lessons"
+		sections = Section.all.select{|a| a.date >= Date.today }
+		sections.first(20).each do |section|		
 			
 			until section.remaining_capacity <= 1
 				lt = LessonTime.find_or_create_by({
 					date: section.date,
 					slot: section.slot
 					})
+				puts "!!!!!new lesson time created"
 				Lesson.create!({
 					requester_id: User.first.id,
 					guest_email: 'test@example.com',
@@ -107,13 +118,13 @@ class Section < ApplicationRecord
 					gear: true,
 					lift_ticket_status: true,
 					objectives: 'Test lesson',
-					state: 'booked',
 					terms_accepted: true,
 					how_did_you_hear: 100,
 					requester_name: 'John Parent',
 					product_id: Product.where(location_id:24,length:"1.00",product_type:'learn_to_ski',calendar_period:"Regular").first.id,
 					section_id: section.id,
-					product_name: ['Group Package','Group Lesson Only'].sample
+					product_name: ['Group Package','Group Lesson Only'].sample,
+					state: "test_lesson"
 					})
 				Student.create!({
 					lesson_id: Lesson.last.id,
@@ -124,6 +135,7 @@ class Section < ApplicationRecord
 					most_recent_level: "Level 1 - first-time ever, no previous experience.", 
 					requester_id: User.first.id					
 					})
+				puts "!!!! new lesson created"
 			end
 		end
 	end
@@ -151,7 +163,7 @@ class Section < ApplicationRecord
 	end
 
 	def self.generate_all_sections
-		dates = ['2017-11-18','2017-11-19','2017-11-23','2017-11-24','2017-11-25','2017-11-26','2017-12-01','2017-12-02','2017-12-03','2017-12-04','2017-12-08','2017-12-09','2017-12-10','2017-12-11','2017-12-15','2017-12-16','2017-12-17','2017-12-18','2017-12-22','2017-12-23','2017-12-24','2017-12-25','2017-12-26','2017-12-27','2017-12-28','2017-12-29','2017-12-30','2017-12-31','2018-01-01','2018-01-02','2018-01-03','2018-01-04','2018-01-05','2018-01-06','2018-01-07','2018-01-08','2018-01-12','2018-01-13','2018-01-14','2018-01-15','2018-01-19','2018-01-20','2018-01-21','2018-01-22','2018-01-26','2018-01-27','2018-01-28','2018-01-29','2018-02-02','2018-02-03','2018-02-04','2018-02-05','2018-02-09','2018-02-10','2018-02-11','2018-02-12','2018-02-16','2018-02-17','2018-02-18','2018-02-19','2018-02-20','2018-02-21','2018-02-22','2018-02-23','2018-02-24','2018-02-25','2018-02-26','2018-03-02','2018-03-03','2018-03-04','2018-03-05','2018-03-09','2018-03-10','2018-03-11','2018-03-12','2018-03-16','2018-03-17','2018-03-18','2018-03-19','2018-03-23','2018-03-24','2018-03-25','2018-03-26','2018-03-30','2018-03-31','2018-04-01','2018-04-02','2018-04-06','2018-04-07','2018-04-08','2018-04-09','2018-04-13','2018-04-14','2018-04-15']
+		dates = ['2017-12-15','2017-12-16','2017-12-17','2017-12-18','2017-12-22','2017-12-23','2017-12-24','2017-12-25','2017-12-26','2017-12-27','2017-12-28','2017-12-29','2017-12-30','2017-12-31','2018-01-01','2018-01-02','2018-01-03','2018-01-04','2018-01-05','2018-01-06','2018-01-07','2018-01-08','2018-01-12','2018-01-13','2018-01-14','2018-01-15','2018-01-19','2018-01-20','2018-01-21','2018-01-22','2018-01-26','2018-01-27','2018-01-28','2018-01-29','2018-02-02','2018-02-03','2018-02-04','2018-02-05','2018-02-09','2018-02-10','2018-02-11','2018-02-12','2018-02-16','2018-02-17','2018-02-18','2018-02-19','2018-02-20','2018-02-21','2018-02-22','2018-02-23','2018-02-24','2018-02-25','2018-02-26','2018-03-02','2018-03-03','2018-03-04','2018-03-05','2018-03-09','2018-03-10','2018-03-11','2018-03-12','2018-03-16','2018-03-17','2018-03-18','2018-03-19','2018-03-23','2018-03-24','2018-03-25','2018-03-26','2018-03-30','2018-03-31','2018-04-01','2018-04-02','2018-04-06','2018-04-07','2018-04-08','2018-04-09','2018-04-13','2018-04-14','2018-04-15']
 		dates.each do |date|
 			Section.seed_sections(date)
 		end
@@ -162,7 +174,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '09:00  -  10:00am',
+			slot: LESSON_SLOTS.first,
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -170,7 +182,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '09:00  -  10:00am',
+			slot: LESSON_SLOTS.first,
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -179,7 +191,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Skiing',
-			slot: '10:10 - 11:10am (first-timers only)',
+			slot: LESSON_SLOTS.second,
 			sport_id: 1,
 			level: 'First-timer',
 			capacity: 5
@@ -187,7 +199,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Snowboarding',
-			slot: '10:10 - 11:10am (first-timers only)',
+			slot: LESSON_SLOTS.second,
 			sport_id: 2,
 			level: 'First-timer',
 			capacity: 5
@@ -196,7 +208,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '11:20  -  12:20pm',
+			slot: LESSON_SLOTS.third,
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -204,7 +216,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '11:20  -  12:20pm',
+			slot: LESSON_SLOTS.third,
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -212,7 +224,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Skiing',
-			slot: '12:30 -1:30pm  (first-timers only)',
+			slot: LESSON_SLOTS.fourth,
 			sport_id: 1,
 			level: 'First-timer',
 			capacity: 5
@@ -220,7 +232,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Skiing',
-			slot: '12:30 -1:30pm  (first-timers only)',
+			slot: LESSON_SLOTS.fourth,
 			sport_id: 2,
 			level: 'First-timer',
 			capacity: 5		
@@ -228,7 +240,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '2:20  -  3:20pm',
+			slot: LESSON_SLOTS.fifth,
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -236,7 +248,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '2:20  -  3:20pm',
+			slot: LESSON_SLOTS.fifth,
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -244,7 +256,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '3:30  -  4:30pm',
+			slot: LESSON_SLOTS[5],
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -252,7 +264,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '3:30  -  4:30pm',
+			slot: LESSON_SLOTS[5],
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -274,24 +286,25 @@ class Section < ApplicationRecord
 	end
 
 	def capacity_text
-		spots = [4,self.remaining_capacity].min
-		"#{spots} spots left."
+		if self.remaining_capacity <= 2
+			return 	"(#{self.remaining_capacity} spots left)"
+		end
 	end
 
 	def slot_short
 		case slot
-			when '09:00  -  10:00am'
-				return '9am'
-			when  '10:10 - 11:10am (first-timers only)'
-				return '10:10am'
-			when '11:20  -  12:20pm'
-				return '11:20am'
-			when '12:30 -1:30pm  (first-timers only)'
-				return '12:30pm'
-			when '2:20  -  3:20pm'
-				return '2:20pm'
-			when '3:30  -  4:30pm'
-				return '330pm'
+			when LESSON_SLOTS.first
+				return '9am First-timers'
+			when  LESSON_SLOTS.second
+				return '10:10am First-timers'
+			when LESSON_SLOTS.third
+				return '11:20am Beginners'
+			when LESSON_SLOTS.fourth
+				return '12:30pm Beginners'
+			when LESSON_SLOTS.fifth
+				return '2:20pm All Levels'
+			when LESSON_SLOTS.last
+				return '330pm All levels'
 			end
 	end
 
