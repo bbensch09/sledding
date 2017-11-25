@@ -24,7 +24,7 @@ class Lesson < ActiveRecord::Base
   validate :instructors_must_be_available, on: :create
   validate :add_lesson_to_section
   before_save :add_lesson_to_section
-  before_save :confirm_valid_email
+  before_save :confirm_valid_email, if: :just_created?
   after_save :confirm_section_valid
   after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
@@ -316,6 +316,10 @@ class Lesson < ActiveRecord::Base
 
   def just_finalized?
     waiting_for_payment?
+  end
+
+  def just_created?
+    return true if self.id == Lesson.last.id
   end
 
 def price
