@@ -185,8 +185,6 @@ class LessonsController < ApplicationController
         puts "!!!!!About to save state & deposit status after processing lessons#update"
         @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'deposit-submitted', params[:ga_client_id])
-      #HEAP TESTING - send server-side vent for lesson purchase: this would be redundant...
-      Heap.track 'lesson-purchase-completed', "#{@lesson.requester.heap_uuid}"
       LessonMailer.send_lesson_request_notification(@lesson).deliver
       flash[:notice] = 'Thank you, your lesson request was successful. You will receive an email notification when your instructor confirmed your request. If it has been more than an hour since your request, please email support@snowschoolers.com.'
       flash[:conversion] = 'TRUE'
@@ -202,26 +200,11 @@ class LessonsController < ApplicationController
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     unless current_user && current_user.user_type == "Snow Schoolers Employee"
       @lesson.requester = current_user
-    end
-    if @lesson.guest_email
-      if User.find_by_email(@lesson.guest_email.downcase)
-          @lesson.requester_id = User.find_by_email(@lesson.guest_email.downcase).id
-          puts "!!!! user is checking out as guest; found matching email from previous entry"
-      else
-          User.create!({
-          email: @lesson.guest_email,
-          password: 'homewood_temp_2017',
-          user_type: "Student",
-          name: "#{@lesson.guest_email}"
-          })
-         @lesson.requester_id = User.last.id
-      end
-      puts "!!!! user is checking out as guest; create a temp email for them that must be confirmed"
-    end
+    end    
     if @lesson.is_gift_voucher? && current_user.user_type == "Snow Schoolers Employee"
       @user = User.new({
           email: @lesson.gift_recipient_email,
-          password: 'homewood_temp_2017',
+          password: 'sstemp2017',
           user_type: "Student",
           name: "#{@lesson.gift_recipient_name}"
         })
@@ -242,8 +225,6 @@ class LessonsController < ApplicationController
     end
     if @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
-      #HEAP TESTING - send server-side vent for lesson ready for deposit: this would be redundant...
-      Heap.track 'lesson-ready-for-deposit', "#{@lesson.requester.heap_uuid}"
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
       LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
@@ -406,14 +387,14 @@ class LessonsController < ApplicationController
     @lesson = Lesson.new(lesson_params)
     puts "!!!!!!params are: #{lesson_params}"
     @lesson.requester = current_user
-    @lesson.requested_location = Location.find(24).id
+    @lesson.requested_location = 24
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     @lesson.product_id = Product.where(name:params[:product_name]).first
     if @lesson.save
-      redirect_to complete_lesson_path(@lesson)
       GoogleAnalyticsApi.new.event('lesson-requests', 'request-initiated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
+      redirect_to complete_lesson_path(@lesson)
       else
         @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]
         @slot = session[:lesson].nil? ? nil : session[:lesson]["lesson_time"]["slot"]

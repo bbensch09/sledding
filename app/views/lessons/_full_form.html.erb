@@ -9,10 +9,9 @@
       <h1>Update Your Lesson</h1>
     </header>
 
-    <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
+    <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
     <div id="autofill-container" class="admin-viewable">
-      <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autofill Form</a>  
-      <a href="#hideLessons" class="btn btn-success" id="toggle-available-lessons">Show (hide) Admin</a>
+      <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a>  
     </div>
     <% end %>
 
@@ -172,7 +171,7 @@
             <% button_text = "Continue to Payment" %>
             <% else %>
             <h4>Update <strong> Lesson Request</strong></h4>
-            <% button_text = "Update Lesson Request" %>
+            <% button_text = "Finalize Reservation" %>
           <% end %>
           </div>
           <div class="col-md-3">

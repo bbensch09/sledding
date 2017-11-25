@@ -41,7 +41,7 @@
       <% else %>
       <!-- <td class="lessons-table-cells lesson-student"><%= lesson.guest_email %></td> -->
       <% end %>            <!-- <td><%= lesson.location.name %></td> -->
-      <td><%= student.lesson.phone_number %></td>
+      <td><a href="tel:<%= student.lesson.phone_number %>" class="btn btn-phone"><%= student.lesson.phone_number %></td>
       <td><%= lesson.state %></td>
       <!-- <td><%= number_to_currency(lesson.visible_lesson_cost) %></td> -->
       <!-- <td></td> -->

@@ -31,6 +31,31 @@ if SkiLevel.count == 0
 end
 puts "Ski and snowboard level 1-9 created."
 
+User.create!({
+  email: "brian@snowschoolers.com",
+  password: "password",
+  user_type: "Snow Schoolers Employee",
+  location_id: 24
+  })
+
+Instructor.create!({
+  first_name: "Brian",
+  last_name: "Bensch",
+  username: "brian@snowschoolers.com",
+  phone_number: "408-315-2900",
+  city: "San Francisco",
+  certification: "Level 1 PSIA",
+  intro: "I am the founder.",
+  bio: "I am the best instructor on the mountain. period.",
+  location_ids: 24,
+  adults_initial_rank: 10,
+  kids_initial_rank: 10,
+  overall_initial_rank: 10,
+  status: 'Active',
+  age: 30,
+  user_id: User.first.id
+  })
+
 gb_seed_accounts = [
   "brian+chris@snowschoolers.com",
   "brian+ron@snowschoolers.com",
@@ -68,24 +93,6 @@ Instructor.find_or_create_by!({
 puts "Instructor created: #{Instructor.last.first_name}."
 
 end
-
-Instructor.create!({
-  first_name: "Brian",
-  last_name: "Bensch",
-  username: "brian@snowschoolers.com",
-  phone_number: "408-315-2900",
-  city: "San Francisco",
-  certification: "Level 1 PSIA",
-  intro: "I am the founder.",
-  bio: "I am the best instructor on the mountain. period.",
-  location_ids: 24,
-  adults_initial_rank: 10,
-  kids_initial_rank: 10,
-  overall_initial_rank: 10,
-  status: 'Active',
-  age: 30,
-  user_id: 9
-  })
 
 User.confirm_all_users
 puts "all users confirmed"

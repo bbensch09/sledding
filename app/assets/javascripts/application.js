@@ -19,8 +19,10 @@
 //= require jquery.timepicker.js
 //= require jquery.raty
 //= require moment
+//= require fullcalendar
 //= require cocoon
 //= require tinymce-jquery
+//= require fullcalendar/gcal
 //= require_self
 //= require_tree ./channels
 //= require_tree .
