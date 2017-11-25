@@ -1,6 +1,6 @@
 class SectionsController < ApplicationController
   before_action :set_section, only: [:show, :edit, :update, :destroy]
-  skip_before_action :authenticate_user!, only: [:available_lessons]
+  skip_before_action :authenticate_user!, only: [:available_lessons, :show]
 
   def assign_instructor_to_section
     puts "the params are #{params}"
@@ -32,6 +32,11 @@ class SectionsController < ApplicationController
   # GET /sections/1
   # GET /sections/1.json
   def show
+    puts "!!!!!! params are #{params}"
+    session[:activity] = @section.activity
+    session[:slot] = @section.slot 
+    session[:date] = @section.date 
+    redirect_to new_specific_slot_path
   end
 
   def browse_available_sections

@@ -12,7 +12,7 @@
 
 <div class="buffer"></div>
 
-<h2 class='center'>SKI LESSON AVAILABILITY</h2>
+<h2 id='ski-availability' class='center'>SKI LESSON AVAILABILITY <br> <span><a href="#snowboard-availability" class="btn btn-warning btn-sm">Jump to Snowboard Availability</a> </span></h2>
 <div class="calendar-container">
   <%= month_calendar(sections: :date, events:@ski_sections) do |date, sections| %>
     <div class="day-within-week">
@@ -33,7 +33,7 @@
 
 <div class="buffer"></div>
 
-<h2 class='center'>SNOWBOARD LESSON AVAILABILITY</h2>
+<h2 id="snowboard-availability" class='center'>SNOWBOARD LESSON AVAILABILITY<br> <span><a href="#ski-availability" class="btn btn-warning btn-sm">Jump to Ski Lesson Availability</a> </span></h2>
 <div class="calendar-container">
   <%= month_calendar(sections: :date, events:@snowboard_sections) do |date, sections| %>
     <div class="day-within-week">

@@ -1,6 +1,6 @@
 class LessonsController < ApplicationController
   respond_to :html
-  skip_before_action :authenticate_user!, only: [:new, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
+  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :save_lesson_params_and_redirect, only: [:create]
   before_action :create_lesson_from_session, only: [:create]
 
@@ -128,6 +128,16 @@ class LessonsController < ApplicationController
     @instructor_requested = Instructor.find(params[:id]).id
     @lesson_time = @lesson.lesson_time
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-lessons-new-private-request')
+    render 'new'
+  end
+
+  def new_specific_slot
+    @lesson = Lesson.new
+    @activity = session[:activity]
+    @slot = session[:slot]
+    @date = session[:date]
+    @lesson_time = @lesson.lesson_time
+    GoogleAnalyticsApi.new.event('lesson-requests', 'load-lessons-new')
     render 'new'
   end
 

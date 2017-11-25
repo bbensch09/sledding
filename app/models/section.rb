@@ -12,6 +12,14 @@ class Section < ApplicationRecord
 		self.date
 	end
 
+	def activity
+		if self.sport_id == 1
+			return 'Ski'
+		elsif self.sport_id == 2
+			return 'Snowboard'
+		end			
+	end
+
 	def status
 		if self.has_capacity?
 			return 'Available'
@@ -167,7 +175,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '09:00  -  10:00am',
+			slot: LESSON_SLOTS.first,
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -175,7 +183,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '09:00  -  10:00am',
+			slot: LESSON_SLOTS.first,
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -184,7 +192,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Skiing',
-			slot: '10:10 - 11:10am (first-timers only)',
+			slot: LESSON_SLOTS.second,
 			sport_id: 1,
 			level: 'First-timer',
 			capacity: 5
@@ -192,7 +200,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Snowboarding',
-			slot: '10:10 - 11:10am (first-timers only)',
+			slot: LESSON_SLOTS.second,
 			sport_id: 2,
 			level: 'First-timer',
 			capacity: 5
@@ -201,7 +209,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '11:20  -  12:20pm',
+			slot: LESSON_SLOTS.third,
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -209,7 +217,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '11:20  -  12:20pm',
+			slot: LESSON_SLOTS.third,
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -217,7 +225,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Skiing',
-			slot: '12:30 -1:30pm  (first-timers only)',
+			slot: LESSON_SLOTS.fourth,
 			sport_id: 1,
 			level: 'First-timer',
 			capacity: 5
@@ -225,7 +233,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'First-timers: Skiing',
-			slot: '12:30 -1:30pm  (first-timers only)',
+			slot: LESSON_SLOTS.fourth,
 			sport_id: 2,
 			level: 'First-timer',
 			capacity: 5		
@@ -233,7 +241,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '2:20  -  3:20pm',
+			slot: LESSON_SLOTS.fifth,
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -241,7 +249,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '2:20  -  3:20pm',
+			slot: LESSON_SLOTS.fifth,
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -249,7 +257,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Skiing',
-			slot: '3:30  -  4:30pm',
+			slot: LESSON_SLOTS[5],
 			sport_id: 1,
 			level: 'Beginner',
 			capacity: 5
@@ -257,7 +265,7 @@ class Section < ApplicationRecord
 		Section.create!({
 			date: date,
 			name: 'Beginner Snowboarding',
-			slot: '3:30  -  4:30pm',
+			slot: LESSON_SLOTS[5],
 			sport_id: 2,
 			level: 'Beginner',
 			capacity: 5
@@ -285,17 +293,17 @@ class Section < ApplicationRecord
 
 	def slot_short
 		case slot
-			when '09:00  -  10:00am'
+			when LESSON_SLOTS.first
 				return '9am'
-			when  '10:10 - 11:10am (first-timers only)'
+			when  LESSON_SLOTS.second
 				return '10:10am'
-			when '11:20  -  12:20pm'
+			when LESSON_SLOTS.third
 				return '11:20am'
-			when '12:30 -1:30pm  (first-timers only)'
+			when LESSON_SLOTS.fourth
 				return '12:30pm'
-			when '2:20  -  3:20pm'
+			when LESSON_SLOTS.fifth
 				return '2:20pm'
-			when '3:30  -  4:30pm'
+			when LESSON_SLOTS.last
 				return '330pm'
 			end
 	end

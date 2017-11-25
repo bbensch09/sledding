@@ -179,6 +179,7 @@ Rails.application.routes.draw do
   resources :lessons
   # get 'new_request' => 'lessons#new_request'
   get 'new_request/:id' => 'lessons#new_request'
+  get 'book-a-lesson/new' => 'lessons#new_specific_slot', as: :new_specific_slot
   put   'lessons/:id/set_instructor'      => 'lessons#set_instructor',      as: :set_instructor
   put   'lessons/:id/admin_reconfirm_state'      => 'lessons#admin_reconfirm_state',      as: :admin_reconfirm_state
   put   'lessons/:id/decline_instructor'      => 'lessons#decline_instructor',      as: :decline_instructor
