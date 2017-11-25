@@ -88,13 +88,16 @@ class Section < ApplicationRecord
 	end
 
 	def self.fill_sections_with_lessons
-		Section.first(2).each do |section|		
+		puts "!!!!!Begin method: self.fill_sections_with_lessons"
+		sections = Section.all.select{|a| a.date >= Date.today }
+		sections.first(20).each do |section|		
 			
 			until section.remaining_capacity <= 1
 				lt = LessonTime.find_or_create_by({
 					date: section.date,
 					slot: section.slot
 					})
+				puts "!!!!!new lesson time created"
 				Lesson.create!({
 					requester_id: User.first.id,
 					guest_email: 'test@example.com',
@@ -125,6 +128,7 @@ class Section < ApplicationRecord
 					most_recent_level: "Level 1 - first-time ever, no previous experience.", 
 					requester_id: User.first.id					
 					})
+				puts "!!!! new lesson created"
 			end
 		end
 	end
