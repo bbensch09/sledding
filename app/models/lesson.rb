@@ -319,7 +319,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def just_created?
-    return true if self.id == Lesson.last.id
+    return true if Lesson.count == 0 || self.id == Lesson.last.id
   end
 
 def price
