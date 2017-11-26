@@ -15,6 +15,6 @@ test:
 
 production:
   <<: *default
-  database: granlibakken_development
+  database: granlibakken_production
   # username: granlibakken
   # password: bb4ss109
