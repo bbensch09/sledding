@@ -322,7 +322,19 @@ class Lesson < ActiveRecord::Base
     return true if Lesson.count == 0 || self.id == Lesson.last.id
   end
 
-def price
+  def lookup_calendar_period(date)
+    date = date.to_s
+    if HOLIDAYS.include?(date)
+      return 'Holiday'
+    elsif NON_HOLIDAYS.include?(date)
+      return 'Regular'
+    else
+      return 'N/A'
+    end
+  end
+
+  def price
+    puts "!!!beginc calculating price"
     if self.lesson_price
       return self.lesson_price.to_s
     elsif self.lesson_cost && self.lesson_cost > 0
@@ -330,7 +342,10 @@ def price
     # elsif self.product_id > 0
         # return Product.find(product_id).price
     elsif self.product_name
-        product = Product.where(location_id:24,length:"1.00",calendar_period:Location.find(24).calendar_status,name:self.product_name).first
+      calendar_period = self.lookup_calendar_period(self.lesson_time.date)
+      puts "!!!!lookup calendar period status, it is: #{calendar_period}"
+      product = Product.where(location_id:24,length:"1.00",calendar_period:calendar_period,name:self.product_name).first
+      puts "!!!product found, its price is #{product.price}"
     end
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
@@ -347,21 +362,6 @@ def price
       return self.lesson_cost
     end
   end
-
-  # def price
-  #   hourly_base = 75
-  #   surge = 1
-  #   hourly_price = hourly_base*surge
-  #   if self.actual_duration.nil?
-  #     if self.duration.nil?
-  #         price = hourly_price * 2
-  #       else
-  #         price = self.duration * hourly_price
-  #     end
-  #   else
-  #     price = self.actual_duration * hourly_price
-  #   end
-  # end
 
   def get_changed_attributes(original_lesson)
     lesson_changes = self.previous_changes

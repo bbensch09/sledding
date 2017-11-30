@@ -228,6 +228,8 @@ $(document).ready(function(){
   // calculateTotalListener();
   toggleElementListener();
   abilityLevelWarningListener();
+  // var calendarStatus = $('#calendar-status').html();
+  // console.log('calendar status is '+calendarStatus);
 });
 
 var abilityLevelWarningListener = function(){
@@ -242,14 +244,26 @@ var calculatePriceListener = function() {
   $('#lesson_product_name').change(function(e){
     
     console.log("detected product_name change.");
-    if ( $('#lesson_product_name').val() == '1hr Learn to Ski Package (rental included)'){
+    calendarStatus = $('#calendar-status').html();
+    console.log('calendar status is '+calendarStatus);
+    if ( $('#lesson_product_name').val() == '1hr Learn to Ski Package (rental included)' && calendarStatus == 'Regular') {
         console.log("the user has selected a rental package.");
         var lesson_price = '$70.00';
         $('#lesson_gear').val("false");
     };
-    if ( $('#lesson_product_name').val() == '1hr Group Lesson (lesson + lift only)'){
+    if ( $('#lesson_product_name').val() == '1hr Learn to Ski Package (rental included)' && calendarStatus == 'Holiday') {
+        console.log("the user has selected a rental package.");
+        var lesson_price = '$90.00';
+        $('#lesson_gear').val("false");
+    };
+    if ( $('#lesson_product_name').val() == '1hr Group Lesson (lesson + lift only)' && calendarStatus == 'Regular') {
         console.log("the user has selected a rental package.");
         var lesson_price = '$50.00';
+        $('#lesson_gear').val("true");
+    };
+    if ( $('#lesson_product_name').val() == '1hr Group Lesson (lesson + lift only)' && calendarStatus == 'Holiday') {
+        console.log("the user has selected a rental package.");
+        var lesson_price = '$75.00';
         $('#lesson_gear').val("true");
     };
     console.log("lesson price is: "+lesson_price)

@@ -220,9 +220,9 @@ class LessonsController < ApplicationController
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
-    if @lesson.lesson_cost.nil?
-      @lesson.lesson_cost = @lesson.price
-    end
+    # if @lesson.lesson_cost.nil?
+    #   @lesson.lesson_cost = @lesson.price
+    # end
     if @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
