@@ -139,7 +139,9 @@
             <% end %>
             <h3 class="text-warning hidden" id="ability-level-warning">Warning - students must all be within one level of each other in order to participate in the same lesson.</h3>
             <div class='links'>
-              <%= link_to_add_association 'Add Another Student', f, :students, class: 'btn btn-default', id:'add-student-button' %>
+              <%= link_to_add_association 'Add Another Student', f, :students, limit: 2, class: 'btn btn-default', id:'add-student-button' %>
+            <h4 class="text-danger hidden" id="max-students-warning">Note: only 3 students may be registered at a time. To book a private group lesson for 4 or more students, please visit <a href="www.snowschoolers.com/granlibakken" class="" target="_blank">www.snowschoolers.com/granlibakken</a>
+            </h4>
             </div>
             <%= f.semantic_errors :students %>
           </div>
