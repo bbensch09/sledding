@@ -35,7 +35,8 @@
                   <%= @lesson.num_days %>
                 <% end %>
                 <%= @lesson.lesson_time.slot %> <br>
-                Granlibakken Lodge  (<a href="https://www.google.com/maps/place/Homewood+Mountain+Resort/@39.086085,-120.1627817,17z/data=!4m12!1m6!3m5!1s0x809bd57fbf0e6771:0x6cdf8953d18f267f!2sSR+89+Homewood+(Homewood+Mountain+Resort)!8m2!3d39.086085!4d-120.160593!3m4!1s0x0:0x73b0c46aa0c1068d!8m2!3d39.0855831!4d-120.1605392" >725 Granlibakken Rd, Tahoe City, CA 961451</a>) <br>
+                Granlibakken Ski Hut  
+                (<a href="https://www.google.com/maps/place/Granlibakken+Ski+%26+Sledding+Hill/@39.1561613,-120.1565678,17z/data=!4m13!1m7!3m6!1s0x80997d8619f5ff29:0x815523715ab4e748!2s725+Granlibakken+Rd,+Tahoe+City,+CA+96145!3b1!8m2!3d39.1561613!4d-120.1543791!3m4!1s0x80997d88a3630ec7:0x30c3373b77f6c7b4!8m2!3d39.1540162!4d-120.1547892" target="_blank" class="contact-link" ><%=@lesson.location.address%></a>) <br>
               <% if @lesson.lesson_price.nil? %>
                 <% amount = @lesson.price.to_i*100 %>
                 <%= number_to_currency(@lesson.price) %>
@@ -62,7 +63,8 @@
               </script>
                   <p class="nonrefundable_disclaimer">
                   <br>
-                    You may cancel or modify your reservation up to 24 hours before the start of your lesson. A $50 charge will be applied for any customer-initiated cancellations made after your reservation has been made. Any cancellation made less than 24 hours before the lesson time will be charged the full amount, regardless of weather conditions. A no-call/no-show will be charged the full amount. If for any reason you are unsatisfied with your Snow Schoolers experience, please <a class="contact-link" href="mailto:info@granlibakken.com">ask about our 100% satisfaction guarantee.</a>
+                    You may cancel or modify your reservation up to 24 hours before the start of your lesson. A $50 charge will be applied for any customer-initiated cancellations made after your reservation has been made. Any cancellation made less than 24 hours before the lesson time will be charged the full amount, regardless of weather conditions. A no-call/no-show will be charged the full amount. 
+                    <!-- If for any reason you are unsatisfied with your Snow Schoolers experience, please <a class="contact-link" href="mailto:info@granlibakken.com">ask about our 100% satisfaction guarantee.</a> -->
                 </p>
             </div>
         </article>

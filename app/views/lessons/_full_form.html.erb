@@ -102,18 +102,19 @@
 
               <div class="col-md-4">
                 <label>Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: LESSON_SLOTS, selected: @slot, include_blank: 'Time', :input_html => { :class => 'slot'}, label: false %>
+                <%= lt_f.input :slot, as: :select, collection: LESSON_SLOTS, include_blank: 'Time', :input_html => { :class => 'slot'}, label: false %>
               </div>
           <% end %>
             <div class="col-md-4">
               <label>Price</label>
                 <h2> <span id="lesson-price"><%= number_to_currency(@lesson.price) %></span></h2>
+                <div id="calendar-status" class=""><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
                 <label>Your Name</label>
-                <%= f.text_field :requester_name, value: current_user ? current_user.name : "", class: "form-control", required: true, label: false %>
+                <%= f.text_field :requester_name, value: @lesson.requester_name, class: "form-control", required: true, label: false %>
               </div>
               <div class="col-md-6">
                 <label>Phone</label> <span class="text-smaller"></span>
@@ -124,7 +125,8 @@
           <div class='row'>
             <div class="col-md-6">
               <label>Do you already have equipment?</label>
-              <%= f.select :gear, options_for_select([['Yes, I already have my equipment.', true], ['No, I will need to rent equipment.', false]]), {}, {class: 'form-control gear', required:true,  include_blank:"(Skis,boots,etc.)"} %>
+              <%= f.select :gear, [['Yes, I already have my equipment.', true], ['No, I will need to rent equipment.', false]], {}, {class: 'form-control', required:true, include_blank:"(Skis,boots,etc)"} %>
+
             </div>
 
           </div>
@@ -137,7 +139,9 @@
             <% end %>
             <h3 class="text-warning hidden" id="ability-level-warning">Warning - students must all be within one level of each other in order to participate in the same lesson.</h3>
             <div class='links'>
-              <%= link_to_add_association 'Add Another Student', f, :students, class: 'btn btn-default', id:'add-student-button' %>
+              <%= link_to_add_association 'Add Another Student', f, :students, limit: 2, class: 'btn btn-default', id:'add-student-button' %>
+            <h4 class="text-danger hidden" id="max-students-warning">Note: only 3 students may be registered at a time. To book a private group lesson for 4 or more students, please visit <a href="www.snowschoolers.com/granlibakken" class="" target="_blank">www.snowschoolers.com/granlibakken</a>
+            </h4>
             </div>
             <%= f.semantic_errors :students %>
           </div>
@@ -164,7 +168,6 @@
 
           <div class="col-md-9">
           <% if @lesson.state == 'new' %>
-            <!-- <h4>Review <strong> Lesson Request</strong></h4> -->
             <% button_text = "Continue to Payment" %>
             <% else %>
             <h4>Update <strong> Lesson Request</strong></h4>
@@ -195,13 +198,6 @@
 
   </div>
 </div>
-
-<!-- SLIDER -->
-<!-- <img id="cycle-loader" src="https://s3.amazonaws.com/snowschoolers/images/spinner.gif" alt="loader" /> -->
-
-<!-- <div id="lesson-flow-background">
-      <img src="https://s3.amazonaws.com/snowschoolers/images/demo/slider/thredbo-village-resort-hero.jpg" alt="" />
-</div> -->
 
 <ul id="slider" class="mc-cycle" style="display: block; height: 100%; width: 100%;">
     <div class="mc-image bg-photo" title="background photo" style="background-image: url('https://s3.amazonaws.com/snowschoolers/gb-sitting.jpeg'); height: 100%; width: 100%;" data-href=""    
