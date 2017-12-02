@@ -16,7 +16,7 @@ def devise_mapping
 end
 
 def confirm_admin_permissions
-  return if current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == 'Granlibakken Employee'
+  return if current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee' || current_user.email == 'chrisparson@granlibakken.com' || current_user.email == 'adamvincent@granlibakken.com'
   redirect_to root_path, notice: 'You do not have permission to view that page.'
 end
 
