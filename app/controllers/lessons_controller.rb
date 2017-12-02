@@ -198,10 +198,10 @@ class LessonsController < ApplicationController
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
-    unless current_user && current_user.user_type == "Snow Schoolers Employee"
+    unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
     end    
-    if @lesson.is_gift_voucher? && current_user.user_type == "Snow Schoolers Employee"
+    if @lesson.is_gift_voucher? && current_user.user_type == "Granlibakken Employee"
       @user = User.new({
           email: @lesson.gift_recipient_email,
           password: 'sstemp2017',
@@ -428,7 +428,7 @@ class LessonsController < ApplicationController
   def check_user_permissions
     return unless @lesson.guest_email.nil?
     # FEB7 - disabling permission check to allow non-signed-in users to resume their reservation
-    # unless (current_user && current_user == @lesson.requester || (current_user && current_user.instructor && current_user.instructor.status == "Active") || @lesson.requester.nil? || (current_user.nil? && @lesson.requester.email == "brian@snowschoolers.com") || (current_user && (current_user.user_type == "Ski Area Partner" || current_user.user_type == "Snow Schoolers Employee"))   )
+    # unless (current_user && current_user == @lesson.requester || (current_user && current_user.instructor && current_user.instructor.status == "Active") || @lesson.requester.nil? || (current_user.nil? && @lesson.requester.email == "brian@snowschoolers.com") || (current_user && (current_user.user_type == "Ski Area Partner" || current_user.user_type == "Granlibakken Employee"))   )
       # puts "!!!!!!! INSUFFICIENT PERMISSIONS"
       # flash[:alert] = "You do not have access to this page."
       # redirect_to root_path

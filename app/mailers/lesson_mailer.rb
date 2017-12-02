@@ -126,17 +126,17 @@ class LessonMailer < ActionMailer::Base
 
   def new_user_signed_up(user)
     @user = user
-    mail(to: 'brian@snowschoolers.com', subject: "A new user has registered for Snow Schoolers")
+    mail(to: 'brian@snowschoolers.com', subject: "A new user has registered for Granlibakken Lessons")
   end
 
   def new_instructor_application_received(instructor)
     @instructor = instructor
-    mail(to: 'brian@snowschoolers.com', subject: "Submitted Application: #{@instructor.username} has applied to join Snow Schoolers")
+    mail(to: 'brian@snowschoolers.com', subject: "Submitted Application: #{@instructor.username} has applied to join Granlibakken")
   end
 
   def send_new_instructor_application_confirmation(instructor)
     @instructor = instructor
-    mail(to: @instructor.username, cc: 'brian@snowschoolers.com', subject: "Thanks for applying to Snow Schoolers -- please schedule your interview!")
+    mail(to: @instructor.username, cc: 'brian@snowschoolers.com', subject: "Thanks for applying to Granlibakken -- please schedule your interview!")
   end
 
   def new_homewood_application_received(applicant)
@@ -156,7 +156,7 @@ class LessonMailer < ActionMailer::Base
 
   def subscriber_sign_up(beta_user)
     @beta_user = beta_user
-    mail(to: 'brian@snowschoolers.com', subject: "Someone has subscribed to the Snow Schoolers mailing list")
+    mail(to: 'brian@snowschoolers.com', subject: "Someone has subscribed to the Granlibakken mailing list")
   end
 
   def send_lesson_request_to_instructors(lesson, excluded_instructor=nil)
@@ -169,7 +169,7 @@ class LessonMailer < ActionMailer::Base
       @available_instructors << instructor.user.email
     end
     puts "!!!available instructors to email are: #{@available_instructors}"
-    mail(to: 'notify@snowschoolers.com', bcc: @available_instructors, subject: "You have a new Snow Schoolers lesson request on #{@lesson.date.strftime("%b %-d")}")
+    mail(to: 'notify@snowschoolers.com', bcc: @available_instructors, subject: "You have a new Granlibakken lesson request on #{@lesson.date.strftime("%b %-d")}")
   end
 
   def send_lesson_request_to_new_instructors(lesson, excluded_instructor=nil)
@@ -185,15 +185,15 @@ class LessonMailer < ActionMailer::Base
   # notification when instructor cancels
   def send_cancellation_confirmation(lesson)
     @lesson = lesson
-    mail(to: @lesson.instructor.user.email, cc:'notify@snowschoolers.com', subject: 'You have canceled your Snow Schoolers lesson')
+    mail(to: @lesson.instructor.user.email, cc:'notify@snowschoolers.com', subject: 'You have canceled your Granlibakken lesson')
   end
 
   def send_lesson_confirmation(lesson)
     @lesson = lesson
     if @lesson.guest_email.nil?
-      mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', bcc:@lesson.instructor.user.email, subject: "Your Snow Schoolers lesson on #{@lesson.date.strftime("%b %-d")} with #{@lesson.instructor.name} is confirmed!")
+      mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', bcc:@lesson.instructor.user.email, subject: "Your Granlibakken lesson on #{@lesson.date.strftime("%b %-d")} with #{@lesson.instructor.name} is confirmed!")
     else
-      mail(to: @lesson.guest_email, cc:'notify@snowschoolers.com', bcc:@lesson.instructor.user.email, subject: "Your Snow Schoolers lesson on #{@lesson.date.strftime("%b %-d")} with #{@lesson.instructor.name} is confirmed!")
+      mail(to: @lesson.guest_email, cc:'notify@snowschoolers.com', bcc:@lesson.instructor.user.email, subject: "Your Granlibakken lesson on #{@lesson.date.strftime("%b %-d")} with #{@lesson.instructor.name} is confirmed!")
     end
   end
 
@@ -210,27 +210,27 @@ class LessonMailer < ActionMailer::Base
     @original_lesson = original_lesson
     @updated_lesson = updated_lesson
     @changed_attributes = changed_attributes
-    mail(to: @updated_lesson.instructor.user.email, cc:'notify@snowschoolers.com', subject: 'One of your Snow Schoolers lesson has been updated')
+    mail(to: @updated_lesson.instructor.user.email, cc:'notify@snowschoolers.com', subject: 'One of your Granlibakken lesson has been updated')
   end
 
   # notification when client cancels
   def send_cancellation_email_to_instructor(lesson)
     @lesson = lesson
-    mail(to: @lesson.instructor.user.email, cc:'notify@snowschoolers.com', bcc: @lesson.requester.email, subject: 'One of your Snow Schoolers lessons has been canceled')
+    mail(to: @lesson.instructor.user.email, cc:'notify@snowschoolers.com', bcc: @lesson.requester.email, subject: 'One of your Granlibakken lessons has been canceled')
   end
 
   def inform_requester_of_instructor_cancellation(lesson, available_instructors)
     @lesson = lesson
     @available_instructors = available_instructors
-    mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', subject: 'Your Snow Schoolers lesson has been canceled')
+    mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', subject: 'Your Granlibakken lesson has been canceled')
   end
 
   def send_payment_email_to_requester(lesson)
     @lesson = lesson
     if @lesson.guest_email.nil?
-      mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', subject: 'Please complete your Snow Schoolers online experience!')
+      mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', subject: 'Please complete your Granlibakken online experience!')
     else
-      mail(to: @lesson.guest_email, cc:'notify@snowschoolers.com', subject: 'Please complete your Snow Schoolers online experience!')
+      mail(to: @lesson.guest_email, cc:'notify@snowschoolers.com', subject: 'Please complete your Granlibakken online experience!')
     end
   end
 end

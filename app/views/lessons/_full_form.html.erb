@@ -6,7 +6,7 @@
       <h1>Update Your Lesson</h1>
     </header>
 
-    <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
+    <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
     <div id="autofill-container" class="admin-viewable">
       <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a>  
     </div>

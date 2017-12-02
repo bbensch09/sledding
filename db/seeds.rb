@@ -34,7 +34,7 @@ puts "Ski and snowboard level 1-9 created."
 User.create!({
   email: "brian@snowschoolers.com",
   password: "password",
-  user_type: "Snow Schoolers Employee",
+  user_type: "Granlibakken Employee",
   location_id: 24
   })
 
@@ -80,7 +80,7 @@ Instructor.find_or_create_by!({
   phone_number: "408-315-2900",
   city: ['Tahoe City, CA', 'Truckee, CA','South Lake Tahoe, CA'].sample,
   certification: ['PSIA Level 1','PSIA Level 2','PSIA Level 3','AASI Level 1','AASI Level 2','AASI Level 3'].sample,
-  intro: "I want to teach for Snow Schoolers!!!!",
+  intro: "I want to teach for Granlibakken!!!!",
   bio: "Chris hails from New York where he learned to ski as a kid and first began teaching children's ski lessons in high school at the local resort. He later coached the traveling freestyle ski team, and eventually moved to Crested Butte to live the ski bum dream for awhile, which included competing in the U.S. Freeskiing Championships. He recently moved to Tahoe 5 years ago. With nearly three decades of instructor experience across all skill levels, he will happily share his local secrets and ensure you have a wonderful experience on the mountain..",
   adults_initial_rank: rand(5..10),
   kids_initial_rank: rand(5..10),

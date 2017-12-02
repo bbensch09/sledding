@@ -3,7 +3,7 @@
 <h3> Current User ID: <%= current_user.id %> </h3>
 <h3> Current User.email: <%= current_user.email %> </h3>
  -->
-<% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
+<% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
 <div class="admin-viewable">
  <div id="admin-testing" class="row vertical-padding container admin-viewable">
     <%= link_to 'Fill first 50 lessons with sample students', seed_lessons_with_students_path, method: :post, class: "btn btn-success" %>
@@ -49,7 +49,7 @@
       <!-- <th>Mountain</th> -->
       <th>Date</th>
       <th>Status</th>
-    <% if current_user.user_type == "Snow Schoolers Employee" %>
+    <% if current_user.user_type == "Granlibakken Employee" %>
       <th>Price</th>
       <th></th>
       <% else %>
@@ -79,7 +79,7 @@
             <% end %>            <!-- <td><%= lesson.location.name %></td> -->
             <td><%= lesson.lesson_time.date.strftime("%m/%d") %></td>
             <td><%= lesson.state %></td>
-            <% if current_user.user_type == "Snow Schoolers Employee" %>
+            <% if current_user.user_type == "Granlibakken Employee" %>
             <td><%= number_to_currency(lesson.visible_lesson_cost) %></td>
             <td><%= link_to "Send Instructor SMS", send_reminder_sms_to_instructor_path(lesson), class: "btn btn-default" %></td>
             <% else %>

@@ -4,7 +4,7 @@
   <title><%= title %></title>
   <%= action_cable_meta_tag %>
   <meta name='description'
-      content='<%= yield_meta_tag(:description, 'Snow Schoolers is an online platform for private ski & snowboard lessons. We offer guests the ability to easily book a private ski or snowboard lesson online with our fleet of expert, certified instructors. We collaborate closely with our ski area partners to help them attract valuable new visitors.') %>' />
+      content='<%= yield_meta_tag(:description, 'Granlibakken is an online platform for private ski & snowboard lessons. We offer guests the ability to easily book a private ski or snowboard lesson online with our fleet of expert, certified instructors. We collaborate closely with our ski area partners to help them attract valuable new visitors.') %>' />
   <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
   <link rel="icon" type="image/png" href="http://granlibakken.com/wp-content/uploads/cropped-tin-g-32x32.png">
   <meta name="google-site-verification" content="W1jQsfy52H6ubJcGDNxflQmKuSNdLuId5JvlfBaLBF4" />
@@ -185,7 +185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="nav-collapse hidden-unless-desktop nav-main-collapse pull-right">
       <nav class="nav-main">
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
-          <% if current_user && (current_user.user_type == "Snow Schoolers Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
+          <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
            <li> <a href="/instructors" class="btn-success"> Manage Instructors</a></li>
            <li> <a href="/lessons-availability" class="btn-success"> Availability</a></li>
             <li><a href="/lessons" class="btn-success"> Schedule </a></li>
@@ -432,7 +432,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <li><a href="mailto:info@snowschoolers.com" target="_blank">CONTACT</a></li>
     <li><a href="https://www.snowsportsjobs.com" target="_blank">JOBS - JOIN THE TEAM</a></li>
   </ul>
-  <span class="hidden-xs copyright-text pull-left">&copy; Site powered by Snow Schoolers, Inc. 2017</span>
+  <span class="hidden-xs copyright-text pull-left">&copy; Site powered by Granlibakken, Inc. 2017</span>
   </h4>
   <!-- /right menu -->
 
