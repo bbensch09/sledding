@@ -1,7 +1,8 @@
 <div class="container">
 
-<%if current_user && current_user.user_type == "Ski Area Partner" || (current_user.email == "brian@snowschoolers.com") %>
+<%if current_user && current_user.user_type == "Granlibakken Employee" || (current_user.email == "brian@snowschoolers.com") %>
   <div class="row">
+    <%= link_to "Manage admin permissions", "/admin_users", class: 'btn btn-success' %>
     <%= link_to "View Detailed Info (CRM)", "/admin_index", class: 'btn btn-primary' %>
     <%= link_to 'Manage shift assignments', "/shifts", method: :get, class: "btn btn-success" %>
   </div>
