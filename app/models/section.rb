@@ -148,7 +148,7 @@ class Section < ApplicationRecord
 			slot: slot,
 			sport_id: 1,
 			level: 'Beginner',
-			capacity: 6
+			capacity: 5
 			})		
 	end
 
@@ -159,7 +159,7 @@ class Section < ApplicationRecord
 			slot: slot,
 			sport_id: 2,
 			level: 'Beginner',
-			capacity: 6
+			capacity: 5
 			})		
 	end
 

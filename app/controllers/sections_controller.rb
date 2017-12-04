@@ -121,6 +121,12 @@ class SectionsController < ApplicationController
     end
   end
 
+  def remove
+    section = Section.find(params[:id])
+    section.destroy
+    redirect_to '/lessons'
+  end
+
   # POST /sections
   # POST /sections.json
   def create

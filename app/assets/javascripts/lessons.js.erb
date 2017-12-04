@@ -262,21 +262,25 @@ var calculatePriceListener = function() {
         console.log("the user has selected a rental package.");
         var lesson_price = '$70.00';
         $('#lesson_gear').val("false");
+        $('#gear-question').hide();
     };
     if ( $('#lesson_product_name').val() == '1hr Learn to Ski Package (rental included)' && calendarStatus == 'Holiday') {
         console.log("the user has selected a rental package.");
         var lesson_price = '$90.00';
         $('#lesson_gear').val("false");
+        $('#gear-question').hide();
     };
     if ( $('#lesson_product_name').val() == '1hr Group Lesson (lesson + lift only)' && calendarStatus == 'Regular') {
         console.log("the user has selected a rental package.");
         var lesson_price = '$50.00';
         $('#lesson_gear').val("true");
+        $('#gear-question').show();
     };
     if ( $('#lesson_product_name').val() == '1hr Group Lesson (lesson + lift only)' && calendarStatus == 'Holiday') {
         console.log("the user has selected a rental package.");
         var lesson_price = '$75.00';
         $('#lesson_gear').val("true");
+        $('#gear-question').show();
     };
     console.log("lesson price is: "+lesson_price)
     $('#lesson-price').html(lesson_price);

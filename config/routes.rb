@@ -164,6 +164,8 @@ Rails.application.routes.draw do
   resources :sections do 
     member do
       post :duplicate
+      delete :remove
+      delete :destroy
     end
   end
   get 'lessons-availability' => 'sections#available_lessons', as: :available_lessons

@@ -17,6 +17,11 @@ class LessonMailer < ActionMailer::Base
       mail(to: 'brian@snowschoolers.com', subject: "New Lesson Request begun - #{@lesson.date} - #{@lesson.guest_email}.")
   end
 
+  def notify_admin_section_sold_out(section)
+      @section = section
+      mail(to: 'brian+chris@snowschoolers.com', subject: "Section is Now Full - #{@section.date} - #{@section.slot}.")
+  end
+
   def notify_admin_lesson_full_form_updated(lesson,email)
       @lesson = lesson
       @user_email = email

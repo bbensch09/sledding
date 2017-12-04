@@ -12,9 +12,9 @@
         <h3> To issue a full refund: </h3>
           <ol>
             <li>
-                <a href="https://dashboard.stripe.com/payments" id="stripe-refund" target="_blank" class="btn btn-danger">First Issue Refund in Stripe</a>
+                <a href="https://dashboard.stripe.com/payments" id="stripe-refund" target="_blank" class="btn btn-danger">First Issue Refund in Stripe</a> <br><br>
             </li>
-            <li><%= link_to 'Mark Lesson as Refunded', issue_full_refund_path(@lesson), method: :post, class: "btn btn-danger" %></li>
+            <li><%= link_to 'Mark Lesson as Refunded', issue_full_refund_path(@lesson), method: :post, class: "btn btn-warning" %></li>
           </ol>
                 
         <h3> To issue a partial refund: </h3>
@@ -23,7 +23,7 @@
               <a href="https://dashboard.stripe.com/payments" id="stripe-refund" target="_blank" class="btn btn-danger"> First issue a partial refund in Stripe.</a>
             </li>
             <li>Enter the refund reason as 'Package info' below, along with the final amount due as 'Total Price'. </li>
-            <li>Then click to <a href="#finalize-lesson" class="btn btn-success">finalize the reservation</a> </li>
+            <li>Then click to <a href="#finalize-lesson" class="btn btn-warning">Re-confirm the reservation</a> </li>
           </ol>
       <% end %>
     </div>
@@ -83,21 +83,28 @@
           </div>
         </div>
       <% end %>
-      <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
-      <div class='row'>
-        <div class="col-md-6">
-          <h4>Book as a <strong>Guest</strong> | Or <a href="#" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Sign-in to your Account</a></h4>
-              <label>Email</label>
-              <%= f.email_field :guest_email, placeholder: "email@example.com", class: "form-control", type: 'email', required:true, label: false %>
-        </div>
-      </div>
-      <% end %>
+
       <div class='row'>
         <div class="col-md-6">
           <h4>Basic <strong>Info</strong></h4>
-
+          <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
-
+            <div class="col-md-12">
+              <h4>Book as a <strong>Guest</strong> | Or <a href="#" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Sign-in to your Account</a></h4>
+                  <label>Email</label>
+                  <%= f.email_field :guest_email, placeholder: "email@example.com", class: "form-control", type: 'email', required:true, label: false %>
+            </div>
+          </div>
+          <% end %>
+          <div class='row'>
+            <div class="col-md-6">
+              <label>Your Name</label>
+              <%= f.text_field :requester_name, value: @lesson.requester_name, class: "form-control", required: true, label: false %>
+            </div>
+            <div class="col-md-6">
+              <label>Phone</label> <span class="text-smaller"></span>
+              <%= f.text_field :phone_number, placeholder: 'xxx-xxx-xxxx', class: 'form-control', required:true, include_blank:false %>
+            </div>
             <div class="col-md-6">
               <label>Lesson Type</label>
               <%= f.select :activity, ['Ski', 'Snowboard'], {}, {class: 'form-control', required:true, include_blank:'Lesson Type'} %>
@@ -125,27 +132,18 @@
             <div class="col-md-4">
               <label>Price</label>
                 <h2> <span id="lesson-price"><%= number_to_currency(@lesson.price) %></span></h2>
-                <div id="calendar-status" class=""><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
+                <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-                <label>Your Name</label>
-                <%= f.text_field :requester_name, value: @lesson.requester_name, class: "form-control", required: true, label: false %>
-              </div>
-              <div class="col-md-6">
-                <label>Phone</label> <span class="text-smaller"></span>
-                <%= f.text_field :phone_number, placeholder: 'xxx-xxx-xxxx', class: 'form-control', required:true, include_blank:false %>
-              </div>
-            </div>
 
           <div class='row'>
-            <div class="col-md-6">
+            <div class="col-md-12" id="gear-question">
               <label>Do you already have equipment?</label>
               <%= f.select :gear, [['Yes, I already have my equipment.', true], ['No, I will need to rent equipment.', false]], {}, {class: 'form-control', required:true, include_blank:"(Skis,boots,etc)"} %>
-
             </div>
+          </div>
 
+          <div class="row">
           </div>
 
           <h4>Student <strong>Info</strong></h4>
@@ -193,13 +191,14 @@
           </div>
           <div class="col-md-3">
             <%= f.input :state, as: :hidden, input_html: { value: @state } %>
-            <% if @lesson.product_name.length !=0 %>
+            <% if @lesson.product_name && @lesson.product_name.length !=0 %>
             <%= f.input :product_id, as: :hidden, input_html: { value: Product.where(location_id:@lesson.requested_location,calendar_period:@lesson.location.calendar_status,name:@lesson.product_name).first.id } %>
             <% end %>
             <%= f.submit button_text, class: 'btn sign-up-btn pull-right', id: 'finalize-lesson' %>
           </div>
-
         </div>
+      <!-- %= link_to 'Section Schedule', "#{ENV['DOMAIN']}/filtered-schedule-results?date=#{@lesson.section.date.to_s}", class: 'btn btn-default' %> -->
+
       </div>
 
       <hr class='lesson-break' />

@@ -26,7 +26,7 @@ class Lesson < ActiveRecord::Base
   before_save :add_lesson_to_section
   before_save :confirm_valid_email, if: :just_created?
   after_save :confirm_section_valid
-  after_save :send_lesson_request_to_instructors
+  after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
 
@@ -35,6 +35,14 @@ class Lesson < ActiveRecord::Base
       return "Unassigned"
     else
       return "Assigned"
+    end
+  end
+
+  def check_if_sections_are_full
+    section = Lesson.last.section
+    unless section.has_capacity?
+      puts "!!!section is now sold out"
+      LessonMailer.notify_admin_section_sold_out(section).deliver
     end
   end
 
@@ -389,7 +397,7 @@ class Lesson < ActiveRecord::Base
       puts "!!!product found, its price is #{product.price}"
     end
     if product.nil?
-      return "Error - lesson price not found" #99 #default lesson price - temporary
+      return "Select date & package" #99 #default lesson price - temporary
     else
       price = product.price * [1,self.students.count].max
     end

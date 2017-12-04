@@ -149,12 +149,12 @@ class LessonsController < ApplicationController
 
   def new_specific_slot
     @lesson = Lesson.new
-    @activity = session[:activity]
-    @slot = session[:slot]
-    @date = session[:date]
-    @lesson_time = @lesson.lesson_time
-    GoogleAnalyticsApi.new.event('lesson-requests', 'load-lessons-new')
-    render 'new'
+    @lesson.activity = session[:activity]
+    @lesson.requested_location = 24
+    @lesson.lesson_time = LessonTime.find_or_create_by(date:session[:date],slot:session[:slot])
+    @lesson.save
+    GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    render 'complete'
   end
 
   def create
