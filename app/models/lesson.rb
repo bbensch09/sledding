@@ -29,7 +29,7 @@ class Lesson < ActiveRecord::Base
   after_save :send_lesson_request_to_instructors
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
-  
+
   def section_assignment_status
     if self.section_id.nil?
       return "Unassigned"
@@ -38,12 +38,12 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def self.seed_lessons(date,number)    
+  def self.seed_lessons(date,number)
     LessonTime.create!({
         date: date,
         slot: ['Early Bird (9-10am)', 'Half-day Morning (10am-1pm)', 'Half-day Afternoon (1pm-4pm)','Full-day (10am-4pm)', 'Mountain Rangers All-day', 'Snow Rangers All-day'].sample
         })
-    number.times do 
+    number.times do
       puts "!!! - first creating new student user"
       User.create!({
           email: Faker::Internet.email,
@@ -69,13 +69,13 @@ class Lesson < ActiveRecord::Base
           terms_accepted: true
         })
       puts "!!! - lesson created, creating students for lesson"
-      last_lesson_product_age_type = Lesson.last.product.age_type      
+      last_lesson_product_age_type = Lesson.last.product.age_type
       if last_lesson_product_age_type == "Child"
         sample_age = (4..12).to_a.sample
       elsif last_lesson_product_age_type == "Adult"
         sample_age = (12..50).to_a.sample
       else
-        sample_age = (4..50).to_a.sample        
+        sample_age = (4..50).to_a.sample
       end
       Student.create!({
           lesson_id: Lesson.last.id,
@@ -334,11 +334,11 @@ class Lesson < ActiveRecord::Base
   end
 
   def price
-    puts "!!!beginc calculating price"
+    puts "!!!begin calculating price"
     if self.lesson_price
       return self.lesson_price.to_s
     elsif self.lesson_cost && self.lesson_cost > 0
-      return self.lesson_cost.to_s     
+      return self.lesson_cost.to_s
     # elsif self.product_id > 0
         # return Product.find(product_id).price
     elsif self.product_name
@@ -349,8 +349,8 @@ class Lesson < ActiveRecord::Base
     end
     if product.nil?
       return "Error - lesson price not found" #99 #default lesson price - temporary
-    else      
-      price = product.price * [1,self.students.count].max      
+    else
+      price = product.price * [1,self.students.count].max
     end
     return price.to_s
   end
@@ -435,19 +435,19 @@ class Lesson < ActiveRecord::Base
           errors.add(:lesson, "There is unfortunately no more room in this lesson, please review the available times below and choose another slot.")
           return false
       end
-      self.section_id = self.available_sections.first.id 
+      self.section_id = self.available_sections.first.id
       self.save
     elsif self.section.remaining_capacity <= 0
       puts "!!!!warning, at capcity"
     else self.section.remaining_capacity >= 1
       return true
-    end      
+    end
   end
 
   def confirm_valid_email
     if self.guest_email
       puts "!!! user guest emails is: #{self.guest_email.downcase}"
-      if self.requester_id 
+      if self.requester_id
         return true
       elsif User.find_by_email(self.guest_email.downcase)
           self.requester_id = User.find_by_email(self.guest_email.downcase).id
@@ -476,8 +476,8 @@ class Lesson < ActiveRecord::Base
       section.instructor_id = section.available_instructors.first.id
       section.save!
     end
-    unassigned_lessons = Lesson.where(instructor_id:nil)  
-    puts "!!!!!!!!! there are #{unassigned_lessons.count} unassigned lessons"    
+    unassigned_lessons = Lesson.where(instructor_id:nil)
+    puts "!!!!!!!!! there are #{unassigned_lessons.count} unassigned lessons"
     unassigned_lessons.each do |lesson|
       if lesson.section.nil?
         lesson.section_id = lesson.available_sections.first ? lesson.available_sections.first.id : Section.first.id
@@ -685,10 +685,10 @@ class Lesson < ActiveRecord::Base
         when 'pending instructor'
           body =  "#{self.available_instructors.first.first_name}, There has been a change in your previously confirmed lesson request. #{self.requester.name} would now like their lesson to be at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. Are you still available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'Payment complete, waiting for review.'
-          if self.transactions.last.tip_amount == 0.0009            
+          if self.transactions.last.tip_amount == 0.0009
             body = "#{self.requester.name} has completed their lesson review and reported that they gave you a cash tip. Great work!"
           elsif self.transactions.last.tip_amount == 0
-            body = "Hope you had a great lesson with #{self.requester.name}. They have now completed their lesson review, which you should receive an email notification about shortly."            
+            body = "Hope you had a great lesson with #{self.requester.name}. They have now completed their lesson review, which you should receive an email notification about shortly."
           else
             body = "#{self.requester.name} has completed payment for their lesson and you've received a tip of $#{self.post_stripe_tip.round(2)}. Great work!"
           end
@@ -707,7 +707,7 @@ class Lesson < ActiveRecord::Base
 
   def send_reminder_sms
     # ENV variable to toggle Twilio on/off during development
-    return if ENV['twilio_status'] == "inactive"    
+    return if ENV['twilio_status'] == "inactive"
     return if self.state == 'confirmed' || (Time.now - LessonAction.last.created_at) < 20
     account_sid = ENV['TWILIO_SID']
     auth_token = ENV['TWILIO_AUTH']
@@ -728,7 +728,7 @@ class Lesson < ActiveRecord::Base
 
   def send_sms_to_all_other_instructors
     # ENV variable to toggle Twilio on/off during development
-    return if ENV['twilio_status'] == "inactive"    
+    return if ENV['twilio_status'] == "inactive"
     recipients = self.available_instructors
     if recipients.count < 2
       @client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_AUTH']
@@ -774,7 +774,7 @@ class Lesson < ActiveRecord::Base
 
   def send_sms_to_requester
       # ENV variable to toggle Twilio on/off during development
-      return if ENV['twilio_status'] == "inactive"    
+      return if ENV['twilio_status'] == "inactive"
       account_sid = ENV['TWILIO_SID']
       auth_token = ENV['TWILIO_AUTH']
       snow_schoolers_twilio_number = ENV['TWILIO_NUMBER']

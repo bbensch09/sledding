@@ -10,7 +10,7 @@ class LessonsController < ApplicationController
     @section = Section.find(params[:section_id])
     @lesson.section_id = @section.id
     @lesson.save!
-    redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}"    
+    redirect_to "/schedule-filtered?utf8=✓&search_date=#{@section.parametized_date}&age_type=#{@section.age_group}"
   end
 
   def admin_index
@@ -29,7 +29,7 @@ class LessonsController < ApplicationController
   end
 
   def filtered_schedule_results
-    @all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}    
+    @all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
     if params[:date] != ""
       # @search_params = {date: params[:date]}
       # puts "!!!!! the search_params are: #{@search_params}"
@@ -38,7 +38,7 @@ class LessonsController < ApplicationController
       @days = @all_days.select{|a| a.date.to_s == params[:date]}
     else
       @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
-      @days = all_days.keep_if{|a| a.date >= Date.today}   
+      @days = all_days.keep_if{|a| a.date >= Date.today}
     end
     @new_date = Section.new
     render 'index'
@@ -54,15 +54,15 @@ class LessonsController < ApplicationController
   #   render 'schedule'
   # end
 
-  def index    
-      all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}      
-      @days = all_days.keep_if{|a| a.date >= Date.today}      
+  def index
+      all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
+      @days = all_days.keep_if{|a| a.date >= Date.today}
       @days = @days.first(10)
       # Need to remove restriction after 100 lessons are booked
       @lessons = Lesson.first(100).to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
       @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
       @new_date = Section.new
-      if session[:notice] 
+      if session[:notice]
         flash.now[:notice] = session[:notice]
       end
   end
@@ -143,7 +143,7 @@ class LessonsController < ApplicationController
 
   def create
       puts "!!!!!!!!! Lesson params are \n #{params}"
-      create_lesson_and_redirect    
+      create_lesson_and_redirect
   end
 
   def complete
@@ -160,6 +160,19 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time
     @state = @lesson.instructor ? 'pending instructor' : @lesson.state
+  end
+
+  def reissue_invoice
+    @lesson = Lesson.find(params[:id])
+    @lesson.state == "ready_to_book"
+    @lesson.deposit_status = nil
+    @lesson.save
+    render 'edit'
+  end
+
+  def issue_refund
+    @lesson = Lesson.find(params[:id])
+    render 'edit'
   end
 
   def confirm_reservation
@@ -197,10 +210,10 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
-    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+    # @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
-    end    
+    end
     if @lesson.is_gift_voucher? && current_user.user_type == "Granlibakken Employee"
       @user = User.new({
           email: @lesson.gift_recipient_email,
@@ -364,15 +377,7 @@ class LessonsController < ApplicationController
     puts params[:lesson][:lesson_time][:date]
     puts params[:lesson][:lesson_time][:slot]
     puts "!!!!!!! end params"
-    # if current_user.nil?
-    #   session[:lesson] = params[:lesson]
-    #   flash[:alert] = 'You need to sign in or sign up before continuing.'
-    #   # flash[:notice] = "The captured params are #{params[:lesson]}"
-    #   redirect_to new_user_registration_path and return
-    # elsif params["commit"] != "Book Lesson"
-    #   session[:lesson] = params[:lesson]
-    # end
-      validate_new_lesson_params
+    validate_new_lesson_params
   end
 
   def create_lesson_from_session
@@ -393,7 +398,7 @@ class LessonsController < ApplicationController
     if @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'request-initiated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
-      LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
+      # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
       redirect_to complete_lesson_path(@lesson)
       else
         @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]

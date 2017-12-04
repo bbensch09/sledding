@@ -21,6 +21,8 @@
                 <%if @lesson.includes_lift_or_rental_package? || @lesson.is_gift_voucher? %>
                 <b>Description:</b> <br>
                 <% end %>
+                <% if @lesson.transactions %>
+                <b>Previous charges processed:</b> 
               <%= link_to 'Edit Lesson', edit_lesson_path(@lesson), class: "btn btn-default" %>
               </h4>
             </div>
