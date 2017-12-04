@@ -133,7 +133,7 @@ Rails.application.routes.draw do
       end
   end
   get '/admin_index' => 'instructors#admin_index'
-  get 'lessons/admin_index' => 'lessons#admin_index'
+  get 'lessons/admin_index' => 'lessons#admin_index', as: :lessons_admin_index
   get 'browse' => 'instructors#browse'
   get 'lessons/book_product/:id' => 'lessons#book_product'
   # post 'search_results' => 'products#search_results', as: :refresh_search_results
@@ -190,6 +190,7 @@ Rails.application.routes.draw do
   get   'lessons/:id/send_reminder_sms_to_instructor' => 'lessons#send_reminder_sms_to_instructor',  as: :send_reminder_sms_to_instructor
   post 'lessons/:id/confirm_reservation'              => 'lessons#confirm_reservation', as: :confirm_reservation
   put 'lessons/:id/issue_refund'              => 'lessons#issue_refund', as: :issue_refund
+  post 'lessons/:id/issue_full_refund'              => 'lessons#issue_full_refund', as: :issue_full_refund
   put 'lessons/:id/reissue_invoice'              => 'lessons#reissue_invoice', as: :reissue_invoice
 
   unless Rails.application.config.consider_all_requests_local

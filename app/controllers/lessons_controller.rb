@@ -173,7 +173,17 @@ class LessonsController < ApplicationController
 
   def issue_refund
     @lesson = Lesson.find(params[:id])
+    @lesson_time = @lesson.lesson_time    
+    session[:refund] = true
     render 'edit'
+  end
+
+  def issue_full_refund
+    @lesson = Lesson.find(params[:id])
+    @lesson.state = 'Canceled - full refund issued.'
+    @lesson.save 
+    session[:refund] = nil
+    redirect_to @lesson 
   end
 
   def confirm_reservation
