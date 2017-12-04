@@ -38,6 +38,26 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def email
+    if self.requester
+      return self.requester.email
+    elsif self.guest_email
+      return self.guest_email
+    else
+      "N/A"
+    end
+  end
+
+  def name
+    if self.requester
+      return self.requester.name
+    elsif self.guest_email
+      return self.guest_email
+    else
+      "N/A"
+    end
+  end
+
   def self.seed_lessons(date,number)
     LessonTime.create!({
         date: date,
@@ -250,6 +270,14 @@ class Lesson < ActiveRecord::Base
     state == 'finalizing payment & reviews'
   end
 
+  def booked?
+    state == 'booked'
+  end
+
+  def ready_to_book?
+    state == 'ready_to_book'
+  end
+
   def waiting_for_review?
     state == 'Lesson complete, waiting for review.'
   end
@@ -332,6 +360,19 @@ class Lesson < ActiveRecord::Base
       return 'N/A'
     end
   end
+
+  def self.open_lesson_requests
+    Lesson.where(state:'booked') 
+  end  
+
+  def self.open_booked_revenue
+    lessons = Lesson.open_lesson_requests
+    total = 0
+    lessons.each do |lesson|
+      total += lesson.price.to_i
+    end
+    return total
+  end  
 
   def price
     puts "!!!begin calculating price"

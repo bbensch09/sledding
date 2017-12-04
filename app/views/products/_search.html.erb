@@ -1,6 +1,24 @@
 <div id="search-widget">
-    <%= form_tag(search_results_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Search by city, state or resort name", class:'navy-text form-control search-form' %>
-    <%= submit_tag "Search Locations", class:"btn btn-primary btn-lg page-scroll" %>
+    <%= form_tag(filtered_lesson_reservations_path, :method => "get", id: "search-form") do %>
+<div class="row">
+    <div class="col-md-3">
+    	<%= text_field_tag :email, params[:email], placeholder: "Search by email", class:'navy-text form-control' %>
+	</div>
+    <div class="col-md-3">
+	    <%= text_field_tag :name, params[:name], placeholder: "Search by name", class:'navy-text form-control' %>
+	</div>
+    <div class="col-md-3">	
+   		<%= text_field_tag :date, params[:date], placeholder: 'Date', id: 'datepicker', class:'navy-text form-control', required: false %>   
+   	</div>
+    <div class="col-md-3">
+      <label for="rememberme">
+          <%= check_box_tag :gear, params[:gear], false  %> Includes Rental?
+      </label>
+   	</div>
+</div>
+<div class="row">
+    <%= submit_tag "Search", class:"btn btn-primary btn-lg page-scroll" %>
+   <a href="/lessons/admin_index" class="btn btn-lg btn-warning"> Clear Filters</a>
+</div>
     <% end %>
 </div>

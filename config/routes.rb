@@ -70,7 +70,7 @@ Rails.application.routes.draw do
   get 'search' => 'products#search'
   get 'tahoe-season-passes' => 'products#pass_search_results'
   get 'tahoe-season-passes-search-results' => 'products#pass_search_results', as: :pass_search_results
-  get 'search-results' => 'products#search_results', as: :search_results 
+  get 'search-results' => 'products#search_results', as: :search_results   
   get 'filtered-schedule-results' => 'lessons#filtered_schedule_results', as: :filtered_schedule_results 
 
   get   'lessons/sugarbowl'               => 'lessons#sugarbowl'
@@ -192,6 +192,7 @@ Rails.application.routes.draw do
   put 'lessons/:id/issue_refund'              => 'lessons#issue_refund', as: :issue_refund
   post 'lessons/:id/issue_full_refund'              => 'lessons#issue_full_refund', as: :issue_full_refund
   put 'lessons/:id/reissue_invoice'              => 'lessons#reissue_invoice', as: :reissue_invoice
+  get 'filtered-lesson-reservations' => 'lessons#filtered_lesson_reservations', as: :filtered_lesson_reservations 
 
   unless Rails.application.config.consider_all_requests_local
     # having created corresponding controller and action
