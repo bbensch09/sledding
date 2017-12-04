@@ -22,6 +22,7 @@
     <a href="#hideLessons" class="btn btn-default hidden" id="toggle-upcoming-lessons">Show (hide) upcoming Lessons</a>
     <a href="#hideLessons" class="btn btn-default hidden" id="toggle-completed-lessons">Show (hide) Past Lessons</a>
     <%= link_to 'Generate sections for all dates', generate_all_sections_path, method: :post, class: "btn btn-success" %>
+    <%= link_to 'View all lesson reservations', lessons_admin_index_path, method: :get, class: "btn btn-warning" %>
 </div>
 <% end %>
 

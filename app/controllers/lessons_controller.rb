@@ -164,6 +164,7 @@ class LessonsController < ApplicationController
 
   def reissue_invoice
     @lesson = Lesson.find(params[:id])
+    @lesson_time = @lesson.lesson_time    
     @lesson.state == "ready_to_book"
     @lesson.deposit_status = nil
     @lesson.save
@@ -172,7 +173,17 @@ class LessonsController < ApplicationController
 
   def issue_refund
     @lesson = Lesson.find(params[:id])
+    @lesson_time = @lesson.lesson_time    
+    session[:refund] = true
     render 'edit'
+  end
+
+  def issue_full_refund
+    @lesson = Lesson.find(params[:id])
+    @lesson.state = 'Canceled - full refund issued.'
+    @lesson.save 
+    session[:refund] = nil
+    redirect_to @lesson 
   end
 
   def confirm_reservation
@@ -210,7 +221,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
-    # @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
     end
