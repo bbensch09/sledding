@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h4>A Group Lesson Section is now SOLD OUT</h4>
+    <p>
+      The section below is now sold out: 
+    </p>
+    <ul>
+      <li>Sport: <%= @section.activity %>  </li>
+      <li>Date: <%= @section.date %>  </li>
+      <li>Time: <%= @section.slot %>  </li>
+    </ul>
+    <p>
+      To add an addtional section, visit         
+      <%= link_to 'Section Schedule', "#{ENV['DOMAIN']}/filtered-schedule-results?date=#{@section.date.to_s}", class: 'btn btn-default' %>
+    </p>
+  </body>
+</html>

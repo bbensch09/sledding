@@ -609,7 +609,7 @@ h2.how-it-works {
 }
 
 h2 {
-    font-size: 2.4em;
+    font-size: 2em;
     font-weight: 300;
     line-height: 42px;
     margin: 0 0 32px 0;
@@ -1162,6 +1162,13 @@ section.pricing-new-lesson{
 }
 .home-header{
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+.wide-container{
+  max-width: 1400px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 

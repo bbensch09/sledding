@@ -6,96 +6,34 @@
 <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
 <div class="admin-viewable">
  <div id="admin-testing" class="row vertical-padding container admin-viewable">
+  <h4>Setup test sections & lessons</h4>
     <%= link_to 'Fill first 50 lessons with sample students', seed_lessons_with_students_path, method: :post, class: "btn btn-success" %>
     <%= link_to 'Clear sample lessons', delete_all_lessons_path, method: :post, class: "btn btn-warning" %>
     <%= link_to 'Delete all sections & lessons', delete_all_sections_and_lessons_path, method: :post, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
-
+    <%= link_to 'Generate sections for all dates', generate_all_sections_path, method: :post, class: "btn btn-success" %>
 </div>
+<h4>
+</h4>
+<% end %>
 <div class="col-md-6">
-  <h3>Generate sections for a specific date</h3>
+  <h3>Generate new sections for a specific date</h3>
   <%= semantic_form_for(@new_date, url: generate_new_sections_path) do |f| %>
-       <%= f.input :date, as: :string, input_html: { id: 'datepicker' }, placeholder: 'Date', required: true, label: true %>    
-      <%= f.action :submit, :as => :input, :label => "Generate sections for this date" %>
+     <%= f.input :date, as: :string, input_html: { id: 'datepicker', class:'navy-text form-control search-form' }, placeholder: 'Date', required: true, label: false %>    
+      <%= f.action :submit, :as => :input, :button_html => {class:'btn btn-success'}, label:"CREATE SECTIONS" %>
   <% end %>
 </div>
-    <a href='lessons/admin_index' class='btn btn-default hidden'>View Full Lesson Details</a>
-    <a href="#hideLessons" class="btn btn-default hidden" id="toggle-upcoming-lessons">Show (hide) upcoming Lessons</a>
-    <a href="#hideLessons" class="btn btn-default hidden" id="toggle-completed-lessons">Show (hide) Past Lessons</a>
-    <%= link_to 'Generate sections for all dates', generate_all_sections_path, method: :post, class: "btn btn-success" %>
-    <%= link_to 'View all lesson reservations', lessons_admin_index_path, method: :get, class: "btn btn-warning" %>
 </div>
-<% end %>
+
 
 <h3 class="center">Filter Lesson Schedule for a Specific Date</h3>
   <div id="search-widget" class="center">
     <%= form_tag(filtered_schedule_results_path, :method => "get") do %>
     <%= text_field_tag :date, params[:date], placeholder: "Select a date", id:"datepicker2", class:'navy-text form-control search-form' %>
-    <%= submit_tag "Filter Lessons", class:"btn btn-primary btn-lg page-scroll" %>
+    <%= submit_tag "Filter by Date", class:"btn btn-primary btn-lg page-scroll" %>
+    <%= link_to 'Search by customer', lessons_admin_index_path, method: :get, class: "btn btn-primary btn-lg" %>
     <% end %>
 </div>
 
-
-<!-- SECTION 1 - PREVIOUS LESSONS -->
-<div id="completed-lessons" class="hidden">
-<h1>Previous Lessons</h1>
-
-<table class="instructors-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Instructor</th>
-      <th>Type</th>
-      <!-- <th>Deposit?</th> -->
-      <th>Student</th>
-      <!-- <th>Mountain</th> -->
-      <th>Date</th>
-      <th>Status</th>
-    <% if current_user.user_type == "Granlibakken Employee" %>
-      <th>Price</th>
-      <th></th>
-      <% else %>
-      <th></th>
-      <th></th>
-    <% end %>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @lessons.each do |lesson| %>
-        <% if lesson.completed? %>
-          <tr>
-            <% if lesson.instructor %>
-            <td><%= image_tag(lesson.instructor.avatar.url(:thumb), alt:"avatar-img", class:"img-responsive img-thumbnail avatar-thumbnail") %></td>
-            <td><%= lesson.instructor.name %></td>
-            <% else %>
-            <td></td>
-            <td>TBD</td>
-            <% end %>
-            <td><%= link_to "#{lesson.lesson_time.slot}", lesson, class: "btn btn-default" %></td>
-            <!-- <td><%= lesson.deposit_status %></td> -->
-            <% if lesson.requester %>
-              <td class="lessons-table-cells lesson-student">Requester: <%= lesson.requester.email %></td>
-              <% else %>
-              <td class="lessons-table-cells lesson-student">Requester: <%= lesson.guest_email %></td>
-            <% end %>            <!-- <td><%= lesson.location.name %></td> -->
-            <td><%= lesson.lesson_time.date.strftime("%m/%d") %></td>
-            <td><%= lesson.state %></td>
-            <% if current_user.user_type == "Granlibakken Employee" %>
-            <td><%= number_to_currency(lesson.visible_lesson_cost) %></td>
-            <td><%= link_to "Send Instructor SMS", send_reminder_sms_to_instructor_path(lesson), class: "btn btn-default" %></td>
-            <% else %>
-              <td></td>
-              <td></td>
-            <% end %>
-          </tr>
-        <%end%>
-    <% end %>
-  </tbody>
-</table>
-</div>
-<hr>
-
-<!-- SECTION 2 - ACTIVE LESSONS -->
 
 <div id="upcoming-lessons" class="">
 

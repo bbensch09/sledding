@@ -14,8 +14,9 @@ class LessonsController < ApplicationController
   end
 
   def admin_index
-    @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
-    @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons = Lesson.all
+    # @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? }
+    # @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
   end
 
   def schedule
@@ -28,31 +29,46 @@ class LessonsController < ApplicationController
     redirect_to '/sections'
   end
 
-  def filtered_schedule_results
-    @all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
-    if params[:date] != ""
-      # @search_params = {date: params[:date]}
-      # puts "!!!!! the search_params are: #{@search_params}"
-      @lessons = Lesson.all.select{|lesson| lesson.date == params[:date]}
-      @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
-      @days = @all_days.select{|a| a.date.to_s == params[:date]}
-    else
-      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
-      @days = all_days.keep_if{|a| a.date >= Date.today}
+  def filtered_lesson_reservations
+    search_params = {email: params[:search], name: params[:name], date: params[:date], gear:params[:gear]}
+    puts "!!!!! the search_params are: #{search_params}"
+    @lessons = Lesson.all
+    if params[:date] != ""      
+        puts "!!!filter by date.  param is #{params['date']}"
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}  
+        puts "found #{@lessons.count} mactching lessons"
     end
-    @new_date = Section.new
-    render 'index'
+    if params[:name] != ""
+        puts "!!!filter by name.  param is #{params['name']}"
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.name == params[:name]}  
+        puts "found #{@lessons.count} mactching lessons"
+    end 
+    if params['email'] != ""
+        puts "!!!filter by email. email param is #{params['email']}"
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.email == params[:email]}  
+        # @lessons = Lesson.all.select{|lesson| lesson.email == 'brian@snowschoolers.com'}  
+        puts "found #{@lessons.count} mactching lessons"
+    end  
+    if params['gear'] == "on"
+        puts "!!!filtering for resrations with rentals."
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.gear == true}  
+        puts "found #{@lessons.count} mactching lessons"
+    end  
+    puts "!!!! @lessons.count is #{@lessons.count}"
+    render 'admin_index'
   end
 
-  # def lesson_schedule_results
-  #     @date = Date.today.strftime("%m/%d/%Y")
-  #     @age_type = params[:age_type] ? params[:age_type] : ["Kids","Adults","Any"]
-  #     @lessons = Lesson.all.to_a.keep_if{ |lesson| lesson.lesson_time.date.to_date.strftime("%m/%d/%Y") >= @date }
-  #     @ski_sections = Section.all.to_a.keep_if {|section| section.date.strftime("%m/%d/%Y") >= @date && section.sport_id == 1}
-  #     @sb_sections = Section.all.to_a.keep_if {|section| section.date.strftime("%m/%d/%Y") >= @date && section.sport_id == 2}
-  #     @lessons.sort! { |a,b| a.id <=> b.id }
-  #   render 'schedule'
-  # end
+  def filtered_schedule_results
+      date = params[:date]
+      puts "!!! filtere date: #{date}"
+      all_days = Section.select(:date).distinct
+      @days = all_days.to_a.keep_if{|a| a.date.to_s == params[:date]}
+      puts "!!!filter by date.  param is #{params['date']}"
+      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}       
+        puts "found #{@lessons.count} mactching lessons"
+      @new_date = Section.new
+      render 'index'
+  end
 
   def index
       all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
@@ -133,12 +149,12 @@ class LessonsController < ApplicationController
 
   def new_specific_slot
     @lesson = Lesson.new
-    @activity = session[:activity]
-    @slot = session[:slot]
-    @date = session[:date]
-    @lesson_time = @lesson.lesson_time
-    GoogleAnalyticsApi.new.event('lesson-requests', 'load-lessons-new')
-    render 'new'
+    @lesson.activity = session[:activity]
+    @lesson.requested_location = 24
+    @lesson.lesson_time = LessonTime.find_or_create_by(date:session[:date],slot:session[:slot])
+    @lesson.save
+    GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    render 'complete'
   end
 
   def create
@@ -458,6 +474,7 @@ class LessonsController < ApplicationController
       @lesson.state = 'booked'
     elsif @lesson.deposit_status == 'confirmed' && @lesson.is_gift_voucher == true
       flash.now[:notice] = "Lesson voucher information has been updated."
+      @lesson.state = 'booked_voucher'
     end
     @lesson.save
     @state = params[:lesson][:state]

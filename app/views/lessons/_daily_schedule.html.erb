@@ -1,6 +1,7 @@
 <div class="slot-roster">
 <div class="slot-instructor">
-  <h4>Slot: <%= section.slot %> <em> (spots remaining: <%= section.remaining_capacity %>)</em></h4>  
+  <h4>Slot: <%= section.slot %> on <%= section.date.strftime("%b #{section.date.day.ordinalize}") %></h4>  
+
   Instructor: 
    <% if section.instructor %>
    <%= section.instructor.name %>
@@ -9,6 +10,7 @@
    <% else %>
    TBD
    <%= link_to 'Assign', edit_section_path(section), class: 'btn btn-sm btn-success' %>
+   <em> (spots remaining: <%= section.remaining_capacity %>)</em>
    <% end %>
 </div>
 <!-- <h3><%= section.id %></h3> -->
@@ -60,5 +62,6 @@
 
 </table>
       <%= link_to 'Create new section for this date & time', duplicate_ski_section_path(section.id), method: :post, class: "btn btn-default" %>
+      <%= link_to 'Remove this section', remove_section_path(section), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
   <!-- <hr class="hr-full"> -->
 </div>

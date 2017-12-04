@@ -23,8 +23,8 @@ class Product < ActiveRecord::Base
   end
 
   def still_open?
-        # <% if product.location.closing_date < Date.today && product.product_type != "season_pass" %>
-      self.location.closing_date < Date.today ? 0 : 1
+      return true
+      # self.location.closing_date < Date.today ? 0 : 1
   end
 
   def self.import(file)

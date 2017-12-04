@@ -65,6 +65,11 @@ class SectionsController < ApplicationController
     redirect_to '/lessons'
   end
 
+  def delete_all_lessons
+    Lesson.delete_all
+    redirect_to '/lessons'
+  end
+
   def generate_new_sections
     day = params[:section][:date]
     puts "!!!!!!! new section params are: #{params[:section][:date]}"
@@ -114,6 +119,12 @@ class SectionsController < ApplicationController
         format.json { render json: @section.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def remove
+    section = Section.find(params[:id])
+    section.destroy
+    redirect_to '/lessons'
   end
 
   # POST /sections

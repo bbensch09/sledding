@@ -26,7 +26,7 @@ class Lesson < ActiveRecord::Base
   before_save :add_lesson_to_section
   before_save :confirm_valid_email, if: :just_created?
   after_save :confirm_section_valid
-  after_save :send_lesson_request_to_instructors
+  after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
 
@@ -35,6 +35,34 @@ class Lesson < ActiveRecord::Base
       return "Unassigned"
     else
       return "Assigned"
+    end
+  end
+
+  def check_if_sections_are_full
+    section = Lesson.last.section
+    unless section.has_capacity?
+      puts "!!!section is now sold out"
+      LessonMailer.notify_admin_section_sold_out(section).deliver
+    end
+  end
+
+  def email
+    if self.requester
+      return self.requester.email
+    elsif self.guest_email
+      return self.guest_email
+    else
+      "N/A"
+    end
+  end
+
+  def name
+    if self.requester
+      return self.requester.name
+    elsif self.guest_email
+      return self.guest_email
+    else
+      "N/A"
     end
   end
 
@@ -250,6 +278,14 @@ class Lesson < ActiveRecord::Base
     state == 'finalizing payment & reviews'
   end
 
+  def booked?
+    state == 'booked'
+  end
+
+  def ready_to_book?
+    state == 'ready_to_book'
+  end
+
   def waiting_for_review?
     state == 'Lesson complete, waiting for review.'
   end
@@ -333,6 +369,19 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def self.open_lesson_requests
+    Lesson.where(state:'booked') 
+  end  
+
+  def self.open_booked_revenue
+    lessons = Lesson.open_lesson_requests
+    total = 0
+    lessons.each do |lesson|
+      total += lesson.price.to_i
+    end
+    return total
+  end  
+
   def price
     puts "!!!begin calculating price"
     if self.lesson_price
@@ -348,7 +397,7 @@ class Lesson < ActiveRecord::Base
       puts "!!!product found, its price is #{product.price}"
     end
     if product.nil?
-      return "Error - lesson price not found" #99 #default lesson price - temporary
+      return "Select date & package" #99 #default lesson price - temporary
     else
       price = product.price * [1,self.students.count].max
     end
