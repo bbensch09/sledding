@@ -260,14 +260,11 @@ class LessonsController < ApplicationController
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
-    # if @lesson.lesson_cost.nil?
-    #   @lesson.lesson_cost = @lesson.price
-    # end
     if @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
-      # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
+      LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
       end
       # send_lesson_update_notice_to_instructor
       puts "!!!! Lesson update saved; update notices sent"
