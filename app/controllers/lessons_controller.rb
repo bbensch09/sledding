@@ -225,7 +225,7 @@ class LessonsController < ApplicationController
         puts "!!!!!About to save state & deposit status after processing lessons#update"
         @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'deposit-submitted', params[:ga_client_id])
-      LessonMailer.send_lesson_request_notification(@lesson).deliver
+      # LessonMailer.send_lesson_request_notification(@lesson).deliver
       flash[:notice] = 'Thank you, your lesson request was successful. You will receive an email notification when your instructor confirmed your request. If it has been more than an hour since your request, please email support@snowschoolers.com.'
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Lesson deposit successfully charged"
@@ -260,16 +260,13 @@ class LessonsController < ApplicationController
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
-    # if @lesson.lesson_cost.nil?
-    #   @lesson.lesson_cost = @lesson.price
-    # end
     if @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
       LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
       end
-      send_lesson_update_notice_to_instructor
+      # send_lesson_update_notice_to_instructor
       puts "!!!! Lesson update saved; update notices sent"
     else
       determine_update_state
@@ -313,7 +310,7 @@ class LessonsController < ApplicationController
       instructor_id: current_user.instructor.id,
       action: "Accept"
       })
-    LessonMailer.send_lesson_confirmation(@lesson).deliver
+    # LessonMailer.send_lesson_confirmation(@lesson).deliver
     @lesson.send_sms_to_requester
     redirect_to @lesson
     else
@@ -370,7 +367,7 @@ class LessonsController < ApplicationController
       @lesson.update(lesson_params.merge(state: 'finalizing payment & reviews'))
       @lesson.state = @lesson.valid? ? 'finalizing payment & reviews' : 'confirmed'
       @lesson.send_sms_to_requester
-      LessonMailer.send_payment_email_to_requester(@lesson).deliver
+      # LessonMailer.send_payment_email_to_requester(@lesson).deliver
     end
     respond_with @lesson, action: :show
   end
@@ -437,14 +434,14 @@ class LessonsController < ApplicationController
 
   def send_cancellation_email_to_instructor
     if @lesson.instructor.present?
-      LessonMailer.send_cancellation_email_to_instructor(@lesson).deliver
+      # LessonMailer.send_cancellation_email_to_instructor(@lesson).deliver
     end
   end
 
   def send_instructor_cancellation_emails
-    LessonMailer.send_lesson_request_to_new_instructors(@lesson, @lesson.instructor).deliver if @lesson.available_instructors?
-    LessonMailer.inform_requester_of_instructor_cancellation(@lesson, @lesson.available_instructors?).deliver
-    LessonMailer.send_cancellation_confirmation(@lesson).deliver
+    # LessonMailer.send_lesson_request_to_new_instructors(@lesson, @lesson.instructor).deliver if @lesson.available_instructors?
+    # LessonMailer.inform_requester_of_instructor_cancellation(@lesson, @lesson.available_instructors?).deliver
+    # LessonMailer.send_cancellation_confirmation(@lesson).deliver
   end
 
   def send_lesson_update_notice_to_instructor
@@ -453,7 +450,7 @@ class LessonsController < ApplicationController
       changed_attributes = @lesson.get_changed_attributes(@original_lesson)
       return unless changed_attributes.any?
       return unless current_user.email != "brian@snowschoolers.com"
-      LessonMailer.send_lesson_update_notice_to_instructor(@original_lesson, @lesson, changed_attributes).deliver
+      # LessonMailer.send_lesson_update_notice_to_instructor(@original_lesson, @lesson, changed_attributes).deliver
     end
   end
 

@@ -714,7 +714,7 @@ class Lesson < ActiveRecord::Base
           :body => body
       })
       # send_reminder_sms
-      LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
+      # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
 
   def send_sms_to_instructor
@@ -751,7 +751,7 @@ class Lesson < ActiveRecord::Base
       send_reminder_sms
       # puts "!!!!Body: #{body}"
       puts "!!!!! - reminder SMS has been scheduled"
-      LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
+      # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
 
   def send_reminder_sms
@@ -771,7 +771,7 @@ class Lesson < ActiveRecord::Base
       })
       puts "!!!!! - reminder SMS has been sent"
       send_sms_to_all_other_instructors
-      LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
+      # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
   handle_asynchronously :send_reminder_sms, :run_at => Proc.new {300.seconds.from_now }
 
@@ -800,7 +800,7 @@ class Lesson < ActiveRecord::Base
             :body => body
         })
     end
-    LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
+    # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
   # handle_asynchronously :send_sms_to_all_other_instructors, :run_at => Proc.new {5.seconds.from_now }
 
@@ -818,7 +818,7 @@ class Lesson < ActiveRecord::Base
           :from => "#{snow_schoolers_twilio_number}",
           :body => body
       })
-      LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
+      # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
 
   def send_sms_to_requester
@@ -846,7 +846,7 @@ class Lesson < ActiveRecord::Base
           LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
           else
             puts "!!!! error - could not send SMS via Twilio"
-            LessonMailer.send_admin_notify_invalid_phone_number(self).deliver
+            # LessonMailer.send_admin_notify_invalid_phone_number(self).deliver
         end
   end
 
@@ -857,7 +857,7 @@ class Lesson < ActiveRecord::Base
           :from => ENV['TWILIO_NUMBER'],
           :body => "ALERT - no instructors are available to teach #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}. The last person to decline was #{Instructor.find(LessonAction.last.instructor_id).username}."
       })
-      LessonMailer.notify_admin_sms_logs(self,body).deliver
+      # LessonMailer.notify_admin_sms_logs(self,body).deliver
   end
 
   def send_sms_to_admin_1to1_request_failed
@@ -867,7 +867,7 @@ class Lesson < ActiveRecord::Base
           :from => ENV['TWILIO_NUMBER'],
           :body => "ALERT - A private 1:1 request was made and declined. #{self.requester.name} had requested #{self.instructor.name} but they are unavailable at #{self.lesson_time.slot} on #{self.lesson_time.date} at #{self.location.name}."
       })
-      LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
+      # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
 
   private
@@ -893,7 +893,7 @@ class Lesson < ActiveRecord::Base
     #currently testing just to see whether lesson is active and deposit has gone through successfully.
     #need to replace with logic that tests whether lesson is newly complete, vs. already booked, etc.
     if self.active? && self.confirmable? && self.deposit_status == 'confirmed' && self.state != "pending instructor" #&& self.deposit_status == 'verified'
-      LessonMailer.send_lesson_request_to_instructors(self).deliver
+      # LessonMailer.send_lesson_request_to_instructors(self).deliver
       self.send_sms_to_instructor
     elsif self.state != "Lesson Complete" && self.available_instructors.any? == false
       self.send_sms_to_admin

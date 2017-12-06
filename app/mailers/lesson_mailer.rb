@@ -1,5 +1,5 @@
 class LessonMailer < ActionMailer::Base
-  default from: 'Granlibakken.com <info@snowschoolers.com>' #, cc: 'Brian Bensch <brian@snowschoolers.com>, Chris Parson <chrisparson@granlibakken.com>'
+  default from: 'Granlibakken.com <info@snowschoolers.com>', cc: 'Brian Bensch <brian+granlibakken@snowschoolers.com>, Chris Parson <chrisparson@granlibakken.com>'
 
   def track_apply_visits(email="Unknown user")
       @email = email
@@ -25,7 +25,7 @@ class LessonMailer < ActionMailer::Base
   def notify_admin_lesson_full_form_updated(lesson,email)
       @lesson = lesson
       @user_email = email
-      mail(to: 'brian@snowschoolers.com', subject: "Lesson Request complete, ready for deposit - #{@lesson.date.strftime("%b %-d")}.")
+      mail(to: 'brian@snowschoolers.com', cc: 'brian+granlibakken2@snowschoolers.com', subject: "Lesson Request complete, ready for deposit - #{@lesson.date.strftime("%b %-d")}.")
   end
 
   def notify_admin_beta_user(beta_user)
