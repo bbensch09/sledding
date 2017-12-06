@@ -148,9 +148,13 @@ class LessonsController < ApplicationController
   end
 
   def new_specific_slot
+    puts "!!!!session data includes: #{session[:activity]}"
     @lesson = Lesson.new
     @lesson.activity = session[:activity]
     @lesson.requested_location = 24
+    @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]
+    @slot = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?) ? nil : session[:lesson]["lesson_time"]["slot"]
+    @date = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?)  ? nil : session[:lesson]["lesson_time"]["date"]    
     @lesson.lesson_time = LessonTime.find_or_create_by(date:session[:date],slot:session[:slot])
     @lesson.save
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')

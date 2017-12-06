@@ -120,13 +120,13 @@
             <div class='row'>
               <div class="col-md-4">
                 <label>Date</label>
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker' }, placeholder: 'Pick a date', required: true, label: false %>
+                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date }, placeholder: 'Pick a date', required: true, label: false %>
                 <span class="search-area-icon"></span>
               </div>
 
               <div class="col-md-4">
                 <label>Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: LESSON_SLOTS, include_blank: 'Time', :input_html => { :class => 'slot'}, label: false %>
+                <%= lt_f.input :slot, as: :select, collection: LESSON_SLOTS, selected: @slot, include_blank: 'Time', :input_html => { :class => 'slot'}, label: false %>
               </div>
           <% end %>
             <div class="col-md-4">
