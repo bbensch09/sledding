@@ -726,7 +726,7 @@ class Lesson < ActiveRecord::Base
       recipient = self.available_instructors.any? ? self.available_instructors.first.phone_number : "4083152900"
       case self.state
         when 'new'
-          body = "A lesson booking was begun and not finished. Please contact an admin or email info@snowschoolers.com if you intended to complete the lesson booking."
+          body = "A lesson booking was begun and not finished. Please contact an admin or email frontdesk@granlibakken.com if you intended to complete the lesson booking."
         when 'booked'
           body = "#{self.available_instructors.first.first_name}, You have a new lesson request from #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. They are a level #{self.level.to_s} #{self.athlete}. Are you available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'seeking replacement instructor'
@@ -873,7 +873,7 @@ class Lesson < ActiveRecord::Base
   private
 
   def instructors_must_be_available
-    errors.add(:instructor, " unfortunately not available at that time. Please email info@snowschoolers.com to be notified if we have any instructors that become available.") unless available_instructors.any?
+    errors.add(:instructor, " unfortunately not available at that time. Please email frontdesk@granlibakken.com to be notified if we have any instructors that become available.") unless available_instructors.any?
   end
 
   def requester_must_not_be_instructor

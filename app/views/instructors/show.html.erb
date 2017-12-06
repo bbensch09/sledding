@@ -2,7 +2,7 @@
   <% if current_user && current_user.instructor %>
     <div class="row col-md-12">
       <h3 class="text-warning">Instructor status: <%= @instructor.status %> </h3>
-      <p class="text-warning">Questions? Email info@snowschoolers.com.</p>
+      <p class="text-warning">Questions? Email frontdesk@granlibakken.com.</p>
       <%= link_to 'Edit Your Profile', edit_instructor_path(@instructor), class: 'btn btn-default' %>
     </div>
   <% end %>
