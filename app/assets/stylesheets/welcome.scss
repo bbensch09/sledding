@@ -21,6 +21,8 @@ html, body {
 */
 body {
   font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+  overflow: hidden;
+  width: 100%;
 }
 hr {
   border-width: 3px;
@@ -1182,6 +1184,10 @@ section.pricing-new-lesson{
 @media (max-width: 768px) {
   .hidden-unless-desktop{
     display: none;
+  }
+
+  .homepage-lesson-container{
+    min-height: 840px;
   }
   
   .iframe-youtube{
