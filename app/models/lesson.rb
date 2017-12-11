@@ -393,8 +393,10 @@ class Lesson < ActiveRecord::Base
     elsif self.product_name
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
       puts "!!!!lookup calendar period status, it is: #{calendar_period}"
-      product = Product.where(location_id:24,length:"1.00",calendar_period:calendar_period,name:self.product_name).first
-      puts "!!!product found, its price is #{product.price}"
+      product = Product.where(location_id:24,calendar_period:calendar_period,name:self.product_name).first
+      unless product.nil?
+        puts "!!!product found, its price is #{product.price}"
+      end
     end
     if product.nil?
       return "Select date & package" #99 #default lesson price - temporary
