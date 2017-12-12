@@ -365,7 +365,7 @@ class Lesson < ActiveRecord::Base
     elsif NON_HOLIDAYS.include?(date)
       return 'Regular'
     else
-      return 'N/A'
+      return 'Regular'
     end
   end
 
@@ -871,6 +871,18 @@ class Lesson < ActiveRecord::Base
       })
       # LessonMailer.notify_admin_sms_logs(self,recipient,body).deliver
   end
+
+  def self.to_csv(options = {})
+    desired_columns = %w{
+      id gear date slot requester_name phone_number state price referral_source
+    }
+    CSV.generate(headers: true) do |csv|
+      csv << desired_columns
+      all.each do |lesson|
+        csv << lesson.attributes.values_at(*desired_columns)
+      end
+    end
+  end  
 
   private
 

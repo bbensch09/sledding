@@ -136,10 +136,10 @@ class LessonMailer < ActionMailer::Base
 
   def send_lesson_booking_notification(lesson)
     @lesson = lesson
-    if @lesson.guest_email.nil? || @lesson.guest_email == ""
+    if @lesson.requester && lesson.requester.email
       mail(to: @lesson.requester.email, cc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
-    else
-      mail(to: @lesson.guest_email, cc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+    elsif @lesson.guest_email
+      mail(to: @lesson.guest_email, bcc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
     end
   end
 
