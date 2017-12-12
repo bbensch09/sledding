@@ -193,6 +193,8 @@ class LessonsController < ApplicationController
   def edit
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time
+    @slot = @lesson.lesson_time.slot
+    @date = @lesson.lesson_time.date
     @state = @lesson.instructor ? 'pending instructor' : @lesson.state
   end
 
