@@ -63,7 +63,7 @@
             <% end %>
             <td class="lessons-table-cells"><%= lesson.phone_number %></td>
             <td class="lessons-table-cells"><%= lesson.state %></td>
-            <td class="lessons-table-cells"><%= lesson.price %></td>
+            <td class="lessons-table-cells"><%= number_to_currency(lesson.price) %></td>
             <td class="lessons-table-cells"><%= lesson.students.count %></td>
             <td class="lessons-table-cells"><%= lesson.referral_source   %></td>
             <td><%= link_to 'Delete', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %></td>
