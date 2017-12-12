@@ -16,6 +16,7 @@
     <li>Total Revenue Completed: <%= number_to_currency(Location.find(24).lifetime_revenue) %></li>
   </ul>
    <%= link_to "Export CSV", lessons_admin_index_path(format: "csv"), class: 'btn btn-success' %>
+   <%= link_to "View all lessons of any state", lessons_admin_index_all_path, class: 'btn btn-warning' %>
 </div>
 <% end %>
 
@@ -42,6 +43,7 @@
       <th class="lessons-table-cells">Price</th>
       <th class="lessons-table-cells">#Students</th>
       <th class="lessons-table-cells">Referral Source</th>
+      <th class="lessons-table-cells"></th>
     </tr>
   </thead>
 
@@ -64,6 +66,7 @@
             <td class="lessons-table-cells"><%= lesson.price %></td>
             <td class="lessons-table-cells"><%= lesson.students.count %></td>
             <td class="lessons-table-cells"><%= lesson.referral_source   %></td>
+            <td><%= link_to 'Delete', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %></td>
           </tr>
     <% end %>
   </tbody>

@@ -21,8 +21,17 @@ class LessonsController < ApplicationController
           format.html {render 'admin_index'}
           format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
     end
-
   end
+
+  def admin_index_all
+    @lessons_to_export = Lesson.where(state:"booked")
+    @lessons = Lesson.all.to_a
+    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    respond_to do |format|
+          format.html {render 'admin_index'}
+          format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
+    end
+  end  
 
   def schedule
       # @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
