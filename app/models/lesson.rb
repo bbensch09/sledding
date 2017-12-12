@@ -399,7 +399,7 @@ class Lesson < ActiveRecord::Base
       end
     end
     if product.nil?
-      return "Select date & package" #99 #default lesson price - temporary
+      return "First select package type" #99 #default lesson price - temporary
     else
       price = product.price * [1,self.students.count].max
     end

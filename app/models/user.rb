@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_one :contestant
   belongs_to :location
   has_many :lesson_times, through: :lessons
-  after_create :send_admin_notification
+  # after_create :send_admin_notification
   after_create :set_email_as_name
 
   def self.to_csv(options = {})
@@ -56,7 +56,6 @@ class User < ActiveRecord::Base
   def send_admin_notification
       @user = User.last
       LessonMailer.new_user_signed_up(@user).deliver
-      puts "an admin notification has been sent."
   end
 
   def self.confirm_all_users
