@@ -14,9 +14,14 @@ class LessonsController < ApplicationController
   end
 
   def admin_index
-    @lessons = Lesson.all
-    # @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? }
-    # @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons_to_export = Lesson.where(state:"booked")
+    @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? }
+    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    respond_to do |format|
+          format.html {render 'admin_index'}
+          format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
+    end
+
   end
 
   def schedule
@@ -229,8 +234,8 @@ class LessonsController < ApplicationController
         puts "!!!!!About to save state & deposit status after processing lessons#update"
         @lesson.save
       GoogleAnalyticsApi.new.event('lesson-requests', 'deposit-submitted', params[:ga_client_id])
-      # LessonMailer.send_lesson_request_notification(@lesson).deliver
-      flash[:notice] = 'Thank you, your lesson request was successful. You will receive an email notification when your instructor confirmed your request. If it has been more than an hour since your request, please email support@snowschoolers.com.'
+      LessonMailer.send_lesson_booking_notification(@lesson).deliver
+      flash[:notice] = 'Thank you, your lesson request was successful. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Lesson deposit successfully charged"
     end
@@ -270,13 +275,12 @@ class LessonsController < ApplicationController
       if @lesson.state == "ready_to_book"
       LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
       end
-      # send_lesson_update_notice_to_instructor
-      puts "!!!! Lesson update saved; update notices sent"
+      puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
     else
       determine_update_state
       puts "!!!!!Lesson NOT saved, update notices determined by 'determine update state' method...?"
     end
-    respond_with @lesson
+    redirect_to @lesson
   end
 
   def show
@@ -284,8 +288,10 @@ class LessonsController < ApplicationController
     if @lesson.state == "ready_to_book"
       GoogleAnalyticsApi.new.event('lesson-requests', 'ready-for-deposit')
     end
-    if @lesson.date <= Date.today && @lesson.review.nil?
+    if @lesson.date <= Date.today && @lesson.review.nil? && @lesson.deposit_status == 'confirmed'
       @lesson.state = 'Lesson complete, waiting for review.'
+      @lesson.save
+      puts "!!! detected that previously booked lesson should now be complete, now ready for review"
     end
   end
 

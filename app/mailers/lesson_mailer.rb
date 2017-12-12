@@ -1,5 +1,5 @@
 class LessonMailer < ActionMailer::Base
-  default from: 'Granlibakken.com <info@snowschoolers.com>', cc: 'Brian Bensch <brian+granlibakken@snowschoolers.com>, Chris Parson <chrisparson@granlibakken.com>'
+  default from: 'Granlibakken.com <info@snowschoolers.com>', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>"
 
   def track_apply_visits(email="Unknown user")
       @email = email
@@ -25,7 +25,7 @@ class LessonMailer < ActionMailer::Base
   def notify_admin_lesson_full_form_updated(lesson,email)
       @lesson = lesson
       @user_email = email
-      mail(to: 'brian@snowschoolers.com', cc: 'brian+granlibakken2@snowschoolers.com', subject: "Lesson Request complete, ready for deposit - #{@lesson.date.strftime("%b %-d")}.")
+      mail(to: 'brian@snowschoolers.com', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Lesson Request complete, ready for deposit - #{@lesson.date.strftime("%b %-d")}.")
   end
 
   def notify_admin_beta_user(beta_user)
@@ -36,74 +36,6 @@ class LessonMailer < ActionMailer::Base
   def notify_sumo_success(email="Unknown Sumo User")
       @email = email
       mail(to: 'brian@snowschoolers.com', subject: "Sumo Success - #{@email} has subscribed.")
-  end
-
-  def notify_comparison_shopping_referral(product, current_user, unique_id)
-      @product = product
-      @current_user = current_user
-      @unique_id = unique_id
-      mail(to: 'brian@snowschoolers.com', subject: "tracked referral - #{@product.name} @ #{@product.location.name}")
-  end
-
-  def notify_homewood_pass_referral(current_user,unique_id)
-      @current_user = current_user
-      @unique_id = unique_id
-      mail(to: 'brian@snowschoolers.com', subject: "homewood season pass tracked referral")
-  end
-
-  def notify_liftopia_referral
-      mail(to: 'brian@snowschoolers.com', subject: "liftopia referral click-thru")
-  end
-
-  def notify_mountain_collective_referral
-      mail(to: 'brian@snowschoolers.com', subject: "Mountain Collective referral click-thru")
-  end
-
-  def notify_skibutlers_referral
-      mail(to: 'brian@snowschoolers.com', subject: "Ski Butlers referral click-thru")
-  end
-  
-  def notify_sportsbasement_referral
-      mail(to: 'brian@snowschoolers.com', subject: "Sports Basement referral click-thru")
-  end
-
-  def notify_tahoedaves_referral
-      mail(to: 'brian@snowschoolers.com', subject: "Tahoe Daves's referral click-thru")
-  end
-
-  def notify_resort_referral(resort,user)
-      @resort = resort
-      @user = user
-      mail(to: 'brian@snowschoolers.com', subject: "#{@user} has clicked thru to #{@resort}'s website")
-  end
-
-  def notify_homewood_learn_to_ski_referral
-      mail(to: 'brian@snowschoolers.com', subject: "Homewood group lesson LTS referral click-thru")
-  end
-
-  def notify_jackson_promo_user(beta_user)
-      @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "Jackson Hole interested user - #{@beta_user.email}.")
-  end
-
-  def notify_powder_promo(beta_user)
-      @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "Powder Lesson interested user - #{@beta_user.email}.")
-  end
-
-  def notify_package_promo(beta_user)
-      @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "Learn to Ski Packages request - #{@beta_user.email}.")
-  end
-
-  def notify_march_madness_signup(beta_user)
-      @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "March Madness signup - #{@beta_user.email}.")
-  end
-
-  def notify_team_offsite(beta_user)
-      @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "Team Offsite signup - #{@beta_user.email}.")
   end
 
   def notify_beginner_concierge(beta_user)
@@ -202,12 +134,12 @@ class LessonMailer < ActionMailer::Base
     end
   end
 
-  def send_lesson_request_notification(lesson)
+  def send_lesson_booking_notification(lesson)
     @lesson = lesson
-    if @lesson.guest_email.nil? || @lesson.guest_email == ""
-      mail(to: @lesson.requester.email, cc:'notify@snowschoolers.com', subject: "Thanks for reserving your SnowSchoolers Lesson for #{@lesson.date.strftime("%b %-d")}")
-    else
-      mail(to: @lesson.guest_email, cc:'notify@snowschoolers.com', subject: "Thanks for reserving your SnowSchoolers Lesson for #{@lesson.date.strftime("%b %-d")}")
+    if @lesson.requester && lesson.requester.email
+      mail(to: @lesson.requester.email, cc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+    elsif @lesson.guest_email
+      mail(to: @lesson.guest_email, bcc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
     end
   end
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <% if @lesson.requester_name %>
+      <p>Hello <%= @lesson.requester_name.split(" ").first %>,</p>
+      <% else %>
+      <p>Hello,</p>
+    <% end %>
+
+    <p>
+      Thank you for confirming your group lesson reservation at the Granlibakken Ski Hill!
+    </p>
+
+    <h4>What happens next?</h4>
+    <ul>
+      <li>Your lesson will begin promptly at the start time you've selected.</li>
+      <li>If you selected a lesson package including rentals, please plan to arrive at the ski hill at least 45 minutes prior to your lesson so that you can get outfitted with your equipment. When you arrive, please tell one of our staff your name and that you booked your lesson online, and they'll be able to check you in.</li>
+      <li>If you did not select the group lesson package, you should still arrive at least 15 minutes prior to the start of your lesson to afford enough time to find parking and put on your boots and gear.</li>
+    </ul>
+
+    <h4>Meeting Location</h4>
+    <p>
+      Once you are ready with your gear, please plan to meet your instructor in front of the two big trees closest to the beginner rope tow, as depicted below. The ski hill is tough to miss, but if you want the exact address for GPS, it is located at <a href="https://www.google.com/maps/place/Granlibakken+Ski+%26+Sledding+Hill/@39.1561613,-120.1565678,17z/data=!4m13!1m7!3m6!1s0x80997d8619f5ff29:0x815523715ab4e748!2s725+Granlibakken+Rd,+Tahoe+City,+CA+96145!3b1!8m2!3d39.1561613!4d-120.1543791!3m4!1s0x80997d88a3630ec7:0x30c3373b77f6c7b4!8m2!3d39.1540162!4d-120.1547892" target="_blank" class="contact-link" >725 Granlibakken Rd, Ski Hill, Tahoe City, CA 96145</a>. 
+    </p>
+    <img src="https://s3.amazonaws.com/snowschoolers/ski-hut-meeting-location.jpg" alt="meeting-spot" height="400" width="700" />
+    
+    <p>If you have any questions about where to find rental gear or winter clothing, or are looking for last minute accommodations, please feel free to reach out to us at <a href="mailto:frontdesk@granlibakken.com">frontdesk@granlibakken.com.</p>
+
+    <h4>Lesson Details</h4>
+    <ul>
+      <li>Students: <%= @lesson.students.map(&:name).join(', ') %></li>
+      <li>Date: <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %></li>
+      <li>Slot: <%= @lesson.slot %></li>
+      <li>Location: <%= @lesson.location.name %></li>
+      <li>Objectives: <%= @lesson.objectives %></li>
+    </ul>
+    <p>
+      If you need to make any changes to your lesson reservation, please visit: <%= lesson_url(@lesson) %>
+    </p>
+
+    <p>If you have any questions or if there is anything we can do to help you prepare for your upcoming lesson, please don't be afraid to reach out.</p>
+    <p>
+      - The Granlibakken Team <br>      
+    </p>
+  </body>
+</html>
