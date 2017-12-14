@@ -183,6 +183,8 @@ class LessonsController < ApplicationController
   def complete
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time
+    @date = @lesson_time.date
+    @slot = @lesson_time.slot
     @product_name = @lesson.product_name
     @state = 'booked'
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
