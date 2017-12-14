@@ -406,6 +406,43 @@ class Lesson < ActiveRecord::Base
     return price.to_s
   end
 
+  def package_cost
+    package_price = 0
+    puts "!!!calculating package cost"
+    p1 = [self.additional_students_with_gear * self.cost_per_additional_student_with_gear,0].max
+    p2 = [self.additional_students_without_gear * self.cost_per_additional_student_without_gear,0].max
+    return p1 + p2    
+    return package_price
+  end
+
+  def cost_per_additional_student_with_gear
+    return 65
+  end
+
+  def cost_per_additional_student_without_gear
+    return 40
+  end
+
+  def additional_students_with_gear
+      self.location.id == 24 ? count = -1 : count = 0
+      self.students.each do |student|
+        if self.gear == false
+          count += 1
+        end
+      end
+      count
+  end
+
+  def additional_students_without_gear
+      self.location.id == 24 ? count = -1 : count = 0
+      self.students.each do |student|
+        unless self.gear == false
+          count += 1
+        end
+      end
+      return [count,0].max
+  end
+
   def visible_lesson_cost
     if self.lesson_cost.nil?
       return self.price
