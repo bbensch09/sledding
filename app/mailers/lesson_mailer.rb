@@ -1,5 +1,5 @@
 class LessonMailer < ActionMailer::Base
-  default from: 'Granlibakken.com <info@snowschoolers.com>', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>"
+  default from: 'Granlibakken.com <info@snowschoolers.com>'
 
   def track_apply_visits(email="Unknown user")
       @email = email
@@ -19,7 +19,7 @@ class LessonMailer < ActionMailer::Base
 
   def notify_admin_section_sold_out(section)
       @section = section
-      mail(to: 'brian+chris@snowschoolers.com', subject: "Section is Now Full - #{@section.date} - #{@section.slot}.")
+      mail(to: 'brian+chris@snowschoolers.com', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Section is Now Full - #{@section.date} - #{@section.slot}.")
   end
 
   def notify_admin_lesson_full_form_updated(lesson,email)
@@ -83,7 +83,7 @@ class LessonMailer < ActionMailer::Base
 
   def new_review_submitted(review)
     @review = review
-    mail(to: 'brian@snowschoolers.com', subject: "Review submitted: #{@review.reviewer.email} has provided their review")
+    mail(to: 'brian@snowschoolers.com', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Review submitted: #{@review.reviewer.email} has provided their review")
   end
 
   def instructor_status_activated(instructor)
