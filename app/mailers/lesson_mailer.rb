@@ -38,6 +38,12 @@ class LessonMailer < ActionMailer::Base
       mail(to: 'brian@snowschoolers.com', subject: "Sumo Success - #{@email} has subscribed.")
   end
 
+  def notify_resort_referral(resort,user)
+      @resort = resort
+      @user = user
+      mail(to: 'brian@snowschoolers.com', subject: "#{@user} has clicked thru from GB to #{@resort}")
+  end
+
   def notify_beginner_concierge(beta_user)
       @beta_user = beta_user
       mail(to: 'brian@snowschoolers.com', subject: "Concierge request - #{@beta_user.email}.")
