@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   has_one :contestant
   belongs_to :location
   has_many :lesson_times, through: :lessons
-  # after_create :send_admin_notification
+  after_create :send_admin_notification
   after_create :set_email_as_name
 
   def self.to_csv(options = {})
