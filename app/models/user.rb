@@ -2,7 +2,7 @@ require 'csv'
 
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, #:validatable,
+         :recoverable, :rememberable, :trackable, :validatable,
          :lockable, :timeoutable, :confirmable,
          :omniauthable, :omniauth_providers => [:facebook]
 
@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   belongs_to :location
   has_many :lesson_times, through: :lessons
   after_create :send_admin_notification
+  after_create :auto_confirm_users
   after_create :set_email_as_name
 
   def self.to_csv(options = {})
@@ -51,6 +52,13 @@ class User < ActiveRecord::Base
   def username_for_admin
     email_text = self.email[/[^@]+/]
     email_for_sort = "   #{email_text}_#{rand(100)}"
+  end
+
+  def auto_confirm_users
+    # user = User.last
+    # user.confrm
+    # user.sign_in
+    User.confirm_all_users
   end
 
   def send_admin_notification
