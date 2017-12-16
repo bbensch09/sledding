@@ -15,7 +15,6 @@
     <li>Total Lessons Completed: <%= Location.find(24).lifetime_lessons.count %></li>
     <li>Total Revenue Completed: <%= number_to_currency(Location.find(24).lifetime_revenue) %></li>
   </ul>
-   <%= link_to "Export CSV", lessons_admin_index_path(format: "csv"), class: 'btn btn-success' %>
    <%= link_to "View all lessons of any state", lessons_admin_index_all_path, class: 'btn btn-warning' %>
 </div>
 <% end %>

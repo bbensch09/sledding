@@ -50,7 +50,7 @@
                       <span class="italic text-smaller">
                         <ul>
                           <% @lesson.students.each do |student| %>
-                            <li><%= student.name %> (age <%= student.age_range %>): <%= number_to_currency(@lesson.product.price) %></li>
+                            <li><%= student.name %> (age <%= student.age_range %>): <%= number_to_currency(@lesson.price_per_student) %></li>
                           <% end %>
                         </ul>
                       </span>
