@@ -36,9 +36,11 @@
       <li>Slot: <%= @lesson.slot %></li>
       <li>Location: <%= @lesson.location.name %></li>
       <li>Objectives: <%= @lesson.objectives %></li>
+      <li>Rental Equipment: <%= @lesson.gear ? "Rentals included" : "Equipment not included" %></li>
+      <li>Lesson price: <%= number_to_currency(@lesson.price) %></li>
     </ul>
     <p>
-      If you need to make any changes to your lesson reservation, please visit: <%= lesson_url(@lesson) %>
+      If you need to make any changes to your lesson reservation, please visit: <a href="<%= lesson_url(@lesson)%>"</a><%=lesson_url(@lesson) %>.
     </p>
 
     <p>If you have any questions or if there is anything we can do to help you prepare for your upcoming lesson, please don't be afraid to reach out.</p>

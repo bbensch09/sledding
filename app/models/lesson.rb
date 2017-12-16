@@ -406,6 +406,10 @@ class Lesson < ActiveRecord::Base
     return price.to_s
   end
 
+  def price_per_student
+    return (self.price.to_f) / (self.students.count)
+  end
+
   def package_cost
     package_price = 0
     puts "!!!calculating package cost"

@@ -313,7 +313,7 @@ class LessonsController < ApplicationController
     @lesson.update(state: 'canceled')
     send_cancellation_email_to_instructor
     flash[:notice] = 'Your lesson has been canceled.'
-    redirect_to lessons_path
+    redirect_to lessons_admin_index_path
   end
 
   def admin_reconfirm_state
