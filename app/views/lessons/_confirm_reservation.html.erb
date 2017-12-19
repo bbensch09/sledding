@@ -58,11 +58,11 @@
               <% else %>
                 <p><%= number_to_currency(@lesson.lesson_price.to_s) %></p>
                 <% amount = @lesson.lesson_price.to_i*100 %>
+              <% end %>                  
               <% if @lesson.includes_lift_or_rental_package? || @lesson.is_gift_voucher? %>
                   <br>
                   <p><%= @lesson.package_info %></p>
               <% end %>
-              <% end %>                  
               </h4>
             </div>
             <div class="col-md-12"
