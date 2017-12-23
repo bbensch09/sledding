@@ -36,9 +36,7 @@ class Lesson < ActiveRecord::Base
 
       case self.location.name
         when 'Granlibakken'
-          l = 'GB'
-        when 'Homewood'
-          l = 'HW'
+          l = 'GB-GRP'
         else
           l = 'XX'
       end
