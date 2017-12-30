@@ -274,6 +274,7 @@ class LessonsController < ApplicationController
   end
 
   def update
+    puts "!!!!!!begin update action -- shouuld have already passed validations"
     @lesson = Lesson.find(params[:id])
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
@@ -307,11 +308,12 @@ class LessonsController < ApplicationController
       # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
       end
       puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
+    redirect_to @lesson
     else
       determine_update_state
       puts "!!!!!Lesson NOT saved, update notices determined by 'determine update state' method...?"
+      render 'edit'
     end
-    redirect_to @lesson
   end
 
   def show
@@ -520,7 +522,7 @@ class LessonsController < ApplicationController
 
   def lesson_params
     params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name,
-      students_attributes: [:id, :name, :age_range, :age, :gender, :relationship_to_requester, :lesson_history, :requester_id, :most_recent_experience, :most_recent_level, :other_sports_experience, :experience, :_destroy])
+      students_attributes: [:id, :name, :age_range, :gender, :relationship_to_requester, :lesson_history, :requester_id, :most_recent_experience, :most_recent_level, :other_sports_experience, :experience, :_destroy])
   end
 
   def lesson_time_params

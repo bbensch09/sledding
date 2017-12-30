@@ -371,7 +371,6 @@ ActiveRecord::Schema.define(version: 20171230080642) do
     t.string  "most_recent_experience"
     t.string  "most_recent_level"
     t.text    "other_sports_experience"
-    t.integer "age"
   end
 
   create_table "transactions", force: :cascade do |t|
