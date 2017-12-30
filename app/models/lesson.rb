@@ -19,6 +19,9 @@ class Lesson < ActiveRecord::Base
   # validate :requester_must_not_be_instructor, on: :create
   validate :lesson_time_must_be_valid
   validate :student_exists, on: :update
+  # validates :age, numericality: { greater_than: 7 }
+  before_save :sample_validator, on: :update
+
 
   #Check to ensure an instructor is available before booking
   validate :instructors_must_be_available, on: :create
@@ -959,6 +962,14 @@ class Lesson < ActiveRecord::Base
 
   def student_exists
     errors.add(:students, "count must be greater than zero") unless students.any?
+  end
+
+  def sample_validation
+    errors.add(:lesson, "all students must be at least 8 years old")
+    return false
+    self.students.each do |student|
+      return false if student.age_range.to_i < 8
+    end
   end
 
   def send_lesson_request_to_instructors
