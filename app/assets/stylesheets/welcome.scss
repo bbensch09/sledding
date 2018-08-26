@@ -19,6 +19,9 @@ html, body {
     overflow: auto;
 }
 */
+#sledding-tickets {
+  color: #000;
+}
 body {
   font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
   overflow: hidden;
@@ -55,7 +58,7 @@ p {
   margin-bottom: 20px;
 }
 .bg-primary {
-  background-color: #715845;
+  background-color: #EEE2C9;
 }
 .bg-white {
   background-color: #fff;
@@ -83,7 +86,7 @@ section {
     color: #fff
 }
 #contact{
-    background-color: #715845;
+    background-color: #EEE2C9;
     margin-bottom: 350px;
     min-height: 300px;
 }
@@ -215,7 +218,7 @@ aside {
   font-size: 30px;
 }
 .shadow-box-highlight{
-  background-color: rgba(59, 89, 152, .4);
+  background-color: rgba(0, 0, 0, .3);
   padding-top: 15px;
   padding-bottom: 15px;
 }
@@ -228,7 +231,7 @@ aside {
   margin: 30px auto;
 }
 .deposit-hr-navy{
-border-top: 3px solid #715845 !important;
+border-top: 3px solid #EEE2C9 !important;
 margin-left: auto !important;
 margin-right: auto !important;
 }
@@ -411,7 +414,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary, .btn-primary:visited {
   color: white;
   background-color: #55C9B2;
-  /*border-color: #715845;*/
+  /*border-color: #EEE2C9;*/
   -webkit-transition: all 0.35s;
   -moz-transition: all 0.35s;
   transition: all 0.35s;
@@ -512,7 +515,7 @@ h2.how-it-works {
   }
 .highlight{
   font-weight: bold;
-  color: #715845;
+  color: #EEE2C9;
   }
 
 .pricing-container{
@@ -527,7 +530,7 @@ h2.how-it-works {
 }
 .pricing-table{
   padding: 5px 5px 5px 5px;
-  border: 1px solid #715845;
+  border: 1px solid #EEE2C9;
   margin-bottom: 5px;
 }
 .pricing-table tbody tr td, .pricing-table thead tr th {
@@ -568,22 +571,22 @@ h2.how-it-works {
   text-align: center;
 }
 .price-header{
-  color: white;
-  background-color: #715845;
+  color: #000;
+  background-color: #EEE2C9;
 }
 .price-header h1{
   margin-top:2px;
   margin-bottom: 2px;
 }
 .full-form-focus{
-  border: 1px solid #715845;;
+  border: 1px solid #EEE2C9;;
 }
 .control-label{
   font-weight: bold;
 }
 .logo-left, .logo-right{
   max-height: 100px;
-  /*border: 1px solid #715845;*/
+  /*border: 1px solid #EEE2C9;*/
 }
 @media (min-width:768px) {
   .vertical-middle{
@@ -641,14 +644,14 @@ h2 {
   font-size: 0.7em;
 }
 .contact-link{
-  color: #715845;
+  color: #EEE2C9;
   text-decoration: underline;
 }
 .internal-link{
   text-decoration: underline;
 }
 .nav-email-noaction:hover, .nav-email-noaction:visited{
-  background: #715845 !important;
+  background: #EEE2C9 !important;
   color: #DADADA;
 }
 .blog-container{
@@ -690,11 +693,11 @@ h2 {
     text-decoration: underline;
 }
 .navy-link {
-    color: #715845;
+    color: #EEE2C9;
     text-decoration: underline;
 }
 .navy-bold-link {
-    color: #715845;
+    color: #EEE2C9;
     font-weight: bold;
     text-decoration: underline;
 }
@@ -874,10 +877,10 @@ text-align: center;
   max-height: 400px;
   padding-left: 10px;
   padding-right: 10px;
-  border: 1px solid #715845;
+  border: 1px solid #EEE2C9;
 }
 .navy-border{
-    border: 1px solid #715845;
+    border: 1px solid #EEE2C9;
 }
 
 .blog-bg{
@@ -929,14 +932,14 @@ text-align: center;
 }
 .sledding-map{
   width: 300px;
-  border: 1px solid #715845;
+  border: 1px solid #EEE2C9;
   padding-left: 10px;
   padding-right: 10px;
   float: right;
 }
 .uber-lyft-logo,{
   width: 400px;
-  border: 1px solid #715845;
+  border: 1px solid #EEE2C9;
   padding-left: 10px;
   padding-right: 10px;
   float: right;
@@ -962,7 +965,7 @@ text-align: center;
 .jump-below{
   font-size: 0.7em;
   font-style: italic;
-  color: #715845;
+  color: #EEE2C9;
 }
 .driving-times{
   font-size: 0.9em;
@@ -1020,7 +1023,7 @@ section.pricing-new-lesson{
   line-height:70px;
   padding:6px;
   /*background:rgba(0,0,0,0.5);*/
-  background-color: #715845;
+  background-color: #EEE2C9;
   margin:0; 
   clear:both !important;
   display:inline-block;
@@ -1053,14 +1056,14 @@ section.pricing-new-lesson{
 }
 .blue-box-highlight, .btn-apply-homewood{
     color: white;
-    background-color: #715845;
+    background-color: #EEE2C9;
 }
 .blue-box-highlight{
   padding-top: 10px;
   padding-bottom: 10px;
 }
 .hw-blue-text{
-  color: #715845;
+  color: #EEE2C9;
 }
 .teams-header{
   text-transform: uppercase;
@@ -1345,7 +1348,7 @@ width:100%;
     display: block;
 }
 .guide-intro{
-    background-color: #715845;
+    background-color: #EEE2C9;
 }
 .beginner-intro-questions{
   text-align: left;

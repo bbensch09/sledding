@@ -170,7 +170,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   <div class="container">
   <h2>
-    <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> LESSONS</span>"), root_path, class: 'logo' %>
+    <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> SLEDDING</span>"), root_path, class: 'logo' %>
 
     <ul id="topOptions">
       <li>
@@ -220,7 +220,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <%= link_to 'Sign Up', new_user_registration_path(date: params[:date], slot: params[:slot]), class: 'sign-up-btn' %>
               </li>
             <% else %>
-              <li><a href="/browse" class="sign-up-btn">Browse Instructors</a></li>
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#registerModal">Register</a></li>
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#loginModal">Log In</a></li>
             <% end %>
