@@ -26,7 +26,8 @@
                         <span class="smaller-text">Skip the Line and Purchase in advance. </span> <br>
                         <span class="smaller-text">Tickets go on sale Nov 15th!</span>
                     </h2>
-                <h4><a href="#book-a-lesson" class="btn btn-primary btn-xl page-scroll">Book Online</a></h4>
+                <hr class="">
+                <!-- <h4><a href="#book-a-lesson" class="btn btn-primary btn-xl page-scroll">Book Online</a></h4> -->
                 <div class="">
                     <p class="welcome-subheader"> Granlibakken is one of Tahoe's oldest continuously operating ski areas, founded in the 1920s. 
                         <br class="hidden-unless-desktop"> 
@@ -78,59 +79,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-xs12 text-center">
-                <h2 class="section-heading">Life is stressful.  <br> Planning your ski vacation shouldn't be.</h2>
-                <a href="/lessons/new" class="btn btn-primary btn-xl page-scroll">Book your lesson today</a>
-                <hr>
+                <h2 class="section-heading">Life is stressful.  <br> Planning your winter vacation shouldn't be.</h2>
+                <hr class="hr-black">
                 <h3 class="beta-sign-up-offer" id="subscribe">
-                   Not ready to book today? <br> Enter your email below to subscribe to free weekly tips.
+                   Not ready to book today? <br> Enter your email below to subscribe to free weekly offers and Tahoe weather reports.
                </h3>
                <div class="col-md-12 beta_user-sign-up">
                 <%= form_for(@beta_user = BetaUser.new) do |f| %>
-                <% if @beta_user.errors.any? %>
-                <div id="error_explanation">
-                  <h2><%= pluralize(@beta_user.errors.count, "error") %> prohibited this beta_user from being saved:</h2>
-                  <ul>
-                      <% @beta_user.errors.full_messages.each do |message| %>
-                      <li><%= message %></li>
-                      <% end %>
-                  </ul>
-              </div>
-              <% end %>
-              <div class="email-input">
-                <%= f.email_field :email, autofocus: false, class:"black-text form-control beta-sign-up", placeholder:"Enter Email", required: true  %>
-                <%= f.submit "Subscribe for Updates", class:"btn btn-success btn-lg page-scroll" %>
-                <!-- <h3 class="offer-limitations">*First 100 sign ups receive 20% off their first lesson.</h3> -->
+                    <% if @beta_user.errors.any? %>
+                        <div id="error_explanation">
+                          <h2><%= pluralize(@beta_user.errors.count, "error") %> prohibited this beta_user from being saved:</h2>
+                          <ul>
+                              <% @beta_user.errors.full_messages.each do |message| %>
+                              <li><%= message %></li>
+                              <% end %>
+                          </ul>
+                        </div>
+                    <% end %>
+                    <div class="email-input">
+                        <%= f.email_field :email, autofocus: false, class:"black-text form-control beta-sign-up", placeholder:"Enter Email", required: true  %>
+                        <%= f.submit "Subscribe for Updates", class:"btn btn-success btn-lg page-scroll" %>
+                    </div>
+                <% end %>
+                </div>
             </div>
-            <% end %>
         </div>
-        <!-- <h3 class="text-white">Instructors at Granlibakken loving sharing their passion for the mountain, and don't care to see your wallet drained. </h3> -->
-        <div class="col-md-8 col-md-offset-2">
-                     <!-- <h3> Beyond convenience, our <b> dynamic matching algorithm</b> ensures an expert Granlibakken instructor is always available. Book in advance to lock in early season rates, with one-hour early-bird specials <b>starting at just $89</b>.
-                     </h3> -->
-                     <!-- <h3>
-                     Booking last minute? Not a problem either. Prices only surge when it's necessary to get more instructors out on the hill.
-                 </h3> -->
-             </div>
-         </div>
-     </div>
- </div>
-</section>
-
-<section id="contact" class="bg-primary">
-    <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading white-text">Any Questions? Let us know!</h2>
-                <hr class="hr-white">
-                <p class="white-text">Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                <h2 class="section-heading black-text">Any Questions? Let us know!</h2>
+                <hr class="hr-black">
+                <p class="black-text">Give us a call or send us an email and we will get back to you as soon as possible!</p>
             </div>
             <div class="col-lg-4 col-lg-offset-2 text-center">
                 <i class="fa fa-phone fa-3x sr-contact"></i>
-                <p class="white-text">(800)543-3221</p>
+                <p class="black-text">(800)543-3221</p>
             </div>
             <div class="col-lg-4 text-center">
                 <i class="fa fa-envelope-o fa-3x sr-contact"></i>
-                <p><a href="mailto:frontdesk@granlibakken.com" class="white-text" target="_blank">frontdesk@granlibakken.com</a></p>
+                <p><a href="mailto:frontdesk@granlibakken.com" class="black-text" target="_blank">frontdesk@granlibakken.com</a></p>
             </div>
         </div>
     </div>

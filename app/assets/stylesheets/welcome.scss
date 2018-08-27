@@ -22,6 +22,10 @@ html, body {
 #sledding-tickets {
   color: #000;
 }
+.sledding-details{
+    line-height: 1.3;
+    font-size: 1.7em;
+}
 body {
   font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
   overflow: hidden;
@@ -232,6 +236,11 @@ aside {
 }
 .deposit-hr-navy{
 border-top: 3px solid #EEE2C9 !important;
+margin-left: auto !important;
+margin-right: auto !important;
+}
+.hr-black{
+border-top: 3px solid #000 !important;
 margin-left: auto !important;
 margin-right: auto !important;
 }
