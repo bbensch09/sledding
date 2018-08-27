@@ -569,6 +569,7 @@ div.mc-image {
 	height:100%;
 	overflow:hidden;
 	width:100%;
+	filter: opacity(90%) grayscale(50%);
 }
 
 .mc-old-browser .mc-image {
@@ -733,7 +734,7 @@ div.e404 {
 	}
 
 	h4.modal-title{
-		color:#715845 !important;
+		color:#EEE2C9 !important;
 		padding: 10px;
 		font-weight:300;
 	}
@@ -746,7 +747,7 @@ div.e404 {
 	.modal .modal-header button {
 		font-size:40px;
 		padding:8px;
-		color:#715845 !important;
+		color:#EEE2C9 !important;
 		margin-right:8px;
 		font-weight:300;
 	}
@@ -755,7 +756,7 @@ div.e404 {
 	}
 
 	.modal .modal-dialog {
-		border:#715845 2px solid;
+		border:#EEE2C9 2px solid;
 	}
 	.modal .modal-content {
 		border:0; padding:0;
@@ -1149,7 +1150,7 @@ div.e404 {
 	#footer ul li,
 	#footer ul li a {
 		float:left;
-		color:#fff;
+		color:#000;
 		text-decoration:none;
 	}
 

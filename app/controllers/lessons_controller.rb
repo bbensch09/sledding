@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
+  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
   before_action :save_lesson_params_and_redirect, only: [:create]
   before_action :create_lesson_from_session, only: [:create]
 
@@ -16,6 +17,17 @@ class LessonsController < ApplicationController
   def admin_index
     @lessons_to_export = Lesson.where(state:"booked")
     @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
+    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    respond_to do |format|
+          format.html {render 'admin_index'}
+          format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
+    end
+  end
+
+  def daily_roster
+    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "booked" && lesson.date == Date.today}
+    @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
+    @lessons = @lessons.select{ |lesson| lesson.date == Date.today}
     @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
     respond_to do |format|
           format.html {render 'admin_index'}
@@ -69,6 +81,7 @@ class LessonsController < ApplicationController
         puts "found #{@lessons.count} mactching lessons"
     end  
     puts "!!!! @lessons.count is #{@lessons.count}"
+    @lessons = @lessons.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
     render 'admin_index'
   end
 
@@ -85,16 +98,31 @@ class LessonsController < ApplicationController
   end
 
   def index
-      all_days = Section.select(:date).uniq.sort{|a,b| a.date <=> b.date}
+    if current_user && (current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee" || current_user.email == 'brian@snowschoolers.com')
+      all_days = Section.select(:date).distinct.sort{|a,b| a.date <=> b.date}
       @days = all_days.keep_if{|a| a.date >= Date.today}
-      @days = @days.first(10)
-      # Need to remove restriction after 100 lessons are booked
-      @lessons = Lesson.first(100).to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
-      @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+      @days = @days.first(30)
       @new_date = Section.new
+      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable?}
+      @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
       if session[:notice]
         flash.now[:notice] = session[:notice]
       end
+    elsif current_user
+        @lessons = Lesson.where(requester_id:current_user.id)
+        if @lessons.count > 0
+          @new_date = Section.new
+          days =[]
+          @lessons.each do |lesson|
+            days << Section.select(:date).where(date:lesson.lesson_time.date).first
+          end
+          @days = days
+          render 'index'
+        else
+          redirect_to root_path
+          flash[:notice] = "You do not have permission to view that page."
+        end
+    end
   end
 
   def send_reminder_sms_to_instructor
@@ -256,6 +284,7 @@ class LessonsController < ApplicationController
   end
 
   def update
+    puts "!!!!!!begin update action -- shouuld have already passed validations"
     @lesson = Lesson.find(params[:id])
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
@@ -286,14 +315,15 @@ class LessonsController < ApplicationController
       GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
-      LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
+      # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
       end
       puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
+    redirect_to @lesson
     else
       determine_update_state
       puts "!!!!!Lesson NOT saved, update notices determined by 'determine update state' method...?"
+      render 'edit'
     end
-    redirect_to @lesson
   end
 
   def show

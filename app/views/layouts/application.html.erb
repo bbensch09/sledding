@@ -170,7 +170,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   <div class="container">
   <h2>
-    <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> LESSONS</span>"), root_path, class: 'logo' %>
+    <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> SLEDDING</span>"), root_path, class: 'logo' %>
 
     <ul id="topOptions">
       <li>
@@ -186,6 +186,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
           <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>           
            <li> <a href="/instructors" class="btn-success"> Instructors</a></li>
+           <li> <a href="/lessons/daily-roster" class="btn-success"> Daily Roster</a></li>
            <li> <a href="/lessons/admin_index" class="btn-success"> Reservations</a></li>
            <li> <a href="/lessons-availability" class="btn-success"> Availability</a></li>
             <li><a href="/lessons" class="btn-success"> Schedule </a></li>
@@ -199,9 +200,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <% name = current_user.email.present? ? current_user.email : 'Edit Profile' %>
             <% if current_user.instructor.nil? %>
                 <li><%= link_to name, "#", class: "nav-email-noaction" %></li>
-                <li><a href="/lessons" class="sign-up-btn"> View Lessons</a></li>
-                <li><%= link_to 'Inbox', '/my_conversations', class: 'sign-up-btn' %></li>
-                <li><a href="/browse" class="sign-up-btn">Browse</a></li>
+                <!-- <li><a href="/lessons" class="sign-up-btn"> View Lessons</a></li> -->
+                <li><a href="/browse" class="sign-up-btn">Browse Instructors</a></li>
                 <!-- <li><%= link_to 'Teach with Us', '/apply', class: 'sign-up-btn' %></li> -->
               <% elsif current_user.active_instructor? %>
                 <li><%= link_to name, instructor_path(current_user.instructor) %></li>
@@ -220,7 +220,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <%= link_to 'Sign Up', new_user_registration_path(date: params[:date], slot: params[:slot]), class: 'sign-up-btn' %>
               </li>
             <% else %>
-              <li><a href="/browse" class="sign-up-btn">Browse Instructors</a></li>
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#registerModal">Register</a></li>
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#loginModal">Log In</a></li>
             <% end %>
@@ -418,7 +417,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- right menu -->
   <h4 class="center">
-  <ul>
+  <ul class="">
     <li><a href="/beginners-guide-to-tahoe" target="_blank">COMPLETE GUIDE TO TAHOE</a></li>
     <li><a href="/team-offsites" target="_blank">CORPORATE TRIPS</a></li>
     <li><a href="/resorts" target="_blank">WHERE TO SKI</a></li>
