@@ -13,6 +13,9 @@ Rails.application.configure do
 
   config.cache_classes = false
 
+  config.assets.compile = false #setting to false to prevent vulnerability described here: https://blog.heroku.com/rails-asset-pipeline-vulnerability
+
+
   # Do not eager load code on boot.
   config.eager_load = false
 
