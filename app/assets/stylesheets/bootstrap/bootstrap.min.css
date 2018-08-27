@@ -620,7 +620,7 @@ a.text-danger:hover {
 }
 
 .bg-primary {
-    color: #fff;
+    color: #000;
     background-color: #428bca
 }
 
@@ -6069,7 +6069,7 @@ a.list-group-item-danger.active:focus {
     font-size: 21px;
     font-weight: 700;
     line-height: 1;
-    color: #715845;
+    color: #EEE2C9;
     text-shadow: 0 1px 0 #fff;
     opacity: 1;
     filter: alpha(opacity=20)

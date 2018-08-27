@@ -19,6 +19,10 @@ class Lesson < ActiveRecord::Base
   # validate :requester_must_not_be_instructor, on: :create
   validate :lesson_time_must_be_valid
   validate :student_exists, on: :update
+  
+  # confirm students are all over the age of 8
+  validate :age_validator, on: :update
+
 
   #Check to ensure an instructor is available before booking
   validate :instructors_must_be_available, on: :create
@@ -29,6 +33,28 @@ class Lesson < ActiveRecord::Base
   after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
+  def confirmation_number
+      date = self.lesson_time.date.to_s.gsub("-","")
+      date = date[4..-1]
+      self.includes_rentals? ? rental_code = "-R" : rental_code = ""
+
+      case self.location.name
+        when 'Granlibakken'
+          l = 'GB-GRP'
+        else
+          l = 'XX'
+      end
+      id = self.id.to_s
+      confirmation_number = l+'-'+date+'-'+id+rental_code
+  end
+
+  def includes_rentals?
+    if self.product_name == '1hr Learn to Ski Package (rental included)'
+      return true
+    else 
+      return false
+    end
+  end
 
   def section_assignment_status
     if self.section_id.nil?
@@ -237,12 +263,8 @@ class Lesson < ActiveRecord::Base
     end
   end
 
-  def includes_lift_or_rental_package?
-    if self.includes_lift_or_rental_package == true
-      return true
-    else
-      return false
-    end
+  def includes_rental?
+    self.product_name == '1hr Learn to Ski Package (rental included)' ? 'Yes' : 'No'
   end
 
   def confirmed?
@@ -508,7 +530,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def add_lesson_to_section
-    return true if self.section_id
+    return true if self.section_id && self.sport_id == self.section.sport_id && self.date == self.section.date
     existing_sections = self.available_sections
       if self.available_sections.count == 0
       puts "!!!!!!!! The requested time slot is full!!!!!"
@@ -940,7 +962,20 @@ class Lesson < ActiveRecord::Base
   end
 
   def student_exists
+    puts "!!!!!checking if at least one student exists"
     errors.add(:students, "count must be greater than zero") unless students.any?
+  end
+
+  def age_validator
+    puts "!!!!!!checking student ages"
+    self.students.each do |student|
+      if student.age_range.to_i < 8
+        errors.add(:lesson, "error all students must be at least 8 years old")
+        puts "!!! found a student under the age of 8"
+        return false 
+      end
+    end
+    return true
   end
 
   def send_lesson_request_to_instructors

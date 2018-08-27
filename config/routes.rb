@@ -106,6 +106,7 @@ Rails.application.routes.draw do
   end
   get '/admin_index' => 'instructors#admin_index'
   get 'lessons/admin_index' => 'lessons#admin_index', as: :lessons_admin_index
+  get 'lessons/daily-roster' => 'lessons#daily_roster', as: :lessons_daily_roster
   get 'lessons/admin_index_all' => 'lessons#admin_index_all', as: :lessons_admin_index_all
   get 'browse' => 'instructors#browse'
   get 'lessons/book_product/:id' => 'lessons#book_product'
@@ -146,7 +147,7 @@ Rails.application.routes.draw do
   post 'sections/generate_new_sections' => 'sections#generate_new_sections', as: :generate_new_sections
   post 'sections/delete_all_sections_and_lessons' => 'sections#delete_all_sections_and_lessons', as: :delete_all_sections_and_lessons
   post 'sections/:id/duplicate_ski_section' => 'sections#duplicate_ski_section', as: :duplicate_ski_section
-  post 'sections/:/id/duplicate_snowboard_section' => 'sections#duplicate_snowboard_section', as: :duplicate_snowboard_section
+  post 'sections/:id/duplicate_snowboard_section' => 'sections#duplicate_snowboard_section', as: :duplicate_snowboard_section
   post 'seed_lessons_with_students' => 'sections#fill_sections_with_lessons', as: :seed_lessons_with_students
   post 'delete_all_lessons' => 'sections#delete_all_lessons', as: :delete_all_lessons
 
