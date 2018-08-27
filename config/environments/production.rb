@@ -43,7 +43,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false #setting to false to prevent vulnerability described here: https://blog.heroku.com/rails-asset-pipeline-vulnerability
+  config.assets.compile = true #setting to false to prevent vulnerability described here: https://blog.heroku.com/rails-asset-pipeline-vulnerability
   config.serve_static_assets = false
 
   # Generate digests for assets URLs.
