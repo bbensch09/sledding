@@ -27,13 +27,13 @@
         	<%= f.semantic_errors :lesson %>
         </h1>
         <div class="block inputs">
-            <div class="col-md-2">
+<!--             <div class="col-md-2">
               <%= f.input :activity, as: :select, collection: ['Ski', 'Snowboard'], selected:@activity, include_blank: 'Lesson Type', label: false %>
             </div>
-
             <div class="col-md-3">
               <%= f.input :product_name, as: :select, collection: ['1hr Learn to Ski Package (rental included)','1hr Group Lesson (lesson + lift only)'], input_html: {autofocus: false, class:'highlighted-input'}, include_blank: 'Package Type',  label: false %>
             </div>
+ -->
 
             <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
 
@@ -43,10 +43,10 @@
                 <span class="search-area-icon"></span>
               </div>
 
-              <div class="col-md-2">
+<!--               <div class="col-md-2">
                 <%= lt_f.input :slot, as: :select, collection: LESSON_SLOTS, selected: @slot, include_blank: 'Time', label: false %>
               </div>
-              <% if current_user.nil? %>
+ -->              <% if current_user.nil? %>
               <div class="col-md-2 guest-email-input">
                 <%= f.input :guest_email, as: :string, placeholder: "your_email@example.com", label: false %>
               </div>

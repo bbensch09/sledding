@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   # root to: "lessons#new"
   root to: "welcome#index"
+  get 'tickets' => 'lessons#new'
 
   #backup index
   get 'winter' => 'welcome#index_backup_may2017'

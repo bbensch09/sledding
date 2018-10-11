@@ -2,8 +2,8 @@ class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
-  before_action :save_lesson_params_and_redirect, only: [:create]
-  before_action :create_lesson_from_session, only: [:create]
+  # before_action :save_lesson_params_and_redirect, only: [:create]
+  # before_action :create_lesson_from_session, only: [:create]
 
   def assign_to_section
     puts "the params are #{params}"
@@ -454,7 +454,7 @@ class LessonsController < ApplicationController
     puts params[:lesson][:lesson_time][:date]
     puts params[:lesson][:lesson_time][:slot]
     puts "!!!!!!! end params"
-    validate_new_lesson_params
+    # validate_new_lesson_params
   end
 
   def create_lesson_from_session
@@ -470,17 +470,15 @@ class LessonsController < ApplicationController
     puts "!!!!!!params are: #{lesson_params}"
     @lesson.requester = current_user
     @lesson.requested_location = 24
-    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
-    @lesson.product_id = Product.where(name:params[:product_name]).first
+    @lesson.product_id = 1
+    # @lesson.save
+    # redirect_to @lesson  
     if @lesson.save
-      GoogleAnalyticsApi.new.event('lesson-requests', 'request-initiated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
-      redirect_to complete_lesson_path(@lesson)
+      redirect_to @lesson
       else
-        @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]
-        @slot = session[:lesson].nil? ? nil : session[:lesson]["lesson_time"]["slot"]
-        @date = session[:lesson].nil? ? nil : session[:lesson]["lesson_time"]["date"]
+      flash[:notice] = 'Unfortunately, there has been a problem.'
         render 'new'
     end
   end

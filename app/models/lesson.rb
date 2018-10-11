@@ -11,13 +11,13 @@ class Lesson < ActiveRecord::Base
   accepts_nested_attributes_for :students, reject_if: :all_blank, allow_destroy: true
 
   validates :requested_location, :lesson_time, presence: true
-  validates :phone_number, presence: true, on: :update
+  # validates :phone_number, presence: true, on: :update
   # validates :duration, :start_time, presence: true, on: :update
-  validates :gear, inclusion: { in: [true, false] }, on: :update
+  # validates :gear, inclusion: { in: [true, false] }, on: :update
   validates :terms_accepted, inclusion: { in: [true], message: 'must accept terms' }, on: :update
   validates :actual_start_time, :actual_end_time, presence: true, if: :just_finalized?
   # validate :requester_must_not_be_instructor, on: :create
-  validate :lesson_time_must_be_valid
+  # validate :lesson_time_must_be_valid
   validate :student_exists, on: :update
   
   # confirm students are all over the age of 8
@@ -25,12 +25,12 @@ class Lesson < ActiveRecord::Base
 
 
   #Check to ensure an instructor is available before booking
-  validate :instructors_must_be_available, on: :create
-  validate :add_lesson_to_section
-  before_save :add_lesson_to_section
+  # validate :instructors_must_be_available, on: :create
+  # validate :add_lesson_to_section
+  # before_save :add_lesson_to_section
   before_save :confirm_valid_email, if: :just_created?
-  after_save :confirm_section_valid
-  after_save :check_if_sections_are_full
+  # after_save :confirm_section_valid
+  # after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
   def confirmation_number
