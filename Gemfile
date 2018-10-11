@@ -42,7 +42,8 @@ gem 'twilio-ruby', '4.13.0'
 
 #AWS SDK's for storing images
 # gem 'aws-sdk-v1'
-gem 'aws-sdk', '~> 2'
+gem 'aws-sdk-core'
+gem 'aws-sdk-s3'
 
 #Using CKeditor as the WYSIWYG editor for potential custom formatting in-line.
 # gem 'ckeditor'

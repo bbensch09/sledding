@@ -50,6 +50,24 @@ def set_user
     end
 end
 
+def authenticate_from_cookie!
+  puts "!!! params for :allow are #{params[:allow]}"
+  cookie_expected = @lesson.id + 30
+  unless cookies[:lesson].to_i == cookie_expected.to_i || (current_user && current_user.user_type == 'Snow Schoolers Employee') || (current_user && current_user.instructor) || params[:allow] == 'true'
+    puts "!!! current cookie value for lesson is: #{cookies[:lesson]} and expected value is: #{cookie_expected}"
+    session[:must_sign_in] = true
+    redirect_to root_path
+  end
+  if params[:allow] == 'true'
+    cookies[:lesson] = {
+      value: @lesson.id + 30,
+      expires: 1.year.from_now
+    }
+    puts"!!!! cookie has been set to: #{cookies[:lesson]}."
+  end
+end
+
+
 def houston_we_have_a_problem
   render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
   HOUSTON_WE_HAVE_A_404_PROBLEM
