@@ -154,7 +154,9 @@ Rails.application.routes.draw do
 
   get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons
-  # get 'new_request' => 'lessons#new_request'
+  
+  get 'tickets/:id' => 'lessons#complete', as: :complete_tickets
+
   get 'new_request/:id' => 'lessons#new_request'
   get 'book-a-lesson/new' => 'lessons#new_specific_slot', as: :new_specific_slot
   put   'lessons/:id/set_instructor'      => 'lessons#set_instructor',      as: :set_instructor

@@ -205,16 +205,27 @@ class LessonsController < ApplicationController
 
   def create
       puts "!!!!!!!!! Lesson params are \n #{params}"
-      create_lesson_and_redirect
+      @lesson = Lesson.new(lesson_params)
+      @lesson.requester = current_user
+      @lesson.requested_location = 24
+      @lesson.product_id = 1
+      @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+      # @lesson.save!
+    if @lesson.save
+      @user_email = current_user ? current_user.email : "unknown"
+      redirect_to complete_lesson_path(@lesson)
+      # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
+      else
+      flash[:notice] = 'Unfortunately, there has been a problem.'
+      render 'new'
+    end
+
   end
 
   def complete
     @lesson = Lesson.find(params[:id])
-    @lesson_time = @lesson.lesson_time
-    @date = @lesson_time.date
-    @slot = @lesson_time.slot
     @product_name = @lesson.product_name
-    @state = 'booked'
+    @date = @lesson.lesson_time.date
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
@@ -457,31 +468,6 @@ class LessonsController < ApplicationController
     # validate_new_lesson_params
   end
 
-  def create_lesson_from_session
-  #   unless params["commit"] == "request-an-instructor"
-      create_lesson_and_redirect
-  #     session[:lesson] = params[:lesson]
-  #     puts "!!!!! params are: #{params[:lesson]}"
-  #   end
-  end
-
-  def create_lesson_and_redirect
-    @lesson = Lesson.new(lesson_params)
-    puts "!!!!!!params are: #{lesson_params}"
-    @lesson.requester = current_user
-    @lesson.requested_location = 24
-    @lesson.product_id = 1
-    # @lesson.save
-    # redirect_to @lesson  
-    if @lesson.save
-      @user_email = current_user ? current_user.email : "unknown"
-      # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
-      redirect_to @lesson
-      else
-      flash[:notice] = 'Unfortunately, there has been a problem.'
-        render 'new'
-    end
-  end
 
   def send_cancellation_email_to_instructor
     if @lesson.instructor.present?

@@ -10,7 +10,7 @@ class Lesson < ActiveRecord::Base
   belongs_to :section
   accepts_nested_attributes_for :students, reject_if: :all_blank, allow_destroy: true
 
-  validates :requested_location, :lesson_time, presence: true
+  validates :requested_location, presence: true
   # validates :phone_number, presence: true, on: :update
   # validates :duration, :start_time, presence: true, on: :update
   # validates :gear, inclusion: { in: [true, false] }, on: :update
@@ -28,7 +28,7 @@ class Lesson < ActiveRecord::Base
   # validate :instructors_must_be_available, on: :create
   # validate :add_lesson_to_section
   # before_save :add_lesson_to_section
-  before_save :confirm_valid_email, if: :just_created?
+  # before_save :confirm_valid_email, if: :just_created?
   # after_save :confirm_section_valid
   # after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
@@ -405,23 +405,11 @@ class Lesson < ActiveRecord::Base
   end  
 
   def price
-    puts "!!!begin calculating price"
-    if self.lesson_price
-      return self.lesson_price.to_s
-    elsif self.lesson_cost && self.lesson_cost > 0
-      return self.lesson_cost.to_s
-    # elsif self.product_id > 0
-        # return Product.find(product_id).price
-    elsif self.product_name
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
       puts "!!!!lookup calendar period status, it is: #{calendar_period}"
-      product = Product.where(location_id:24,calendar_period:calendar_period,name:self.product_name).first
-      unless product.nil?
-        puts "!!!product found, its price is #{product.price}"
-      end
-    end
+      product = Product.where(location_id:24,calendar_period:calendar_period).first
     if product.nil?
-      return "First select package type" #99 #default lesson price - temporary
+      return "First select productLesl." #99 #default lesson price - temporary
     else
       price = product.price * [1,self.students.count].max
     end
