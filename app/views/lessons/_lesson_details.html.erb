@@ -1,26 +1,6 @@
 <header class="page-header">
-  <h2 id="lesson-details-header">Lesson Status</h2>
+  <h2 id="lesson-details-header">Ticket Status</h2>
 </header>
-<p class="lesson-summary-info">
-Requester Email: <%= @lesson.requester ? @lesson.requester.email : @lesson.guest_email %>
-<% if @lesson.instructor %>
-  <br> Instructor: <%= @lesson.instructor.name %>
-<% else %>
-  <% if @lesson.pending_requester? %>
-    <br> No instructors available for this date and time. Please edit or cancel
-  <% else %>
-    <br> No instructor assigned yet
-  <% end %>
-<% end %>
-<br> Status: <%= @lesson.state %>
-<% if @lesson.review %>
-<br>
-  Instructor Review: <%= @lesson.review.rating %> stars - <%= @lesson.review.review %>
-<% end %>
-<% if @lesson.payment_complete? %>
-<br> Tip Amount: <%= number_to_currency(@lesson.tip) %>
-<% end %>
-</p>
 <div id='full-details-container'>
   <%if @lesson.public_feedback_for_student %>
       <%= render partial: 'lessons/confirmed_time_and_feedback' %>
@@ -29,15 +9,12 @@ Requester Email: <%= @lesson.requester ? @lesson.requester.email : @lesson.guest
   <div class="details-info-box">
     <% if @lesson.deposit_status == 'confirmed' || @lesson.date == Date.today %>
     <p>
-      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number the morning of your lesson as proof of payment. Please also find your lesson reservation details below. 
+      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number to a staff member as proof of payment. 
     </p>
-    <ul>
-        <li>If you are renting from the mountain, please plan to arrive at the ski hill at least <%= ENV['RENTAL_ADVANCE_TIME'] %> prior to your lesson so that you can get outfitted with your equipment. For afternoon lessons, if it is at all possible please come by in the morning before 1030am to pickup your equipment, because rental equipment selection is often extremely limited in the afternoon. When you arrive, please tell one of our staff your name and and your reservation confirmation# (below), and they'll be able to check you in.</li>
-    </ul>
 
     <% end %>
 
-    <h3>Lesson Summary</h3>
+    <h3> Summary</h3>
 
     <div class='row'>
 
@@ -45,14 +22,7 @@ Requester Email: <%= @lesson.requester ? @lesson.requester.email : @lesson.guest
       <h4 class="slot-details-mobile">
         <span class="lesson-detail-topic">Requester:</span> <%= @lesson.requester_name %> <br>
         <span class="lesson-detail-topic">Location:</span>  <%= @lesson.location.name %><br>
-        <span class="lesson-detail-topic">Package:</span>  <%= @lesson.product_name %><br>
-        <span class="student-detail-topic">Equipment: </span><%= @lesson.includes_rentals? ? "Rental equipment is included." : "Do not need to rent equipment." %> <br>
-        <span class="lesson-detail-topic">Sport:</span>  <%= @lesson.activity %><br>
         <span class="lesson-detail-topic">Date:</span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
-        <% if @lesson.package_info %>
-          <% @lesson.package_info.include?("custom start time") ? custom_slot_class = "strikethrough" : custom_slot_class = "normal" %>
-        <% end %>
-        <span class="lesson-detail-topic">Slot:</span> <span class=<%= custom_slot_class%> > <%= @lesson.slot %></span> <br><br>
         <% if @lesson.package_info && @lesson.package_info.length > 1 %>
           <span class="lesson-detail-topic">Adjustments:</span>  <%= @lesson.package_info %>
           <br><br>                  

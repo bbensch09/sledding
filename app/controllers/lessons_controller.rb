@@ -2,8 +2,8 @@ class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
-  before_action :save_lesson_params_and_redirect, only: [:create]
-  before_action :create_lesson_from_session, only: [:create]
+  # before_action :save_lesson_params_and_redirect, only: [:create]
+  # before_action :create_lesson_from_session, only: [:create]
 
   def assign_to_section
     puts "the params are #{params}"
@@ -205,16 +205,27 @@ class LessonsController < ApplicationController
 
   def create
       puts "!!!!!!!!! Lesson params are \n #{params}"
-      create_lesson_and_redirect
+      @lesson = Lesson.new(lesson_params)
+      @lesson.requester = current_user
+      @lesson.requested_location = 24
+      @lesson.product_id = 1
+      @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+      # @lesson.save!
+    if @lesson.save
+      @user_email = current_user ? current_user.email : "unknown"
+      redirect_to complete_lesson_path(@lesson)
+      # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
+      else
+      flash[:notice] = 'Unfortunately, there has been a problem.'
+      render 'new'
+    end
+
   end
 
   def complete
     @lesson = Lesson.find(params[:id])
-    @lesson_time = @lesson.lesson_time
-    @date = @lesson_time.date
-    @slot = @lesson_time.slot
     @product_name = @lesson.product_name
-    @state = 'booked'
+    @date = @lesson.lesson_time.date
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
@@ -454,36 +465,9 @@ class LessonsController < ApplicationController
     puts params[:lesson][:lesson_time][:date]
     puts params[:lesson][:lesson_time][:slot]
     puts "!!!!!!! end params"
-    validate_new_lesson_params
+    # validate_new_lesson_params
   end
 
-  def create_lesson_from_session
-  #   unless params["commit"] == "request-an-instructor"
-      create_lesson_and_redirect
-  #     session[:lesson] = params[:lesson]
-  #     puts "!!!!! params are: #{params[:lesson]}"
-  #   end
-  end
-
-  def create_lesson_and_redirect
-    @lesson = Lesson.new(lesson_params)
-    puts "!!!!!!params are: #{lesson_params}"
-    @lesson.requester = current_user
-    @lesson.requested_location = 24
-    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
-    @lesson.product_id = Product.where(name:params[:product_name]).first
-    if @lesson.save
-      GoogleAnalyticsApi.new.event('lesson-requests', 'request-initiated', params[:ga_client_id])
-      @user_email = current_user ? current_user.email : "unknown"
-      # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
-      redirect_to complete_lesson_path(@lesson)
-      else
-        @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]
-        @slot = session[:lesson].nil? ? nil : session[:lesson]["lesson_time"]["slot"]
-        @date = session[:lesson].nil? ? nil : session[:lesson]["lesson_time"]["date"]
-        render 'new'
-    end
-  end
 
   def send_cancellation_email_to_instructor
     if @lesson.instructor.present?

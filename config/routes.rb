@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
   # root to: "lessons#new"
   root to: "welcome#index"
+  get 'tickets' => 'lessons#new'
 
   #backup index
   get 'winter' => 'welcome#index_backup_may2017'
@@ -153,7 +154,9 @@ Rails.application.routes.draw do
 
   get   'lessons/new2' => 'lessons#new_backup_oct22'
   resources :lessons
-  # get 'new_request' => 'lessons#new_request'
+  
+  get 'tickets/:id' => 'lessons#complete', as: :complete_tickets
+
   get 'new_request/:id' => 'lessons#new_request'
   get 'book-a-lesson/new' => 'lessons#new_specific_slot', as: :new_specific_slot
   put   'lessons/:id/set_instructor'      => 'lessons#set_instructor',      as: :set_instructor
