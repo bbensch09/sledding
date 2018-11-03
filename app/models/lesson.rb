@@ -21,7 +21,7 @@ class Lesson < ActiveRecord::Base
   validate :student_exists, on: :update
   
   # confirm students are all over the age of 8
-  validate :age_validator, on: :update
+  # validate :age_validator, on: :update
 
 
   #Check to ensure an instructor is available before booking
@@ -36,16 +36,14 @@ class Lesson < ActiveRecord::Base
   def confirmation_number
       date = self.lesson_time.date.to_s.gsub("-","")
       date = date[4..-1]
-      self.includes_rentals? ? rental_code = "-R" : rental_code = ""
-
       case self.location.name
         when 'Granlibakken'
-          l = 'GB-GRP'
+          l = 'SLED'
         else
           l = 'XX'
       end
-      id = self.id.to_s
-      confirmation_number = l+'-'+date+'-'+id+rental_code
+      id = self.id.to_s.rjust(4,"0")
+      confirmation_number = l+'-'+date+'-'+id
   end
 
   def includes_rentals?
@@ -406,12 +404,15 @@ class Lesson < ActiveRecord::Base
 
   def price
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
-      puts "!!!!lookup calendar period status, it is: #{calendar_period}"
+      # puts "!!!!lookup calendar period status, it is: #{calendar_period}"
       product = Product.where(location_id:24,calendar_period:calendar_period).first
     if product.nil?
-      return "First select productLesl." #99 #default lesson price - temporary
+      return "Lesson price or product not found" #99 #default lesson price - temporary
     else
       price = product.price * [1,self.students.count].max
+    end
+    if self.lodging_guest == true
+      price = price *0.5
     end
     return price.to_s
   end

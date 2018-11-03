@@ -242,7 +242,8 @@ class LessonsController < ApplicationController
   def reissue_invoice
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time    
-    @lesson.state == "ready_to_book"
+    @date = @lesson_time.date
+    @lesson.state = "ready_to_book"
     @lesson.deposit_status = nil
     @lesson.save
     render 'edit'
@@ -274,20 +275,14 @@ class LessonsController < ApplicationController
           charge = Stripe::Charge.create(
             :customer    => customer.id,
             :amount      => @amount*100,
-            :description => 'Lesson reservation deposit',
+            :description => 'Sledding Hill Ticket',
             :currency    => 'usd'
           )
         @lesson.deposit_status = 'confirmed'
-        if @lesson.is_gift_voucher?
-          @lesson.state = 'gift_voucher_reserved'
-        else
-          @lesson.state = 'booked'
-        end
-        puts "!!!!!About to save state & deposit status after processing lessons#update"
+        @lesson.state = 'confirmed'
         @lesson.save
-      GoogleAnalyticsApi.new.event('lesson-requests', 'deposit-submitted', params[:ga_client_id])
       LessonMailer.send_lesson_booking_notification(@lesson).deliver
-      flash[:notice] = 'Thank you, your lesson request was successful. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+      flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Lesson deposit successfully charged"
     end
@@ -303,27 +298,27 @@ class LessonsController < ApplicationController
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
     end
-    if @lesson.is_gift_voucher? && current_user.user_type == "Granlibakken Employee"
-      @user = User.new({
-          email: @lesson.gift_recipient_email,
-          password: 'sstemp2017',
-          user_type: "Student",
-          name: "#{@lesson.gift_recipient_name}"
-        })
-      @user.skip_confirmation!
-      @user.save!
-      @lesson.requester_id = User.last.id
-      puts "!!!! admin is creating a new user to receive a gift voucher; new user need not be confirmed"
-    end
-    if current_user && @lesson.is_gift_voucher? && current_user.email == @lesson.gift_recipient_email.downcase
-      @lesson.state = 'booked'
-      puts "!!!! marking voucher as booked & sending SMS to instructors"
-    end
+    # if @lesson.is_gift_voucher? && current_user.user_type == "Granlibakken Employee"
+    #   @user = User.new({
+    #       email: @lesson.gift_recipient_email,
+    #       password: 'sstemp2017',
+    #       user_type: "Student",
+    #       name: "#{@lesson.gift_recipient_name}"
+    #     })
+    #   @user.skip_confirmation!
+    #   @user.save!
+    #   @lesson.requester_id = User.last.id
+    #   puts "!!!! admin is creating a new user to receive a gift voucher; new user need not be confirmed"
+    # end
+    # if current_user && @lesson.is_gift_voucher? && current_user.email == @lesson.gift_recipient_email.downcase
+    #   @lesson.state = 'booked'
+    #   puts "!!!! marking voucher as booked & sending SMS to instructors"
+    # end
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
     if @lesson.save
-      GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
+      # GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
       # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver
@@ -515,7 +510,7 @@ class LessonsController < ApplicationController
   end
 
   def lesson_params
-    params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name,
+    params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name, :lodging_guest, :lodging_reservation_id, :zip_code, :drivers_license, :state_code, :city, :street_address,
       students_attributes: [:id, :name, :age_range, :gender, :relationship_to_requester, :lesson_history, :requester_id, :most_recent_experience, :most_recent_level, :other_sports_experience, :experience, :_destroy])
   end
 

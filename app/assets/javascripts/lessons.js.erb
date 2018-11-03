@@ -332,11 +332,11 @@ var toggleElementListener = function(){
     rental_state = $('.needs-rental').val();
     console.log("current rental_state is "+rental_state);
     if (rental_state == 'true') {
-    $('.student-rental-information').removeClass('hidden');
-    console.log("rental info revealed");
+    $('.lodging-reservation-input').removeClass('hidden');
+    console.log("lodging info revealed");
     } else { 
-      $('.student-rental-information').addClass('hidden');
-      console.log('keep rental info hidden');
+      $('.lodging-reservation-input').addClass('hidden');
+      console.log('keep lodging info hidden');
     };
   });
 }

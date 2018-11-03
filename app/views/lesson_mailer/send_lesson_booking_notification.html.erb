@@ -11,57 +11,23 @@
     <% end %>
 
     <p>
-      Thank you for confirming your group lesson reservation at the Granlibakken Ski Hill!
+      Thank you for booking your tickets online for the Granlibakken Ski Hill!
     </p>
 
     <h4>Reservation Receipt</h4>
     <p>
-      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please save this email, as you will need to show your confirmation number the morning of your lesson as proof of payment. Please also find your lesson reservation details below, including names & ages of the students in your reservation, and whether or not rental equipment has been included. 
+      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please save this email, as you will need to show your confirmation number when you arrive to the sledding hill as your proof of payment. Please also find your reservation details below, including names & ages of all participants sin your reservation. 
     </p>
-    <ul>
-        <li>If you are renting from the mountain, please plan to arrive at the ski hill at least <%= ENV['RENTAL_ADVANCE_TIME'] %> prior to your lesson so that you can get outfitted with your equipment. For afternoon lessons, if it is at all possible please come by in the morning before 1030am to pickup your equipment, because rental equipment selection is often extremely limited in the afternoon. When you arrive, please tell one of our staff your name and and your reservation confirmation# (below), and they'll be able to check you in.</li>
-    </ul>
-    <h4>Lesson Details</h4>
-        <span class="lesson-detail-topic">Requester:</span> <%= @lesson.requester_name %> <br>
-        <span class="lesson-detail-topic">Location:</span>  <%= @lesson.location.name %><br>
-        <span class="lesson-detail-topic">Package:</span>  <%= @lesson.product_name %><br>
-        <span class="student-detail-topic">Equipment: </span><%= @lesson.includes_rentals? ? "Rental equipment is included." : "Do not need to rent equipment." %> <br>
-        <span class="lesson-detail-topic">Sport:</span>  <%= @lesson.activity %><br>
-        <span class="lesson-detail-topic">Date:</span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
-        <% if @lesson.package_info %>
-          <% @lesson.package_info.include?("custom start time") ? custom_slot_class = "strikethrough" : custom_slot_class = "normal" %>
-        <% end %>
-        <span class="lesson-detail-topic">Slot:</span> <span class=<%= custom_slot_class%> > <%= @lesson.slot %></span> <br><br>
-        <% if @lesson.package_info && @lesson.package_info.length > 1 %>
-          <span class="lesson-detail-topic">Adjustments:</span>  <%= @lesson.package_info %>
-          <br><br>                  
-        <% end %>
-        <span class="lesson-detail-topic">Objectives:</span> <br> <%= @lesson.objectives %>
-
-    <%= render partial: 'lessons/price_details' %>
 
     <%= render partial: 'lessons/student_details' %>
 
-    <h4>What happens next?</h4>
-    <ul>
-      <li>Your lesson will begin promptly at the start time you've selected.</li>
-      <li>If you selected a lesson package including rentals, please plan to arrive at the ski hill at least 45 minutes prior to your lesson so that you can get outfitted with your equipment. When you arrive, please tell one of our staff your name and that you booked your lesson online, and they'll be able to check you in.</li>
-      <li>If you did not select the group lesson package, you should still arrive at least 15 minutes prior to the start of your lesson to afford enough time to find parking and put on your boots and gear.</li>
-    </ul>
-
-    <h4>Meeting Location</h4>
-    <p>
-      Once you are ready with your gear, please plan to meet your instructor in front of the two big trees closest to the beginner rope tow, as depicted below. The ski hill is tough to miss, but if you want the exact address for GPS, it is located at <a href="https://www.google.com/maps/place/Granlibakken+Ski+%26+Sledding+Hill/@39.1561613,-120.1565678,17z/data=!4m13!1m7!3m6!1s0x80997d8619f5ff29:0x815523715ab4e748!2s725+Granlibakken+Rd,+Tahoe+City,+CA+96145!3b1!8m2!3d39.1561613!4d-120.1543791!3m4!1s0x80997d88a3630ec7:0x30c3373b77f6c7b4!8m2!3d39.1540162!4d-120.1547892" target="_blank" class="contact-link" >725 Granlibakken Rd, Ski Hill, Tahoe City, CA 96145</a>. 
-    </p>
-    <img src="https://s3.amazonaws.com/snowschoolers/ski-hut-meeting-location.jpg" alt="meeting-spot" height="400" width="700" />
+    <%= render partial: 'lessons/sled_hill_details' %>
     
-    <p>If you have any questions about where to find rental gear or winter clothing, or are looking for last minute accommodations, please feel free to reach out to us at <a href="mailto:frontdesk@granlibakken.com">frontdesk@granlibakken.com.</p>
-
     <p>
-      If you need to make any changes to your lesson reservation, please visit: <a href="<%= lesson_url(@lesson)%>"</a><%=lesson_url(@lesson) %>.
+      If you need to make any changes to your reservation, please visit: <a href="<%= lesson_url(@lesson)%>"</a><%=lesson_url(@lesson) %>.
     </p>
 
-    <p>If you have any questions or if there is anything we can do to help you prepare for your upcoming lesson, please don't be afraid to reach out.</p>
+    <p>If you have any questions or if there is anything we can do to help you prepare for your upcoming visit, please don't be afraid to reach out.</p>
     <p>
       - The Granlibakken Team <br>      
     </p>
