@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171230080642) do
+ActiveRecord::Schema.define(version: 20181103191127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,6 +214,13 @@ ActiveRecord::Schema.define(version: 20171230080642) do
     t.integer  "product_id"
     t.string   "section_id"
     t.string   "product_name"
+    t.boolean  "lodging_guest"
+    t.string   "lodging_reservation_id"
+    t.string   "street_address"
+    t.string   "city"
+    t.string   "state_code"
+    t.string   "zip_code"
+    t.string   "drivers_license"
   end
 
   create_table "locations", force: :cascade do |t|

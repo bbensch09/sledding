@@ -105,6 +105,26 @@
               <label>Phone</label> <span class="text-smaller"></span>
               <%= f.text_field :phone_number, placeholder: 'xxx-xxx-xxxx', class: 'form-control', required:true, include_blank:false %>
             </div>
+            <div class="col-md-6">
+              <label>Address</label> <span class="text-smaller"></span>
+              <%= f.text_field :street_address, placeholder: '1234 StreetName', class: 'form-control', required:true, include_blank:false %>
+            </div>
+            <div class="col-md-6">
+              <label>City</label> <span class="text-smaller"></span>
+              <%= f.text_field :city, placeholder: 'San Francisco', class: 'form-control', required:true, include_blank:false %>
+            </div>
+            <div class="col-md-3">
+              <label>State</label> <span class="text-smaller"></span>
+              <%= f.text_field :state_code, placeholder: 'CA', class: 'form-control', required:true, include_blank:false %>
+            </div>
+            <div class="col-md-3">
+              <label>Zip Code</label> <span class="text-smaller"></span>
+              <%= f.text_field :zip_code, placeholder: '94102', class: 'form-control', required:true, include_blank:false %>
+            </div>
+            <div class="col-md-6">
+              <label>Driver's License #</label> <span class="text-smaller"></span>
+              <%= f.text_field :street_address, placeholder: 'D555-1111', class: 'form-control', required:false, include_blank:false %>
+            </div>
 
           </div>
           <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
@@ -122,12 +142,6 @@
                 <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
           </div>
-
-          <div class="row">
-          </div>
-
-          <h4>Student <strong>Info</strong></h4>
-
           <div id='lesson_students_input'>
             <%= f.semantic_fields_for :students do |student| %>
               <%= render 'student_fields', f: student %>
@@ -139,19 +153,38 @@
             </h4>
             </div>
             <%= f.semantic_errors :students %>
+          </div>          
+
+          <div class="row">
           </div>
 
-          <div class="col-md-6">
-            <label>How did you first hear about Granlibakken?</label>
-            <%= f.select :how_did_you_hear, [['From a friend',1],['Facebook',2],['Google',3],['I took a previous lesson',10],['From a postcard',4],['From someone at Homewood',5],['Tahoe Daves',6],['Ski Butlers',7],['Yelp',8],['Snowglers',9],['Other',100]], {}, {class: 'form-control', required:true, include_blank:false} %>
-          </div>
-          <div class="col-md-6">
+          <hr>
+
+          <h4>Release of Liability <strong></strong></h4>
+
+          <div class="col-md-12">
             <span class="remember-box checkbox ">
               <label for="rememberme">
-                  <%= f.check_box :terms_accepted, id: "rememberme", required: true  %>I agree to the <span><a href="/terms_of_service" target="_blank">Terms and Conditions</a></span>
+                  <%= f.check_box :terms_accepted, id: "rememberme", required: true  %>
+                  I understand and am aware that the snow saucer furnished could be HAZARDOUS to my well-being while snow sledding. I understand that connecting two saucers together or creating a chain of saucers is not permitted, except parent-child, when a child is incapable to sled by himself. I have read and agree to the <span><a href="/release_of_liability" target="_blank" class="black-link">Release of Liability</a></span> outlined here. By checking this box, I AGREE TO RELEASE FROM ANY LEGAL LIABILITY AND AGREE NEVER TO SUE Granlibakken Resort, and their respective owners, investors, members, managers, directors, employees, representatives, landowners and affiliated companies  for any damage, injury or death to me and/or my child arising from participation in the activities or use the facilities of Granlibakken, regardless of cause. Addtionally, I have read and agree to the <span><a href="/terms_of_service" target="_blank" class='black-link'>Terms of Service</a></span> of this website.
               </label>
             </span>
-        </div>
+          </div>
+
+          <div class="row">
+          </div>
+
+
+          <h4>Optional Information<strong></strong></h4>
+
+          <div class="col-md-12">
+            <label>Do you have a lodging reservation at Granlibakken as well?</label>
+            <%= f.select :lodging_guest, [['No, I have other accommodations.', false],['Yes, I have already made my reservation.', true]], {}, {class: 'form-control needs-rental', required:false, include_blank:true} %>
+          </div>
+          <div class="col-md-12 lodging-reservation-input hidden">
+              <label>Room Reservation ID</label> <span class="text-smaller"></span>
+              <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:true, include_blank:"Enter your room reservation id" %>
+          </div>          
 
           <div class="col-md-9">
           <% if @lesson.state == 'new' %>

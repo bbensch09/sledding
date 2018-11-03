@@ -117,6 +117,8 @@ Rails.application.routes.draw do
   resources :lesson_times
   devise_for :users, controllers: { registrations: 'users/registrations', confirmations: 'users/registrations', omniauth_callbacks: "users/omniauth_callbacks" }
 
+  # release of liability views
+  get 'release_of_liability/:id' => 'welcome#release_of_liability', as: :release_of_liability
   #snowschoolers admin views
   get 'admin_users' => 'welcome#admin_users'
   get 'admin_edit/:id' => 'welcome#admin_edit', as: :admin_edit_user

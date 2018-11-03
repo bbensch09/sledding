@@ -7,6 +7,11 @@ class WelcomeController < ApplicationController
 
     include ApplicationHelper
 
+  def release_of_liability
+      @lesson = Lesson.find(params[:id])
+      render 'release_of_liability'
+  end
+
   def new_hire_packet
     file = "public/Homewood-Hire-Packet-2016-2017.pdf"
     if File.exists?(file)

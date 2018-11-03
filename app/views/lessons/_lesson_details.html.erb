@@ -1,38 +1,39 @@
-<header class="page-header">
-  <h2 id="lesson-details-header">Ticket Status</h2>
-</header>
 <div id='full-details-container'>
   <%if @lesson.public_feedback_for_student %>
       <%= render partial: 'lessons/confirmed_time_and_feedback' %>
   <% end %>
 
-  <div class="details-info-box">
+  <div class="details-info-box">    
+
+    <h3><b>Summary</b></h3>
     <% if @lesson.deposit_status == 'confirmed' || @lesson.date == Date.today %>
-    <p>
-      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number to a staff member as proof of payment. 
-    </p>
-
+      <p>
+        Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number to a staff member as proof of payment. 
+      </p>
     <% end %>
-
-    <h3> Summary</h3>
 
     <div class='row'>
 
       <div class="col-md-12 col-xs-12">
       <h4 class="slot-details-mobile">
-        <span class="lesson-detail-topic">Requester:</span> <%= @lesson.requester_name %> <br>
-        <span class="lesson-detail-topic">Location:</span>  <%= @lesson.location.name %><br>
+        <span class="lesson-detail-topic">Reservation Name:</span> <%= @lesson.requester_name %> <br>
+        <span class="lesson-detail-topic">Number of tickets:</span>  <%= @lesson.students.count %><br>
         <span class="lesson-detail-topic">Date:</span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
         <% if @lesson.package_info && @lesson.package_info.length > 1 %>
           <span class="lesson-detail-topic">Adjustments:</span>  <%= @lesson.package_info %>
           <br><br>                  
         <% end %>
-        <span class="lesson-detail-topic">Objectives:</span> <br> <%= @lesson.objectives %>
+        <span class="lesson-detail-topic">Reservation Status: <%=@lesson.state%> <br>
+        <span class="lesson-detail-topic"> <%= link_to 'View Release of Liability', release_of_liability_path(@lesson.id), class:"btn btn-small btn-default", target:"_blank" %><br>
+
       </h4>
       </div>
     </div>
   </div>
 
+  <div class="details-info-box">
+      <%= render partial: 'sled_hill_details' %>
+  </div>
   <div class="details-info-box">
       <%= render partial: 'price_details' %>
   </div>

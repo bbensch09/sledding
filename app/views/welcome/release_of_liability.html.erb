@@ -1,0 +1,57 @@
+<div class="container">
+<h1>
+	GRANLIBAKKEN SLEDDING & SKI HILL 2017/18 SEASON
+</h1>
+<h4>
+THIS DOCUMENT HAS BEEN DIGITALLY GENERATED AND SIGNED ON <span class="green-text"><%= @lesson.updated_at.strftime("%b %-d %y at %I:%M %p") %></span>
+</h4>
+<hr>
+<p>
+	PLEASE READ CAREFULLY BEFORE SIGNING. THIS IS A RELEASE OF LIABILITY AND WAIVER OF CERTAIN LEGAL RIGHTS.
+</p>
+
+<p>
+Full Name: <span class="release-of-liability-input"> <%= @lesson.requester_name %> </span>
+<br>Address: <span class="release-of-liability-input"> <%= @lesson.street_address %> </span>					  
+<br><span class="release-of-liability-input"> <%= @lesson.city %>, <%= @lesson.state_code %> <%= @lesson.zip_code %> </span>
+<br>Driver’s License #: <span class="release-of-liability-input"> <%= @lesson.drivers_license %> </span>	
+<br>Phone: <span class="release-of-liability-input"> <%= @lesson.phone_number %> </span>
+
+</p>
+
+<p>
+I accept for use, as is, the equipment on this form and accept full responsibility for its care while in my possession. I agree to hold harmless, release, and indemnify Granlibakken Sledding Hill and its owners, agents and employees, as well as the equipment manufacturers and distributors, for all loss or damage I may cause to this equipment, except reasonable wear and tear. I acknowledge and agree to equipment manufacturer clause “This product does not steer nor have brakes and is considered unpredictable. Product should ONLY be used on small hills with a long, flat open area at the bottom for ease of stopping. This product should never be used in areas with trees, rocks, roadways, bystanders, or any other obstacles. Should not be used by children unless accompanied by a competent adult.” I understand and am aware that the snow saucer furnished could be HAZARDOUS to my well-being while snow sledding. I understand that connecting two saucers together or creating a chain of saucers is not permitted, except parent- child, when a child is incapable to sled by himself.
+<br>
+<br>
+I agree to hold harmless, release, defend and indemnify Granlibakken Sledding Hill and its owners, agents and employees, as well as the equipment manufacturers and distributors, for any and all loss or damage I may sustain or cause to person or property while engaged in snow sled-related or other winter sports activities at Granlibakken Ski Hill. This includes, but is not limited to, any and all claims for personal injury, death and/or property damage that may arise out of the use of the Granlibakken Sledding & Hill, or any equipment, regardless of whether such loss or damage be caused to myself or to others.
+<br>
+<br>
+I hereby release Granlibakken Sledding/Ski Hill and its owners, agents and employees, as well as the equipment manufacturers and distributors, from any and all liability to me or my property resulting from their own acts or negligence. I understand that Granlibakken Sledding Hill and its owners, agents and employees, as well as the equipment manufacturer and distributors, are not responsible for the consequences of their own negligence, that is their failure to use reasonable care in any way in operation of this rental center and sledding hill, as well as the installation, maintenance, selection, adjustment and use of this rental equipment. I acknowledge that I am freely and expressly assuming and accepting any and all risks of property damages, personal injury or death as the user of this equipment and facility.
+<br>
+<br>
+I understand and am aware that sledding is a HAZARDOUS ACTIVITY. I understand that sledding and the use of snow saucers involves a risk of injury to any and all parts of my body or death and/or damage to my property. I hereby freely and expressly assume and accept responsibility for any and all risks of injury or death that might be associated with participating in this activity or use of the facilities at Granlibakken and participating in the activities beyond the area boundary. I understand that I may encounter various manmade and natural terrain features during participation. I understand that I must inspect the elements and terrain before sledding to evaluate the risk and degree of difficulty before participating. I understand that throughout the day snow conditions and terrain features will change. 
+In consideration for being permitted to participate in the activities, I AGREE TO RELEASE FROM ANY LEGAL LIABILITY AND AGREE NEVER TO SUE Granlibakken Resort, and their respective owners, investors, members, managers, directors, employees, representatives, landowners and affiliated companies  for any damage, injury or death to me and/or my child arising from participation in the activities or use the facilities of Granlibakken, regardless of cause, INCLUDING the ALLEGED NEGLIGENCE of Granlibakken. I further agree to defend, indemnify and hold harmless Granlibakken for any claims, lawsuits, damages, attorney fees, costs of judgements arising out of my participation in the activities or use of facilities. I UNDERSTAND THIS RELEASE OF LIABILITY THAT IS VALID FOREVER, including any time I choose to participate in the activities of use the facilities of Granlibakken. I understand that this release will prevent me, my child, or heirs from filling suit or making any claim for damages in the event of injury or death from my participation in the activities. 
+<br>
+<br>
+IN THE EVENT ANY SECTION OF THIS RELEASE IS FOUND TO BE UNENFORCEABLE, THE REMAINING TERMS SHALL BE FULLY ENFORCEABLE.
+THIS RELEASE SHALL BE BINDING TO THE FULLEST EXTENT PERMITTED BY LAW. The release shall be binding upon my assignees, subrogors, distributes, heirs, next-of-kin, executors, personal representatives, and administrators and may be pled by Granlibakken Ski & Sledding Hill as a complete bar and defense against any claim, demand, action or causes of action by or on behalf of the Renter. I have read the above paragraphs and fully understand them. I have made no representations to Granlibakken Ski Hill regarding my name, address or age. I CONTRACTUALLY AGREE that any and ALL DISPUTES arising from my participation in the activity or use of this equipment WILL BE GOVERNED BY THE LAWS OF THE STATE OF CALIFORNIA and EXCLUSIVE JURISDICTION thereof will be in the state court residing in Placer County where the alleged tort occurred or the federal courts of the occurred or the federal courts of the State of California.
+<br>
+<br>
+I agree that there have been no warranties, expressed or implied, which have been made to me beyond the information written on this form. I, the undersigned, acknowledge that I have read this agreement and I understand its contents. I understand that my signature below expressly waives any rights I may have to sue Granlibakken Sledding Hill for injuries and damages. Prospective participants under the age of 18 are required to have a parent or legal guardian read and also sign that the minor is in good health, and that there are no special problems associates with the care of the Child. 
+
+</p>
+Participant Names and Ages:   	
+<ul>
+	<% @lesson.students.each do |student| %>
+	<li><span class="release-of-liability-input"> <%=student.name %>, age <%=student.age_range %></span></li>
+	<% end %>
+</ul>
+<p>
+User’s Signature: <span class="signature"> <%= @lesson.requester_name %> </span>
+<br>Date: <span class="release-of-liability-input"> <%= @lesson.updated_at.strftime("%b %-d %y") %></span>
+<br>
+
+</p>
+<div class="buffer"></div>
+<div class="buffer"></div>
+</div>

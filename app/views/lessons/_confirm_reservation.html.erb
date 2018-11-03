@@ -42,7 +42,7 @@
                   <p><%= @lesson.location.name %>  (<a href="https://www.google.com/maps/place/<%=@lesson.location.address%>" ><%=@lesson.location.address%></a>)</p>
                   <br>
               <% if @lesson.lesson_price.nil? %>
-                  <% amount = @lesson.price.to_i*100 %>
+                  <% amount = @lesson.price.to_f*100 %>
                   <p>
                     <%= number_to_currency(@lesson.price) %> 
                   </p>
@@ -57,7 +57,7 @@
                   </p>
               <% else %>
                 <p><%= number_to_currency(@lesson.lesson_price.to_s) %></p>
-                <% amount = @lesson.lesson_price.to_i*100 %>
+                <% amount = @lesson.lesson_price.to_f*100 %>
               <% end %>                  
               <% if @lesson.includes_lift_or_rental_package? || @lesson.is_gift_voucher? %>
                   <br>
@@ -71,7 +71,7 @@
               <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                       data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
                       data-description="Thanks for booking at Granlibakken!"
-                      data-name="Granlibakken Lessons"
+                      data-name="Granlibakken Sledding"
                       data-image="http://granlibakken.com/wp-content/uploads/cropped-tin-g-32x32.png"
                       data-amount=<%= amount %>
                       data-locale="auto"
@@ -79,8 +79,7 @@
               </script>
                   <p class="nonrefundable_disclaimer">
                   <br>
-                    You may cancel or modify your reservation up to 24 hours before the start of your lesson. A $50 charge will be applied for any customer-initiated cancellations made after your reservation has been made. Any cancellation made less than 24 hours before the lesson time will be charged the full amount, regardless of weather conditions. A no-call/no-show will be charged the full amount. 
-                    <!-- If for any reason you are unsatisfied with your Granlibakken experience, please <a class="contact-link" href="mailto:info@granlibakken.com">ask about our 100% satisfaction guarantee.</a> -->
+                    You may cancel or modify your sledding hill ticket up to 24 hours before the day of your reservation. Any cancellation made less than 24 hours before the lesson time will not be refundable, regardless of weather conditions. Please email <a href="mailto:frontdesk@granlibakken.com">frontdesk@granlibakken.com</a> to initiate a cancellation.
                 </p>
             </div>
         </article>
