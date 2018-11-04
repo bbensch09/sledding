@@ -21,14 +21,14 @@
                 <h1 id="homeHeading" class="home-header"><b>SLEDDING </b> at <b>GRANLIBAKKEN</b><br>
                 </h1>
                 <div class="shadow-box-highlight">
-                    <h2>
+                    <h3>
                         <span class="smaller-text">Family Friendly. </span> <br>
                         <span class="smaller-text">Lowest Prices. </span> <br>
-                        <span class="smaller-text">Book Online Today! </span> <br>
                         <!-- <span class="smaller-text">Tickets now on Sale!</span> -->
-                    </h2>
+                    </h3>
+                <h4><a href="#buy-tickets" class="btn btn-primary btn-xl page-scroll">Book Online</a></h4>
+                <h4><span class="smaller-text">Buy tickets online to save time & skip the line.</span></h4>
                 <hr class="">
-                <h4><a href="#buy-tickets" class="btn btn-primary btn-xl page-scroll">Buy Online</a></h4>
                 <div class="">
                     <p class="welcome-subheader"> Granlibakken is Tahoe's oldest continuously operating ski areas, founded in the 1920s. 
                         <br class="hidden-unless-desktop"> 
@@ -47,7 +47,19 @@
     </div>
 </section>
 
-<section id="daily-update" class="bg-primary hidden">
+<section class="bg-white" id="sledding-tickets">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-xs12">
+                <%= render "lessons/lesson_new_form" %>
+                <hr class="light text-center">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="daily-update" class="bg-primary">
     <div class="row">
         <div class="col-lg-12 col-xs-12">
             <h2 class="center weather-subheader">Check out the current weather below, or read the 
@@ -62,19 +74,9 @@
                 <!-- <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
             </div>
         </div>
-    </section>
-
-
-<section class="bg-white" id="sledding-tickets">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-xs12">
-                <%= render "lessons/lesson_new_form" %>
-                <hr class="light text-center">
-            </div>
-        </div>
-    </div>
 </section>
+
+
 
 <section class="bg-primary" id="about">
     <div class="container">
