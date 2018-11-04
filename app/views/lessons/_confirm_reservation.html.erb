@@ -8,66 +8,48 @@
                 <p><%= flash[:error] %></p>
               </div>
             <% end %>
+          </article>
+<!-- <div class="row">
+    <div class="col-xs-4">
+        <h1>TEST TITLE</h1>
+    </div>
+    <div class="col-xs-8">
+        <h1>TEST Section</h1>
+    </div>       
+</div>    -->      
+
             <h1>Authorize Payment to Secure your Reservation</h1>
-            <div id="booking-details-container">
-              <h4 class="booking-details-labels">
-                <p><b>Lesson Date:</b></p>
-                <br>
-                <% if @lesson.num_days && @lesson.num_days > 1 %>
-                  Number of consecutive days:
-                <% end %>
-                <br>
-                <p><b>Meeting Location:</b></p>
-                <br>
-                <p><b>Price:</b></p>
-                <br>
-                <%if @lesson.includes_lift_or_rental_package? || @lesson.is_gift_voucher? %>
-                <p><b>Description:</b></p>
-                <br>
-                <% end %>
-              <%= link_to 'Edit Lesson', edit_lesson_path(@lesson), class: "btn btn-primary" %>
-              </h4>
-              <h4 class="booking-details">
-                <% if @lesson.is_gift_voucher? %>
-                  <p>TBD</p>
-                  <br>
-                <% else %>
-                  <p><%= @lesson.lesson_time.date.strftime("%A %b #{@lesson.lesson_time.date.day.ordinalize}, %Y") %></p>
-                  <br>
-                <% end %>
-                <% if @lesson.num_days && @lesson.num_days > 1 %>
-                  <p><%= @lesson.num_days %></p>
-                <% end %>
-                  <br>
-                  <p><%= @lesson.location.name %>  (<a href="https://www.google.com/maps/place/<%=@lesson.location.address%>" ><%=@lesson.location.address%></a>)</p>
-                  <br>
-              <% if @lesson.lesson_price.nil? %>
+            <div id="booking-details-container" class="booking-details">
+              <div class="row">
+                <div class="col-xs-3">
+                  <b>Date:</b>
+                </div>
+                <div class="col-xs-9">
+                    <%= @lesson.lesson_time.date.strftime("%A %b #{@lesson.lesson_time.date.day.ordinalize} %Y") %>
+                </div>
+              </div>                              
+              <div class="row">
+                <div class="col-xs-3">
+                  <b>Price:</b>
+                </div>
+                <div class="col-xs-9">
                   <% amount = @lesson.price.to_f*100 %>
-                  <p>
-                    <%= number_to_currency(@lesson.price) %> 
-                  </p>
-                  <p>
-                      <span class="italic text-smaller">
-                        <ul>
-                          <% @lesson.students.each do |student| %>
-                            <li><%= student.name %> (age <%= student.age_range %>): <%= number_to_currency(@lesson.price_per_student) %></li>
-                          <% end %>
-                        </ul>
-                      </span>
-                  </p>
-              <% else %>
-                <p><%= number_to_currency(@lesson.lesson_price.to_s) %></p>
-                <% amount = @lesson.lesson_price.to_f*100 %>
-              <% end %>                  
-              <% if @lesson.includes_lift_or_rental_package? || @lesson.is_gift_voucher? %>
+                  <%= number_to_currency(@lesson.price) %>
                   <br>
-                  <p><%= @lesson.package_info %></p>
-              <% end %>
-              </h4>
+                      <ul>
+                        <% @lesson.students.each do |student| %>
+                            <li><%= student.name %>, age <%= student.age_range %></li>
+                        <% end %>
+                      </ul>
+                </div>
+              </div>  
             </div>
-            <div class="col-md-12"
+
+              
+            <div class="col-md-12">
               <label class="amount">
               </label>
+              <%= link_to 'Edit Reservation', edit_lesson_path(@lesson), class: "center btn btn-sm btn-primary" %>
               <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                       data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
                       data-description="Thanks for booking at Granlibakken!"
@@ -77,12 +59,11 @@
                       data-locale="auto"
                       data-zip-code="true">
               </script>
-                  <p class="nonrefundable_disclaimer">
+                <p class="nonrefundable_disclaimer">
                   <br>
                     You may cancel or modify your sledding hill ticket up to 24 hours before the day of your reservation. Any cancellation made less than 24 hours before the lesson time will not be refundable, regardless of weather conditions. Please email <a href="mailto:frontdesk@granlibakken.com">frontdesk@granlibakken.com</a> to initiate a cancellation.
                 </p>
             </div>
-        </article>
 
         <% end %>
 <div class="col-md-12">

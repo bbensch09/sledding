@@ -1,5 +1,14 @@
+.sled-hill-map{
+  max-width: 100%;
+  height:auto;
+}
 .nonrefundable_disclaimer{
   font-size: 0.8em;
+}
+.payment-container{
+  display:flex;
+  min-height: 200px;
+  width: 100%;
 }
 #booking-details-container{
   display: flex;
@@ -12,7 +21,7 @@
   border-top: 2px solid black;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
-  padding: 20px;
+  padding: 10px;
 }
 .booking-details-labels p{
   font-size: 15px;
@@ -25,6 +34,7 @@
   flex-direction: column;
   align-items: flex-start;
   border-top: 2px solid black;
+  border-left: 2px solid black;
   border-right: 2px solid black;
   border-bottom: 2px solid black;
   padding: 20px;

@@ -123,7 +123,7 @@
             </div>
             <div class="col-md-6">
               <label>Driver's License #</label> <span class="text-smaller"></span>
-              <%= f.text_field :street_address, placeholder: 'D555-1111', class: 'form-control', required:false, include_blank:false %>
+              <%= f.text_field :drivers_license, placeholder: 'D555-1111', class: 'form-control', required:false, include_blank:false %>
             </div>
 
           </div>
@@ -160,13 +160,13 @@
 
           <hr>
 
-          <h4>Release of Liability <strong></strong></h4>
+          <h4><strong>Release of Liability</strong></h4>
 
           <div class="col-md-12">
             <span class="remember-box checkbox ">
               <label for="rememberme">
                   <%= f.check_box :terms_accepted, id: "rememberme", required: true  %>
-                  I understand and am aware that the snow saucer furnished could be HAZARDOUS to my well-being while snow sledding. I understand that connecting two saucers together or creating a chain of saucers is not permitted, except parent-child, when a child is incapable to sled by himself. I have read and agree to the <span><a href="/release_of_liability" target="_blank" class="black-link">Release of Liability</a></span> outlined here. By checking this box, I AGREE TO RELEASE FROM ANY LEGAL LIABILITY AND AGREE NEVER TO SUE Granlibakken Resort, and their respective owners, investors, members, managers, directors, employees, representatives, landowners and affiliated companies  for any damage, injury or death to me and/or my child arising from participation in the activities or use the facilities of Granlibakken, regardless of cause. Addtionally, I have read and agree to the <span><a href="/terms_of_service" target="_blank" class='black-link'>Terms of Service</a></span> of this website.
+                  I understand that the snow saucer furnished could be HAZARDOUS to my well-being while snow sledding. I understand that connecting two saucers together or creating a chain of saucers is not permitted, except parent-child, when a child is incapable to sled by himself. I have read and fully agree to the <span><a href="/release_of_liability" target="_blank" class="black-link">Release of Liability</a></span>terms, and by checking this box, I AGREE TO RELEASE FROM ANY LEGAL LIABILITY AND AGREE NEVER TO SUE GRANLIBAKKEN RESORT for any damage, injury or death to me and/or my child arising from participation in the activities or use the facilities of Granlibakken, regardless of cause. Addtionally, I have read and agree to the <span><a href="/terms_of_service" target="_blank" class='black-link'>Terms of Service</a></span> of this website.
               </label>
             </span>
           </div>
@@ -183,7 +183,7 @@
           </div>
           <div class="col-md-12 lodging-reservation-input hidden">
               <label>Room Reservation ID</label> <span class="text-smaller"></span>
-              <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:true, include_blank:"Enter your room reservation id" %>
+              <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
           </div>          
 
           <div class="col-md-9">
