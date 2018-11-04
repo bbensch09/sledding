@@ -185,12 +185,7 @@
           </div>          
 
           <div class="col-md-9">
-          <% if @lesson.state == 'new' %>
             <% button_text = "Continue to Payment" %>
-            <% else %>
-            <h4>Update <strong> Lesson Request</strong></h4>
-            <% button_text = "Finalize Reservation" %>
-          <% end %>
           </div>
           <div class="col-md-3">
             <%= f.input :state, as: :hidden, input_html: { value: @state } %>
