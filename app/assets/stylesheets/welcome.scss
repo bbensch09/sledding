@@ -1194,11 +1194,17 @@ section.pricing-new-lesson{
   padding-right: 15px;
 }
 
+/*DESKTOP ONLY ADJUSTMENTS*/
 
 @media (min-width: 768px) {
 .hidden-unless-mobile{
     display: none;
   }
+
+.smaller-text{
+  font-size: 1.2em;
+} 
+
 }
 
 /*BEGIN MOBILE STYLE ADJUSTMENTS*/
