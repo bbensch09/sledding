@@ -282,9 +282,7 @@ class LessonsController < ApplicationController
         @lesson.state = 'confirmed'
     end
     if @lesson.save
-      @user_email = current_user ? current_user.email : "unknown"
-      # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
-      LessonMailer.send_lesson_booking_notification(@lesson).deliver!
+      LessonMailer.sledding_tickets_confirmation(@lesson).deliver!
       flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Ticket deposit successfully charged"
@@ -341,8 +339,8 @@ class LessonsController < ApplicationController
 
   def show
     @lesson = Lesson.find(params[:id])
-    LessonMailer.track_apply_visits.deliver!
-    LessonMailer.send_lesson_booking_notification(@lesson).deliver!
+    # used for QA of email system
+    # LessonMailer.track_apply_visits.deliver!
     if @lesson.state == "ready_to_book"
       GoogleAnalyticsApi.new.event('lesson-requests', 'ready-for-deposit')
     end
