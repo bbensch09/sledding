@@ -33,18 +33,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def heap_uuid
-    uuid = "#{self.id}-#{self.created_at.to_i}-#{self.email}"
-  end
-
-  def heap_random_ltv
-    if rand(2) == 1
-      ltv = [89,198, 449, 559, 1000].sample
-    else
-      ltv = 0
-    end
-  end
-
   def set_email_as_name
     self.name = self.email
     self.save

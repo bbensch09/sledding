@@ -5,7 +5,7 @@
 
   <div class="details-info-box">    
 
-    <h3><b>Summary</b></h3>
+    <h3><b>Booking Summary</b></h3>
     <% if @lesson.deposit_status == 'confirmed' || @lesson.date == Date.today %>
       <p>
         Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number to a staff member as proof of payment. 
@@ -24,7 +24,7 @@
           <br><br>                  
         <% end %>
         <span class="lesson-detail-topic">Reservation Status: <%=@lesson.state%> <br>
-        <span class="lesson-detail-topic"> <%= link_to 'View Release of Liability', release_of_liability_path(@lesson.id), class:"btn btn-small btn-default", target:"_blank" %><br>
+        <span class="lesson-detail-topic"> <%= link_to 'View Release of Liability', release_of_liability_path(@lesson.id), class:"navy-link", target:"_blank" %><br>
 
       </h4>
       </div>
