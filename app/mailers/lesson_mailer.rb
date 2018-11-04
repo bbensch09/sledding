@@ -3,7 +3,7 @@ class LessonMailer < ActionMailer::Base
 
   def track_apply_visits(email="Unknown user")
       @email = email
-      mail(to: 'brian@snowschoolers.com', subject: "Pageview at /apply - #{email}.")
+      mail(to: 'brian@snowschoolers.com', subject: "TESTING: tracked pageview at lessons#show")
   end
 
   def notify_admin_preseason_request(request)

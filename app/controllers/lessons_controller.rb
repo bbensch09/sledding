@@ -283,9 +283,8 @@ class LessonsController < ApplicationController
     end
     if @lesson.save
       @user_email = current_user ? current_user.email : "unknown"
-      LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
-
-      # LessonMailer.send_lesson_booking_notification(@lesson).deliver!
+      # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
+      LessonMailer.send_lesson_booking_notification(@lesson).deliver!
       flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Ticket deposit successfully charged"
@@ -329,7 +328,7 @@ class LessonsController < ApplicationController
       # GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
-      LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
+      # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
       end
       puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
     redirect_to @lesson
@@ -342,6 +341,8 @@ class LessonsController < ApplicationController
 
   def show
     @lesson = Lesson.find(params[:id])
+    LessonMailer.track_apply_visits.deliver!
+    LessonMailer.send_lesson_booking_notification(@lesson).deliver!
     if @lesson.state == "ready_to_book"
       GoogleAnalyticsApi.new.event('lesson-requests', 'ready-for-deposit')
     end
