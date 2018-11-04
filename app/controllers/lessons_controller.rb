@@ -282,7 +282,10 @@ class LessonsController < ApplicationController
         @lesson.state = 'confirmed'
     end
     if @lesson.save
-      LessonMailer.send_lesson_booking_notification(@lesson).deliver!
+      @user_email = current_user ? current_user.email : "unknown"
+      LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
+
+      # LessonMailer.send_lesson_booking_notification(@lesson).deliver!
       flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
       puts "!!!!!!!! Ticket deposit successfully charged"

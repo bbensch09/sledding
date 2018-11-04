@@ -25,7 +25,7 @@ class LessonMailer < ActionMailer::Base
   def notify_admin_lesson_full_form_updated(lesson,email)
       @lesson = lesson
       @user_email = email
-      mail(to: 'brian@snowschoolers.com', subject: "Granlibakken Lesson ready for deposit - #{@lesson.date.strftime("%b %-d")}.")
+      mail(to: 'brian@snowschoolers.com', subject: "Granlibakken - sled tickets ready for purchase - #{@lesson.date.strftime("%b %-d")}.")
   end
 
   def notify_admin_beta_user(beta_user)
@@ -147,9 +147,9 @@ class LessonMailer < ActionMailer::Base
   def send_lesson_booking_notification(lesson)
     @lesson = lesson
     if @lesson.requester && lesson.requester.email
-      mail(to: @lesson.requester.email, cc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+      mail(to: @lesson.requester.email, cc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
     elsif @lesson.guest_email
-      mail(to: @lesson.guest_email, bcc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Thanks for reserving your Group Lesson at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+      mail(to: @lesson.guest_email, bcc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
     end
   end
 
