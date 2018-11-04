@@ -8,7 +8,7 @@
       <div class="new-lesson-caption" id="buy-tickets">
 
         <div class="block">
-          <p class="cta-subtext black-text">Select Date to Get Started!</p>
+          <p class="cta-subtext center black-text">Select date to get started.</p>
         </div>
         <h1 class="warning">        
         	<%= f.semantic_errors :lesson %>
@@ -24,12 +24,12 @@
                 <span class="search-area-icon"></span>
               </div>
 
-             <% if current_user.nil? %>
+<!--              <% if current_user.nil? %>
               <div class="col-md-4 guest-email-input">
                 <%= f.input :guest_email, as: :string, placeholder: "your_email@example.com", label: false %>
               </div>
               <% end %>
-            <% end %>
+ -->            <% end %>
 
               <%= f.input :state, as: :hidden, input_html: { value: 'new' } %>
               <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
