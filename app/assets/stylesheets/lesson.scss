@@ -1,3 +1,6 @@
+.full-width{
+  width:100%;
+}
 .student-list-confirm-reservation li{
   font-size: 0.8em;
   padding: 0 0 0 0px;
@@ -186,6 +189,12 @@ tr.tickets-table{
   font-size: 1.6em;
   line-height: 1.6;
 }
+.booking-details{
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 }
 
 /*MOBILE ADJUSTMENTS*/

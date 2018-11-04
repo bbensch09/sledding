@@ -411,7 +411,7 @@ class Lesson < ActiveRecord::Base
     else
       price = product.price * [1,self.students.count].max
     end
-    if self.lodging_guest == true
+    if self.lodging_guest == true && self.lodging_reservation_id.length == 6
       price = price *0.5
     end
     return price.to_s
