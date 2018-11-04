@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <% if @lesson.requester_name %>
+      <p>Hello <%= @lesson.requester_name.split(" ").first %>,</p>
+      <% else %>
+      <p>Hello,</p>
+    <% end %>
+
+    <p>
+      Thank you for booking your tickets online for the Granlibakken Ski Hill!
+    </p>
+
+    <h4>Reservation Receipt</h4>
+    <p>
+      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please save this email, as you will need to show your confirmation number when you arrive to the sledding hill as your proof of payment. Please also find your reservation details below, including names & ages of all participants sin your reservation. 
+    </p>
+
+    <%= render partial: 'lessons/student_details' %>
+
+    <%= render partial: 'lessons/sled_hill_details' %>
+    
+    <p>
+      If you need to make any changes to your reservation, please visit: <a href="<%= lesson_url(@lesson)%>"</a><%=lesson_url(@lesson) %>.
+    </p>
+
+    <p>If you have any questions or if there is anything we can do to help you prepare for your upcoming visit, please don't be afraid to reach out.</p>
+    <p>
+      - The Granlibakken Team <br>      
+    </p>
+  </body>
+</html>
