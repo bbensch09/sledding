@@ -280,13 +280,18 @@ class LessonsController < ApplicationController
           )
         @lesson.deposit_status = 'confirmed'
         @lesson.state = 'confirmed'
-        @lesson.save
+    end
+    if @lesson.save
       LessonMailer.send_lesson_booking_notification(@lesson).deliver!
       flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
-      puts "!!!!!!!! Lesson deposit successfully charged"
+      puts "!!!!!!!! Ticket deposit successfully charged"
+      redirect_to @lesson
+    else
+      determine_update_state
+      puts "!!!!!Ticket NOT saved, update notices determined by 'determine update state' method...?"
+      redirect_to @lesson
     end
-    redirect_to @lesson
   end
 
   def update
