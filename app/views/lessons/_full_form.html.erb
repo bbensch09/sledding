@@ -2,7 +2,6 @@
   <div class="white">
 
     <header class="page-header">
-      <h1>Update Your Lesson</h1>
     </header>
 
     <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
@@ -90,9 +89,8 @@
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
             <div class="col-md-12">
-              <h4>Book as a <strong>Guest</strong> | Or <a href="#" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Sign-in to your Account</a></h4>
-                  <label>Email</label>
-                  <%= f.email_field :guest_email, placeholder: "email@example.com", class: "form-control", type: 'email', required:true, label: false %>
+              <label>Email</label>
+                <%= f.email_field :guest_email, placeholder: "email@example.com", class: "form-control", type: 'email', required:true, label: false %>
             </div>
           </div>
           <% end %>
@@ -103,7 +101,7 @@
             </div>
             <div class="col-md-6">
               <label>Phone</label> <span class="text-smaller"></span>
-              <%= f.text_field :phone_number, placeholder: 'xxx-xxx-xxxx', class: 'form-control', required:true, include_blank:false %>
+              <%= f.text_field :phone_number, as: :number, placeholder: 'xxx-xxx-xxxx', class: 'form-control', required:true, include_blank:false %>
             </div>
             <div class="col-md-6">
               <label>Address</label> <span class="text-smaller"></span>
@@ -119,7 +117,7 @@
             </div>
             <div class="col-md-3">
               <label>Zip Code</label> <span class="text-smaller"></span>
-              <%= f.text_field :zip_code, placeholder: '94102', class: 'form-control', required:true, include_blank:false %>
+              <%= f.text_field :zip_code, as: :number, placeholder: '94102', class: 'form-control', required:true, include_blank:false %>
             </div>
             <div class="col-md-6">
               <label>Driver's License #</label> <span class="text-smaller"></span>
