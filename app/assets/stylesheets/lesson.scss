@@ -79,8 +79,7 @@
   margin-bottom: 20px;
 }
 .instructors-table tbody tr td, .instructors-table thead tr th {
-    padding-left: 20px;
-    font-size: 0.9em;
+    padding-left: 10px;
 }
 .instructors-table thead {
   font-size: 1.3em;
@@ -216,21 +215,22 @@ tr.tickets-table{
 }
 .btn-sledding-admin{
   font-size: 1em;
+  padding: 3px;
   font-weight: 300 !important;
   background-color: gray;
-}  
-.table-word-wrap{
-  word-break:break-all;
-}
+} 
 .instructors-table{
   padding: 2 2 2 2px;
   border: 1px solid gray;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.instructors-table tbody tr td, .instructors-table thead tr th {
+.instructors-table thead tr th {
     padding-left: 20px;
     font-size: 0.8em;
+}
+.instructors-table tbody tr td, {
+    padding-left: 20px;
 }
 .instructors-table thead {
   font-size: 1.2em;
@@ -304,7 +304,17 @@ h3{
   padding-right: 15px;
   padding-left: 15px;
 }
-
+.roster-smaller{
+  color:#3b5998;
+  font-size: 0.7em;
+}
+.email-smallest{
+  font-size: 0.6em !important;
+  line-height: 1.1;
+} 
+.table-word-wrap{
+  word-break:break-all;
+}
 
 
 }
