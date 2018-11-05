@@ -22,6 +22,7 @@ class Lesson < ActiveRecord::Base
   
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
+  validate :room_reservation_validator, on: :update
 
 
   #Check to ensure an instructor is available before booking
@@ -45,6 +46,13 @@ class Lesson < ActiveRecord::Base
       ticket_count = self.students.count.to_s
       id = self.id.to_s.rjust(4,"0")
       confirmation_number = l+'-'+id+'-'+date+'-'+ticket_count
+  end
+
+  def self.mark_all_confirmed
+    Lesson.all.to_a.each do |lesson|
+      lesson.state = 'confirmed'
+      lesson.save!
+    end
   end
 
   def includes_rentals?
@@ -82,8 +90,8 @@ class Lesson < ActiveRecord::Base
   end
 
   def name
-    if self.requester
-      return self.requester.name
+    if self.requester_name
+      return self.requester_name
     elsif self.guest_email
       return self.guest_email
     else
@@ -966,6 +974,16 @@ class Lesson < ActiveRecord::Base
       end
     end
     return true
+  end
+
+  def room_reservation_validator
+    puts "!!!!!checking for valid resrvation id"
+    if lodging_reservation_id.length == 6 || lodging_guest == false
+      return true
+    else
+      # errors.add(:lesson, "You must enter a valid room reservation id")
+      false
+    end
   end
 
   def send_lesson_request_to_instructors

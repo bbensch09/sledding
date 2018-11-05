@@ -9,7 +9,7 @@ class WelcomeController < ApplicationController
 
   def release_of_liability
       @lesson = Lesson.find(params[:id])
-      render 'release_of_liability'
+      render 'release_of_liability', layout: 'liability_release_layout'
   end
 
   def new_hire_packet

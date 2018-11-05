@@ -27,13 +27,16 @@ html, body {
     line-height: 1.2;
     font-size: 1.4em;
 }
+.close{
+  color: #000;
+}
 .signature{
 font-family: 'Herr Von Muellerhoff', cursive;
 font-size: 2em;
-color: blue;
+color: #3b5998;
 }
 .release-of-liability-input{
-  color: blue;
+  color: #3b5998;
 }
 body {
   font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
@@ -43,6 +46,8 @@ body {
 hr {
   border-width: 3px;
   max-width: 50px;
+  border-top: 3px solid #3b5998 !important;
+
 }
 hr.light {
   border-color: white;

@@ -332,7 +332,9 @@ class LessonsController < ApplicationController
     redirect_to @lesson
     else
       determine_update_state
+      @date = @lesson.lesson_time.date
       puts "!!!!!Lesson NOT saved, update notices determined by 'determine update state' method...?"
+      # flash[:error] = 'Please enter a valid reservation id.'
       render 'edit'
     end
   end
@@ -343,11 +345,6 @@ class LessonsController < ApplicationController
     # LessonMailer.track_apply_visits.deliver!
     if @lesson.state == "ready_to_book"
       GoogleAnalyticsApi.new.event('lesson-requests', 'ready-for-deposit')
-    end
-    if @lesson.date <= Date.today && @lesson.review.nil? && @lesson.deposit_status == 'confirmed'
-      @lesson.state = 'Lesson complete, waiting for review.'
-      @lesson.save
-      puts "!!! detected that previously booked lesson should now be complete, now ready for review"
     end
   end
 
