@@ -42,8 +42,9 @@ class Lesson < ActiveRecord::Base
         else
           l = 'XX'
       end
+      ticket_count = self.students.count.to_s
       id = self.id.to_s.rjust(4,"0")
-      confirmation_number = l+'-'+date+'-'+id
+      confirmation_number = l+'-'+id+'-'+date+'-'+ticket_count
   end
 
   def includes_rentals?

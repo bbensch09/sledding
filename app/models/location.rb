@@ -64,7 +64,7 @@ class Location < ActiveRecord::Base
 
   def today_lessons
       lessons = Lesson.where(requested_location:self.id.to_s)
-      lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today && (lesson.completed? || lesson.completable?)}
+      lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today &&lesson.booked?}
   end
 
   def today_revenue

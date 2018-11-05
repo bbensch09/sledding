@@ -10,16 +10,16 @@
     <div class="col-md-3">	
    		<%= text_field_tag :date, params[:date], placeholder: 'Date', id: 'datepicker', class:'navy-text form-control', required: false %>   
    	</div>
-    <div class="col-md-3">
+<!--     <div class="col-md-3">
       <label for="rememberme">
           <%= check_box_tag :gear, params[:gear], false  %> Includes Rental?
       </label>
-   	</div>
+   	</div> -->
 </div>
 <div class="row">
-    <%= submit_tag "Search", class:"btn btn-primary btn-lg page-scroll" %>
-   <a href="/lessons/admin_index" class="btn btn-lg btn-warning"> Clear Filters</a>
-    <%= link_to "Export CSV", lessons_admin_index_path(format: "csv"), class: 'btn btn-lg btn-success' %>
+    <%= submit_tag "Search", class:"btn btn-primary btn page-scroll" %>
+   <!-- <a href="/lessons/admin_index" class="btn btn btn-warning"> Clear Filters</a> -->
+    <%= link_to "Export CSV", lessons_admin_index_path(format: "csv"), class: 'btn btn btn-success' %>
 </div>
     <% end %>
 </div>
