@@ -38,20 +38,15 @@ class Location < ActiveRecord::Base
   end
 
   def lifetime_lessons
-    Lesson.where(requested_location:self.id.to_s).to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
+    lessons = Lesson.where(requested_location:self.id.to_s)
+    lessons.to_a.keep_if{|lesson| lesson.confirmed?}
   end
 
   def lifetime_revenue
     lessons = self.lifetime_lessons
     revenue = 0
     lessons.each do |lesson|
-      if lesson.lesson_cost?
-          revenue += lesson.lesson_cost
-        elsif lesson.lesson_price?
-          revenue += lesson.lesson_price
-        elsif lesson.price.class == Float
-          revenue += lesson.price
-      end
+      revenue += lesson.price.to_f
     end
     return revenue
   end
@@ -64,16 +59,14 @@ class Location < ActiveRecord::Base
 
   def today_lessons
       lessons = Lesson.where(requested_location:self.id.to_s)
-      lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today && (lesson.completed? || lesson.completable?)}
+      lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today &&lesson.confirmed?}
   end
 
   def today_revenue
     lessons = self.today_lessons
     revenue = 0
     lessons.each do |lesson|
-      if lesson.price.class == Float
-        revenue += lesson.price
-      end
+        revenue += lesson.price.to_f
     end
     return revenue
   end

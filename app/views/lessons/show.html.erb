@@ -20,29 +20,6 @@
       <!-- <script src="https://www.smartwaiver.com/m/webpl/f.js?webpl_waiver=584daa0c8f287&webpl_title=Please%20now%20sign%20your%20waiver&webpl_align=Left&webpl_fontsize=20&webpl_background=%2355c9b2&webpl_fontcolor=%23ffffff&webpl_font=Verdana" type="text/javascript"></script> -->
       <% end %>
 
-      <% if @lesson.finalizing? %>
-      <%= render partial: 'confirming_lesson_duration' %>
-      <% end %>
-
-      <% if @lesson.waiting_for_payment? && (current_user == @lesson.requester || current_user && current_user.user_type == "Granlibakken Employee" || (@lesson.guest_email && current_user.nil?) || @lesson.guest_email && current_user && current_user.instructor.nil? ) %>
-      <%= render partial: 'make_payment' %>
-      <% elsif @lesson.waiting_for_payment? && current_user.instructor %>
-      <div class="alert alert-success alert-dismissible fade in" role="alert">
-        <p>Your student has been notified and prompted to complete and provide their review of the lesson.</p>
-      </div>
-      <%= link_to "Edit Lesson Times", mark_lesson_complete_path, method: :put, class: "btn btn-success" %>
-      <% end %>
-
-      <% if @lesson.waiting_for_review? && (current_user == @lesson.requester || @lesson.guest_email || current_user && current_user.user_type == "Granlibakken Employee") %>
-      <%= render partial: 'reviews/form' %>
-      <% elsif @lesson.waiting_for_review? && (current_user.instructor || current_user.user_type == "Granlibakken Employee") %>
-      <%= link_to "Remind student to submit their review", mark_lesson_complete_path, method: :get, class: "btn btn-success" %>
-      <% end %>
-
-      <% if @lesson.confirmable? || @lesson.completable? || @lesson.active? %>
-        <!-- <%= render partial: 'lesson_actions_active' %> -->
-      <% end %>
-
       <%= render partial: 'lesson_details' %>
 
       <% if @lesson.canceled? %>

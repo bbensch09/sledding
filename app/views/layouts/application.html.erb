@@ -139,13 +139,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <nav class="nav-main">
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
           <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>           
-           <li> <a href="/lessons/daily-roster" class="btn-success"> Daily Roster</a></li>
-           <li> <a href="/lessons/admin_index" class="btn-success"> Reservations</a></li>
+           <li> <a href="/lessons/roster-today" class="btn-success"> Today's Roster</a></li>
+           <li> <a href="/lessons/roster-tomorrow" class="btn-success"> Tomorrow's Roster</a></li>
+           <li> <a href="/lessons/admin_index" class="btn-success"> All Ticket Sales</a></li>
            <% if current_user.instructor %>
            <li><%= link_to current_user.instructor.first_name %></li>
            <% end %>
-            <li><a href="/browse" class="sign-up-btn">Browse</a></li>
-            <li> <%= link_to 'Logout', destroy_user_session_path %> </li>
+            <!-- <li><a href="/browse" class="sign-up-btn">Browse</a></li> -->
+            <li> <%= link_to 'Logout', destroy_user_session_path, class:'btn btn-warning' %> </li>
 
           <% elsif current_user %>
             <% name = current_user.email.present? ? current_user.email : 'Edit Profile' %>
@@ -160,7 +161,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <li><%= link_to 'Check Instructor Status', instructor_path(current_user.instructor), class: 'sign-up-btn' %></li>
             <% end %>
             </li>
-            <li> <%= link_to 'Logout', destroy_user_session_path %> </li>
+            <li> <%= link_to 'Logout', destroy_user_session_path, class:'btn btn-warning' %> </li>
           <% else %>
             <% if params[:date] && params[:slot] %>
               <li>

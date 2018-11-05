@@ -8,7 +8,12 @@
     <h3><b>Booking Summary</b></h3>
     <% if @lesson.deposit_status == 'confirmed' || @lesson.date == Date.today %>
       <p>
-        Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number to a staff member as proof of payment. 
+        Your ticket confirmation number is: 
+        <ul>
+          <li>
+            <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>
+          </li>
+        </ul>Please either print this page or save the confirmation email you should automaticaly receive, as you will need to show your confirmation number to a staff member as proof of payment. 
       </p>
     <% end %>
 
@@ -16,17 +21,18 @@
 
       <div class="col-md-12 col-xs-12">
       <h4 class="slot-details-mobile">
-        <span class="lesson-detail-topic">Reservation Name:</span> <%= @lesson.requester_name %> <br>
-        <span class="lesson-detail-topic">Number of tickets:</span>  <%= @lesson.students.count %><br>
-        <span class="lesson-detail-topic">Date:</span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
+        <span class="lesson-detail-topic"><b>Reservation Name:</b></span> <%= @lesson.requester_name %> <br>
+        <span class="lesson-detail-topic"><b>Email:</b></span> <%= @lesson.guest_email %> <br>
+        <span class="lesson-detail-topic"><b>Number of tickets:</b></span>  <%= @lesson.students.count %><br>
+        <span class="lesson-detail-topic"><b>Date:</b></span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
         <% if @lesson.package_info && @lesson.package_info.length > 1 %>
-          <span class="lesson-detail-topic">Adjustments:</span>  <%= @lesson.package_info %>
+          <span class="lesson-detail-topic"><b>Adjustments:</b></span>  <%= @lesson.package_info %>
           <br><br>                  
         <% end %>
-        <span class="lesson-detail-topic">Reservation Status: <%=@lesson.state%> <br>
+        <span class="lesson-detail-topic"><b>Reservation Status:</b> <%=@lesson.state%> <br>
         <span class="lesson-detail-topic"> <%= link_to 'View Release of Liability', release_of_liability_path(@lesson.id), class:"navy-link", target:"_blank" %><br>
 
-      </h4>
+      </span></h4>
       </div>
     </div>
   </div>

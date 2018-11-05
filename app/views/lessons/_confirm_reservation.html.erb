@@ -50,6 +50,13 @@
                   </ul>
                 </div>
               </div>
+              <div class="row lodging-discount-warning">
+                <div class="col-xs-12">
+                  <% if @lesson.lodging_guest == true && @lesson.lodging_reservation_id.length != 6 %>
+                    <p>*You may have mis-entered your lodging reservation number. Please confirm and re-enter the reservation id you received when booking your accommdations, and we will apply the 50% discount.</p>
+                  <% end %>
+                </div>
+              </div>
             </div>
 
               

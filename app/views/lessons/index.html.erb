@@ -30,7 +30,7 @@
     <%= form_tag(filtered_schedule_results_path, :method => "get") do %>
     <%= text_field_tag :date, params[:date], placeholder: "Select a date", id:"datepicker2", class:'navy-text form-control search-form' %>
     <%= submit_tag "Filter by Date", class:"btn btn-primary btn-lg page-scroll" %>
-    <%= link_to 'Search by customer', lessons_admin_index_path, method: :get, class: "btn btn-primary btn-lg" %>
+    <%= link_to 'Search by customer', sledding_admin_index_path, method: :get, class: "btn btn-primary btn-lg" %>
     <% end %>
 </div>
 

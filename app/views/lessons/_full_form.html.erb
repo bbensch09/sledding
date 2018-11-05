@@ -85,7 +85,7 @@
 
       <div class='row'>
         <div class="col-md-6">
-          <h4>Basic <strong>Info</strong></h4>
+          <h4><strong>Basic Info</strong></h4>
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
             <div class="col-md-12">
@@ -146,7 +146,7 @@
             <% end %>
             <h3 class="text-warning hidden" id="ability-level-warning">Warning - students must all be within one level of each other in order to participate in the same lesson.</h3>
             <div class='links'>
-              <%= link_to_add_association 'Add Another Student', f, :students, limit: 2, class: 'btn btn-default', id:'add-student-button' %>
+              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 2, class: 'btn btn-default', id:'add-student-button' %>
             <h4 class="text-danger hidden" id="max-students-warning">Note: only 3 students may be registered at a time. To book a private group lesson for 4 or more students, please visit <a href="www.snowschoolers.com/granlibakken" class="" target="_blank">www.snowschoolers.com/granlibakken</a>
             </h4>
             </div>
@@ -179,10 +179,17 @@
             <label>Do you have a lodging reservation at Granlibakken as well?</label>
             <%= f.select :lodging_guest, [['No, I have other accommodations.', false],['Yes, I have already made my reservation.', true]], {}, {class: 'form-control needs-rental', required:false, include_blank:true} %>
           </div>
-          <div class="col-md-12 lodging-reservation-input hidden">
+          <% if @lesson.lodging_guest == true %>
+            <div class="col-md-12">
+                <label>Room Reservation ID</label> <span class="text-smaller"></span>
+                <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
+            </div>          
+            <% else %>
+            <div class="col-md-12 lodging-reservation-input hidden">
               <label>Room Reservation ID</label> <span class="text-smaller"></span>
               <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
-          </div>          
+            </div>          
+          <% end %>
 
           <div class="col-md-9">
             <% button_text = "Continue to Payment" %>
@@ -194,18 +201,10 @@
             <% end %>
             <%= f.submit button_text, class: 'btn sign-up-btn pull-right', id: 'finalize-lesson' %>
           </div>
-      <!-- %= link_to 'Section Schedule', "#{ENV['DOMAIN']}/filtered-schedule-results?date=#{@lesson.section.date.to_s}", class: 'btn btn-default' %> -->
-
       </div>
-
-      <hr class='lesson-break' />
 
       <div class="row">
         <div class="col-md-6"></div>
-        <div class="col-md-6">
-          <hr>
-
-        </div>
       </div>
     <% end %>
 
