@@ -18,6 +18,7 @@ class Lesson < ActiveRecord::Base
   validates :actual_start_time, :actual_end_time, presence: true, if: :just_finalized?
   # validate :requester_must_not_be_instructor, on: :create
   # validate :lesson_time_must_be_valid
+  # validates :date, presence: true
   validate :student_exists, on: :update
   
   # confirm students are all over the age of 8

@@ -121,18 +121,6 @@ div.maximage-controls #slider_prev:hover {
 }
 
 
-.search-area-icon {
-  background: url(https://a0.muscache.com/airbnb/static/landing_pages/home_v2/homepage-sprite-54617e9d9dbd7f5e375a5667bb7a393f.png) 1px -178px no-repeat;
-  display: block;
-  cursor: pointer;
-  position: absolute;
-  right: 27px;
-  top: 40%;
-  margin-top: -12px;
-  width: 24px;
-  height: 20px;
-}
-
 #middle .white {
   background: rgba(255, 255, 255, 0.8);
 }
