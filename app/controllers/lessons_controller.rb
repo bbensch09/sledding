@@ -240,7 +240,7 @@ class LessonsController < ApplicationController
       @lesson.requester = current_user
       @lesson.requested_location = 24
       @lesson.product_id = 1
-      # @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+      @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
       # @lesson.save!
     if @lesson.save
       @user_email = current_user ? current_user.email : "unknown"
@@ -256,7 +256,7 @@ class LessonsController < ApplicationController
   def complete
     @lesson = Lesson.find(params[:id])
     @product_name = @lesson.product_name
-    @date = @lesson.date
+    @date = @lesson.lesson_time.date
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'

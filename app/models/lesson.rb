@@ -159,9 +159,9 @@ class Lesson < ActiveRecord::Base
     return lessons.count
   end
 
-  # def date
-  #   lesson_time.date
-  # end
+  def date
+    lesson_time.date
+  end
 
   def self.set_all_lessons_to_Homewood
     Lesson.all.to_a.each do |lesson|
