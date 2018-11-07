@@ -18,6 +18,7 @@ class Lesson < ActiveRecord::Base
   validates :actual_start_time, :actual_end_time, presence: true, if: :just_finalized?
   # validate :requester_must_not_be_instructor, on: :create
   # validate :lesson_time_must_be_valid
+  validates :date, presence: true
   validate :student_exists, on: :update
   
   # confirm students are all over the age of 8
@@ -158,9 +159,9 @@ class Lesson < ActiveRecord::Base
     return lessons.count
   end
 
-  def date
-    lesson_time.date
-  end
+  # def date
+  #   lesson_time.date
+  # end
 
   def self.set_all_lessons_to_Homewood
     Lesson.all.to_a.each do |lesson|
