@@ -157,37 +157,52 @@
           </div>
 
           <hr>
+          
+      </div>
 
-          <h4><strong>Release of Liability</strong></h4>
+      <div class="row">
+        <div class="col-md-6">
+
+          <h4><strong>Release of Liability</strong>
+            <a href="#accept-terms" class="btn btn-default"> Scroll to bottom</a>
+          </h4>
 
           <div class="col-md-12">
             <span class="remember-box checkbox ">
               <label for="rememberme">
+
+                <%= render partial: 'lessons/release_of_liability_text' %>
+
+                <p id="accept-terms">
                   <%= f.check_box :terms_accepted, id: "rememberme", required: true  %>
-                  I understand that the snow saucer furnished could be HAZARDOUS to my well-being while snow sledding. I understand that connecting two saucers together or creating a chain of saucers is not permitted, except parent-child, when a child is incapable to sled by himself. I have read and fully agree to the <span><a href="/release_of_liability" target="_blank" class="black-link"> Release of Liability </a></span> terms, and by checking this box, I AGREE TO RELEASE FROM ANY LEGAL LIABILITY AND AGREE NEVER TO SUE GRANLIBAKKEN RESORT for any damage, injury or death to me and/or my child arising from participation in the activities or use the facilities of Granlibakken, regardless of cause. Addtionally, I have read and agree to the <span><a href="/terms_of_service" target="_blank" class='black-link'> Terms of Service </a></span> of this website.
+                  By checking this box, I acknowledge that I have read and fully agree to the <span>
+                    <%= link_to 'Release of Liability', release_of_liability_path(@lesson.id), target:"_blank", class:"black-link", target:"_blank" %></span> and the <span><a href="/terms_of_service" target="_blank" class='black-link'> Terms of Service </a></span> governing this website.
+                </p>
+
               </label>
             </span>
           </div>
 
           <div class="row">
-          </div>
+          </div>          
 
+        </div>
+      </div>
+      <h4>Optional Information<strong></strong></h4>
 
-          <h4>Optional Information<strong></strong></h4>
-
-          <div class="col-md-12">
+          <div class="col-md-6">
             <label>Do you have a lodging reservation at Granlibakken as well?</label>
             <%= f.select :lodging_guest, [['No, I have other accommodations.', false],['Yes, I have already made my reservation.', true]], {}, {class: 'form-control needs-rental', required:false, include_blank:true} %>
           </div>
           <% if @lesson.lodging_guest == true %>
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <label>Room Reservation ID</label> <span class="text-smaller"></span>
                 <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
             </div>          
             <% else %>
-            <div class="col-md-12 lodging-reservation-input hidden">
+            <div class="col-md-6 lodging-reservation-input hidden">
               <label>Room Reservation ID</label> <span class="text-smaller"></span>
-              <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
+              <%= f.text_field :lodging_reservation_id, placeholder: 'Enter ID from reservation confirmation email', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
             </div>          
           <% end %>
 
@@ -201,11 +216,6 @@
             <% end %>
             <%= f.submit button_text, class: 'btn sign-up-btn pull-right', id: 'finalize-lesson' %>
           </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6"></div>
-      </div>
     <% end %>
 
   </div>

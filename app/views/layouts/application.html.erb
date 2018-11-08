@@ -139,9 +139,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <nav class="nav-main">
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
           <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>           
-           <li> <a href="/lessons/roster-today" class="btn-success"> Today's Roster</a></li>
-           <li> <a href="/lessons/roster-tomorrow" class="btn-success"> Tomorrow's Roster</a></li>
-           <li> <a href="/lessons/admin_index" class="btn-success"> All Ticket Sales</a></li>
+           <li> <a href="/sledding/roster-today" class="btn-success"> Today's Roster</a></li>
+           <li> <a href="/sledding/roster-tomorrow" class="btn-success"> Tomorrow's Roster</a></li>
+           <li> <a href="/sledding/admin_index" class="btn-success"> All Ticket Sales</a></li>
            <% if current_user.instructor %>
            <li><%= link_to current_user.instructor.first_name %></li>
            <% end %>

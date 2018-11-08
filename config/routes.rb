@@ -106,12 +106,14 @@ Rails.application.routes.draw do
       end
   end
   get '/admin_index' => 'instructors#admin_index'
-  get 'lessons/admin_index' => 'lessons#admin_index', as: :sledding_admin_index
-  get 'lessons/roster-today' => 'lessons#roster_today', as: :sledding_roster_today
-  get 'lessons/roster-today-print' => 'lessons#roster_today_print', as: :sledding_roster_today_print
-  get 'lessons/roster-tomorrow' => 'lessons#roster_tomorrow', as: :sledding_roster_tomorrow
-  get 'lessons/roster-tomorrow-print' => 'lessons#roster_tomorrow_print', as: :sledding_roster_tomorrow_print
-  get 'lessons/admin_index_all' => 'lessons#admin_index_all', as: :sledding_admin_index_all
+  get 'sledding/admin_index' => 'lessons#admin_index', as: :sledding_admin_index
+  get 'sledding/roster-today' => 'lessons#roster_today', as: :sledding_roster_today
+  get 'sledding/roster-today-print' => 'lessons#roster_today_print', as: :sledding_roster_today_print
+  get 'sledding/roster-tomorrow' => 'lessons#roster_tomorrow', as: :sledding_roster_tomorrow
+  get 'sledding/roster-tomorrow-print' => 'lessons#roster_tomorrow_print', as: :sledding_roster_tomorrow_print
+  get 'sledding/admin_index_all' => 'lessons#admin_index_all', as: :sledding_admin_index_all
+  put 'sledding/check-in/:id' => 'lessons#sledding_check_in', as: :sledding_check_in
+  put 'sledding/cancel-check-in/:id' => 'lessons#sledding_check_in_reverse', as: :sledding_check_in_reverse
   get 'browse' => 'instructors#browse'
   get 'lessons/book_product/:id' => 'lessons#book_product'
   # post 'search_results' => 'products#search_results', as: :refresh_search_results

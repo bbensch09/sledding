@@ -1,24 +1,4 @@
-<div class="container liability-text">
-<h1>
-	GRANLIBAKKEN SLEDDING & SKI HILL 2018/19 SEASON
-</h1>
-<h4>
-THIS DOCUMENT HAS BEEN DIGITALLY GENERATED AND SIGNED ON <span class="green-text"><%= @lesson.updated_at.strftime("%b %-d %y at %I:%M %p") %></span>
-</h4>
-<hr>
-<p>
-	PLEASE READ CAREFULLY BEFORE SIGNING. THIS IS A RELEASE OF LIABILITY AND WAIVER OF CERTAIN LEGAL RIGHTS.
-</p>
-
-<p>
-Full Name: <span class="release-of-liability-input"> <%= @lesson.requester_name %> </span>
-<br>Address: <span class="release-of-liability-input"> <%= @lesson.street_address %> </span>					  
-<br><span class="release-of-liability-input"> <%= @lesson.city %>, <%= @lesson.state_code %> <%= @lesson.zip_code %> </span>
-<br>Driver’s License #: <span class="release-of-liability-input"> <%= @lesson.drivers_license %> </span>	
-<br>Phone: <span class="release-of-liability-input"> <%= @lesson.phone_number %> </span>
-
-</p>
-
+<div class="liability-text">
 <p>
 I accept for use, as is, the equipment on this form and accept full responsibility for its care while in my possession. I agree to hold harmless, release, and indemnify Granlibakken Sledding Hill and its owners, agents and employees, as well as the equipment manufacturers and distributors, for all loss or damage I may cause to this equipment, except reasonable wear and tear. I acknowledge and agree to equipment manufacturer clause “This product does not steer nor have brakes and is considered unpredictable. Product should ONLY be used on small hills with a long, flat open area at the bottom for ease of stopping. This product should never be used in areas with trees, rocks, roadways, bystanders, or any other obstacles. Should not be used by children unless accompanied by a competent adult.” I understand and am aware that the snow saucer furnished could be HAZARDOUS to my well-being while snow sledding. I understand that connecting two saucers together or creating a chain of saucers is not permitted, except parent- child, when a child is incapable to sled by himself.
 <br>
@@ -38,20 +18,5 @@ THIS RELEASE SHALL BE BINDING TO THE FULLEST EXTENT PERMITTED BY LAW. The releas
 <br>
 <br>
 I agree that there have been no warranties, expressed or implied, which have been made to me beyond the information written on this form. I, the undersigned, acknowledge that I have read this agreement and I understand its contents. I understand that my signature below expressly waives any rights I may have to sue Granlibakken Sledding Hill for injuries and damages. Prospective participants under the age of 18 are required to have a parent or legal guardian read and also sign that the minor is in good health, and that there are no special problems associates with the care of the Child. 
-
 </p>
-Participant Names and Ages:   	
-<ul>
-	<% @lesson.students.each do |student| %>
-	<li><span class="release-of-liability-input"> <%=student.name %>, age <%=student.age_range %></span></li>
-	<% end %>
-</ul>
-<p>
-User’s Signature: <span class="signature"> <%= @lesson.requester_name %> </span>
-<br>Date: <span class="release-of-liability-input"> <%= @lesson.updated_at.strftime("%b %-d, %Y") %></span>
-<br>
-
-</p>
-<div class="buffer"></div>
-<div class="buffer"></div>
 </div>
