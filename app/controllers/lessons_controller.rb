@@ -5,6 +5,20 @@ class LessonsController < ApplicationController
   # before_action :save_lesson_params_and_redirect, only: [:create]
   # before_action :create_lesson_from_session, only: [:create]
 
+  def sledding_check_in
+      @lesson = Lesson.find(params[:id])
+      @lesson.check_in_status = 'checked-in'
+      @lesson.save
+      redirect_back(fallback_location: lessons_path)
+  end
+
+  def sledding_check_in_reverse
+      @lesson = Lesson.find(params[:id])
+      @lesson.check_in_status = nil
+      @lesson.save
+      redirect_back(fallback_location: lessons_path)
+  end
+
   def assign_to_section
     puts "the params are #{params}"
     @lesson = Lesson.find(params[:lesson_id])
@@ -67,7 +81,7 @@ class LessonsController < ApplicationController
 
   def admin_index_all
     @lessons_to_export = Lesson.where(state:"confirmed")
-    @lessons = Lesson.all.to_a
+    @lessons = Lesson.where(state:"confirmed").to_a
     @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
     @show_search_options = true
     respond_to do |format|
@@ -257,7 +271,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @product_name = @lesson.product_name
     @date = @lesson.lesson_time.date
-    GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
   end
@@ -544,8 +558,9 @@ class LessonsController < ApplicationController
     @state = params[:lesson][:state]
   end
 
+
   def lesson_params
-    params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name, :lodging_guest, :lodging_reservation_id, :zip_code, :drivers_license, :state_code, :city, :street_address, :date,
+    params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name, :lodging_guest, :lodging_reservation_id, :zip_code, :drivers_license, :state_code, :city, :street_address, :date, :check_in_status,
       students_attributes: [:id, :name, :age_range, :gender, :relationship_to_requester, :lesson_history, :requester_id, :most_recent_experience, :most_recent_level, :other_sports_experience, :experience, :_destroy])
   end
 

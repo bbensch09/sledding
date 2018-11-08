@@ -58,7 +58,7 @@ class Location < ActiveRecord::Base
   end
 
   def today_lessons
-      lessons = Lesson.where(requested_location:self.id.to_s)
+      lessons = Lesson.where(requested_location:self.id.to_s,state:'confirmed')
       lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today &&lesson.confirmed?}
   end
 
