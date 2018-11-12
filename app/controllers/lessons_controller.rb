@@ -45,7 +45,7 @@ class LessonsController < ApplicationController
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.today}
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.today}
-    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index'}
           format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
@@ -55,7 +55,7 @@ class LessonsController < ApplicationController
   def roster_today_print
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.today}
-    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index', layout: 'liability_release_layout'}
     end
@@ -66,7 +66,7 @@ class LessonsController < ApplicationController
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.tomorrow}
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
-    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index'}
           format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
@@ -76,7 +76,7 @@ class LessonsController < ApplicationController
   def roster_tomorrow_print
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
-    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index', layout: 'liability_release_layout'}
     end
