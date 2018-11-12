@@ -442,7 +442,7 @@ class Lesson < ActiveRecord::Base
     else
       price = product.price * [1,self.students.count].max
     end
-    if self.lodging_guest == true && self.lodging_reservation_id.length == 6
+    if self.lodging_guest == true && self.lodging_reservation_id && self.lodging_reservation_id.length == 6
       price = price *0.5
     end
     return price.to_s
@@ -1000,11 +1000,14 @@ class Lesson < ActiveRecord::Base
 
   def room_reservation_validator
     puts "!!!!!checking for valid resrvation id"
-    if lodging_reservation_id.length == 6 || lodging_guest == false
+    if lodging_guest == false
       return true
-    else
+    elsif lodging_reservation_id.nil? || lodging_reservation_id.length != 6
       # errors.add(:lesson, "You must enter a valid room reservation id")
-      true
+      puts "!!! invalid room reservation, but not preventing checkout"
+      return true
+    elsif lodging_reservation_id.length == 6
+        return true
     end
   end
 
