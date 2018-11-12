@@ -56,6 +56,13 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def self.remove_all_but_two_sample_bookings
+    sample_bookings = Lesson.all.to_a.keep_if{|booking|booking.is_sample_booking?}
+    sample_bookings[0..-2].each do |booking|
+      booking.destroy!
+    end
+  end
+
   def confirmation_number
       date = self.lesson_time.date.to_s.gsub("-","")
       date = date[4..-1]
@@ -439,6 +446,8 @@ class Lesson < ActiveRecord::Base
       product = Product.where(location_id:24,calendar_period:calendar_period).first
     if product.nil?
       return "Lesson price or product not found" #99 #default lesson price - temporary
+    elsif self.lesson_price
+      price = self.lesson_price
     else
       price = product.price * [1,self.students.count].max
     end
