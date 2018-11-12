@@ -53,7 +53,6 @@ class LessonsController < ApplicationController
   end
 
   def roster_today_print
-    Lesson.set_dates_for_sample_bookings
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.today}
     @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
@@ -63,6 +62,7 @@ class LessonsController < ApplicationController
   end
 
   def roster_tomorrow
+    Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.tomorrow}
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
