@@ -19,7 +19,7 @@ class Lesson < ActiveRecord::Base
   # validate :requester_must_not_be_instructor, on: :create
   # validate :lesson_time_must_be_valid
   # validates :date, presence: true
-  validate :student_exists, on: :update
+  # validate :student_exists, on: :update
   
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
@@ -34,6 +34,27 @@ class Lesson < ActiveRecord::Base
   # after_save :confirm_section_valid
   # after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
+
+  def is_sample_booking?
+    return false if self.requester_name.nil?
+    return true if self.requester_name.include?("John Doe")
+  end
+
+  def self.set_dates_for_sample_bookings
+    today = LessonTime.find_or_create_by(date:Date.today)
+    tomorrow = LessonTime.find_or_create_by(date:Date.tomorrow)
+    sample_bookings = Lesson.all.to_a.keep_if{|booking|booking.is_sample_booking?}
+    sample_bookings.each do |booking|
+      if booking.id.even?
+        booking.lesson_time_id = today.id
+        puts "!!! set sample booking date to today"
+      else
+        booking.lesson_time_id = tomorrow.id
+        puts "!!! set sample booking date to tomorrow"
+      end
+      booking.save!
+    end
+  end
 
   def confirmation_number
       date = self.lesson_time.date.to_s.gsub("-","")
@@ -983,7 +1004,7 @@ class Lesson < ActiveRecord::Base
       return true
     else
       # errors.add(:lesson, "You must enter a valid room reservation id")
-      false
+      true
     end
   end
 

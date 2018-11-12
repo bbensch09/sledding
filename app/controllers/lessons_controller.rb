@@ -29,6 +29,7 @@ class LessonsController < ApplicationController
   end
 
   def admin_index
+    Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.where(state:"confirmed")
     @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
     @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
@@ -40,6 +41,7 @@ class LessonsController < ApplicationController
   end
 
   def roster_today
+    Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.today}
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.today}
@@ -60,6 +62,7 @@ class LessonsController < ApplicationController
   end
 
   def roster_tomorrow
+    Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.tomorrow}
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
