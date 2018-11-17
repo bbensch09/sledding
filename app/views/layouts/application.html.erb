@@ -150,7 +150,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <%= link_to 'Sign Up', new_user_registration_path(date: params[:date], slot: params[:slot]), class: 'sign-up-btn' %>
               </li>
             <% else %>
-              <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#registerModal">Register</a></li>
+              <li><%= link_to 'Register', new_user_registration_path(date: params[:date], slot: params[:slot]), class: 'sign-up-btn' %></li>
+              <!-- <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#registerModal">Register</a></li> -->
               <li><a href="#" class="sign-up-btn" data-toggle="modal" data-target="#loginModal">Log In</a></li>
             <% end %>
           <% end %>
