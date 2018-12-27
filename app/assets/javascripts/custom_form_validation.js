@@ -4,8 +4,6 @@ $(document).ready(function(){
 
 
     $('#finalize-lesson').click(function(e){
-          // age_inputs = $('#lesson_students_attributes_0_age_range').val();
-          // age_inputs = $('.age-range-inputs').val();
 
           age_inputs = []
           $('.age-range-inputs').each(function (index, value) {
@@ -17,12 +15,10 @@ $(document).ready(function(){
 
           console.log("min age of students is "+min_age);
           if (min_age <= 3) {
-          // if (1+1==2) {
             e.preventDefault();
             console.log ("prompt user to remove 3 and under kids");
             $('#age-warning').toggleClass('hidden');
             $('#lesson_students_attributes_0_age_range').focus();
-          // focus on Time slot field.
           }
       });
 
