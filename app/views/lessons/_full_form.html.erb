@@ -145,10 +145,9 @@
             <%= f.semantic_fields_for :students do |student| %>
               <%= render 'student_fields', f: student %>
             <% end %>
-            <h3 class="text-warning hidden" id="ability-level-warning">Warning - students must all be within one level of each other in order to participate in the same lesson.</h3>
             <div class='links'>
-              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 2, class: 'btn btn-default', id:'add-student-button' %>
-            <h4 class="text-danger hidden" id="max-students-warning">Note: only 3 students may be registered at a time. To book a private group lesson for 4 or more students, please visit <a href="www.snowschoolers.com/granlibakken" class="" target="_blank">www.snowschoolers.com/granlibakken</a>
+              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 20, class: 'btn btn-default', id:'add-student-button' %>
+            <h4 class="text-danger hidden" id="max-students-warning">Note: only 20 students may be registered at a time. To book tickets for 20 or more, please visit make separate purchases
             </h4>
             </div>
             <%= f.semantic_errors :students %>
