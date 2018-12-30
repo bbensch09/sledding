@@ -20,7 +20,7 @@ class Lesson < ActiveRecord::Base
   # validate :lesson_time_must_be_valid
   # validates :date, presence: true
   # validate :student_exists, on: :update
-  
+
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
@@ -87,7 +87,7 @@ class Lesson < ActiveRecord::Base
   def includes_rentals?
     if self.product_name == '1hr Learn to Ski Package (rental included)'
       return true
-    else 
+    else
       return false
     end
   end
@@ -428,8 +428,8 @@ class Lesson < ActiveRecord::Base
   end
 
   def self.open_lesson_requests
-    Lesson.where(state:'booked') 
-  end  
+    Lesson.where(state:'booked')
+  end
 
   def self.open_booked_revenue
     lessons = Lesson.open_lesson_requests
@@ -438,7 +438,17 @@ class Lesson < ActiveRecord::Base
       total += lesson.price.to_i
     end
     return total
-  end  
+  end
+
+  def participants_3_and_under
+    count = 0
+    self.students.each do |participant|
+      if participant.age_range.to_i <= 3
+        count +=1
+      end
+    end
+    return count
+  end
 
   def price
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
@@ -449,7 +459,7 @@ class Lesson < ActiveRecord::Base
     elsif self.lesson_price
       price = self.lesson_price
     else
-      price = product.price * [1,self.students.count].max
+      price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
     end
     if self.lodging_guest == true && self.lodging_reservation_id && self.lodging_reservation_id.length == 6
       price = price *0.5
@@ -466,7 +476,7 @@ class Lesson < ActiveRecord::Base
     puts "!!!calculating package cost"
     p1 = [self.additional_students_with_gear * self.cost_per_additional_student_with_gear,0].max
     p2 = [self.additional_students_without_gear * self.cost_per_additional_student_without_gear,0].max
-    return p1 + p2    
+    return p1 + p2
     return package_price
   end
 
@@ -974,7 +984,7 @@ class Lesson < ActiveRecord::Base
         csv << lesson.attributes.values_at(*desired_columns)
       end
     end
-  end  
+  end
 
   private
 
@@ -1001,7 +1011,7 @@ class Lesson < ActiveRecord::Base
       if student.age_range.to_i < 8
         errors.add(:lesson, "error all students must be at least 8 years old")
         puts "!!! found a student under the age of 8"
-        return false 
+        return false
       end
     end
     return true
