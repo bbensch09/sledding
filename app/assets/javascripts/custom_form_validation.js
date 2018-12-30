@@ -15,7 +15,7 @@ $(document).ready(function(){
 
           console.log("min age of students is "+min_age);
           if (min_age <= 3) {
-            e.preventDefault();
+            // e.preventDefault();
             console.log ("prompt user to remove 3 and under kids");
             $('#age-warning').toggleClass('hidden');
             $('#lesson_students_attributes_0_age_range').focus();

@@ -21,7 +21,7 @@
                       <%= @lesson.lesson_time.date.strftime("%b %d, %Y") %>
                     </span>
                 </div>
-              </div>                              
+              </div>
               <div class="row full-width">
                 <div class="col-xs-4 col-md-3">
                   <b>Price:</b>
@@ -40,6 +40,9 @@
                       <li><%= student.name %>, age <%= student.age_range %></li>
                     <% end %>
                   </ul>
+                  <% if @lesson.participants_3_and_under > 0 %>
+                      <h4 class="text-danger" id="age-warning">Note: Kids age 3 and under are FREE.</h4>
+                  <% end %>
                 </div>
               </div>
               <div class="row lodging-discount-warning">
@@ -51,7 +54,7 @@
               </div>
             </div>
 
-              
+
             <div class="col-md-12 center">
               <label class="amount">
               </label>
