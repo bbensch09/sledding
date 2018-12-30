@@ -31,7 +31,7 @@ class LessonsController < ApplicationController
   def admin_index
     Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.where(state:"confirmed")
-    @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
+    @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.lesson_time && lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
     @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
     @show_search_options = true
     respond_to do |format|
@@ -91,7 +91,7 @@ class LessonsController < ApplicationController
           format.html {render 'admin_index'}
           format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
     end
-  end  
+  end
 
   def schedule
       # @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed?}
@@ -107,27 +107,27 @@ class LessonsController < ApplicationController
     search_params = {email: params[:search], name: params[:name], date: params[:date], gear:params[:gear]}
     puts "!!!!! the search_params are: #{search_params}"
     @lessons = Lesson.all
-    if params[:date] != ""      
+    if params[:date] != ""
         puts "!!!filter by date.  param is #{params['date']}"
-        @lessons = @lessons.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}  
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}
         puts "found #{@lessons.count} mactching lessons"
     end
     if params[:name] != ""
         puts "!!!filter by name.  param is #{params['name']}"
-        @lessons = @lessons.to_a.keep_if{|lesson| lesson.name == params[:name]}  
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.name == params[:name]}
         puts "found #{@lessons.count} mactching lessons"
-    end 
+    end
     if params['email'] != ""
         puts "!!!filter by email. email param is #{params['email']}"
-        @lessons = @lessons.to_a.keep_if{|lesson| lesson.email == params[:email]}  
-        # @lessons = Lesson.all.select{|lesson| lesson.email == 'brian@snowschoolers.com'}  
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.email == params[:email]}
+        # @lessons = Lesson.all.select{|lesson| lesson.email == 'brian@snowschoolers.com'}
         puts "found #{@lessons.count} mactching lessons"
-    end  
+    end
     if params['gear'] == "on"
         puts "!!!filtering for resrations with rentals."
-        @lessons = @lessons.to_a.keep_if{|lesson| lesson.gear == true}  
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.gear == true}
         puts "found #{@lessons.count} mactching lessons"
-    end  
+    end
     puts "!!!! @lessons.count is #{@lessons.count}"
     @lessons = @lessons.keep_if{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
     render 'admin_index'
@@ -139,7 +139,7 @@ class LessonsController < ApplicationController
       all_days = Section.select(:date).distinct
       @days = all_days.to_a.keep_if{|a| a.date.to_s == params[:date]}
       puts "!!!filter by date.  param is #{params['date']}"
-      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}       
+      @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}
         puts "found #{@lessons.count} mactching lessons"
       @new_date = Section.new
       render 'index'
@@ -244,7 +244,7 @@ class LessonsController < ApplicationController
     @lesson.requested_location = 24
     @activity = session[:lesson].nil? ? nil : session[:lesson]["activity"]
     @slot = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?) ? nil : session[:lesson]["lesson_time"]["slot"]
-    @date = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?)  ? nil : session[:lesson]["lesson_time"]["date"]    
+    @date = (session[:lesson].nil? || session[:lesson]["lesson_time"].nil?)  ? nil : session[:lesson]["lesson_time"]["date"]
     @lesson.lesson_time = LessonTime.find_or_create_by(date:session[:date],slot:session[:slot])
     @lesson.save
     GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
@@ -289,7 +289,7 @@ class LessonsController < ApplicationController
 
   def reissue_invoice
     @lesson = Lesson.find(params[:id])
-    @lesson_time = @lesson.lesson_time    
+    @lesson_time = @lesson.lesson_time
     @date = @lesson_time.date
     @lesson.state = "ready_to_book"
     @lesson.deposit_status = nil
@@ -299,7 +299,7 @@ class LessonsController < ApplicationController
 
   def issue_refund
     @lesson = Lesson.find(params[:id])
-    @lesson_time = @lesson.lesson_time    
+    @lesson_time = @lesson.lesson_time
     session[:refund] = true
     render 'edit'
   end
@@ -307,9 +307,9 @@ class LessonsController < ApplicationController
   def issue_full_refund
     @lesson = Lesson.find(params[:id])
     @lesson.state = 'Canceled - full refund issued.'
-    @lesson.save 
+    @lesson.save
     session[:refund] = nil
-    redirect_to @lesson 
+    redirect_to @lesson
   end
 
   def confirm_reservation
