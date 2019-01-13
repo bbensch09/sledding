@@ -15,7 +15,7 @@
             </li>
             <li><%= link_to 'Mark Lesson as Refunded', issue_full_refund_path(@lesson), method: :post, class: "btn btn-warning" %></li>
           </ol>
-                
+
         <h3> To issue a partial refund: </h3>
           <ol>
             <li>
@@ -85,7 +85,7 @@
 
       <div class='row'>
         <div class="col-md-6">
-          <h4><strong>Basic Info</strong></h4>
+          <h4><strong>Customer Info</strong></h4>
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
             <div class="col-md-12">
@@ -119,45 +119,50 @@
               <label>Zip Code</label> <span class="text-smaller"></span>
               <%= f.text_field :zip_code, as: :number, placeholder: '94102', class: 'form-control', required:true, include_blank:false %>
             </div>
-            <div class="col-md-6">
+<!--             <div class="col-md-6">
               <label>Driver's License #</label> <span class="text-smaller"></span>
               <%= f.text_field :drivers_license, placeholder: 'D555-1111', class: 'form-control', required:false, include_blank:false %>
-            </div>
+            </div> -->
 
-          </div>
           <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
             <div class='row'>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <label>Date</label>
                 <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, required:true }, placeholder: 'Pick a date', label: false %>
                 <!-- <span class="search-area-icon"></span> -->
               </div>
 
           <% end %>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label>Price</label>
                 <h2> <span id="lesson-price"><%= number_to_currency(Product.find(1).price) %></span></h2>
                 <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
           </div>
+
+          </div>
+
+          <h4><strong>Participants Info</strong></h4>
+
+          <h4 class="text-warning"">Note: please add the names and ages of sledding participants, including your own name from above if your are participating.</h4>
+          <h4 class="text-danger hidden" id="age-warning">Kids age 3 and under are FREE and do not need tickets.</h4>
           <div id='lesson_students_input'>
             <%= f.semantic_fields_for :students do |student| %>
               <%= render 'student_fields', f: student %>
             <% end %>
-            <h3 class="text-warning hidden" id="ability-level-warning">Warning - students must all be within one level of each other in order to participate in the same lesson.</h3>
             <div class='links'>
-              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 2, class: 'btn btn-default', id:'add-student-button' %>
-            <h4 class="text-danger hidden" id="max-students-warning">Note: only 3 students may be registered at a time. To book a private group lesson for 4 or more students, please visit <a href="www.snowschoolers.com/granlibakken" class="" target="_blank">www.snowschoolers.com/granlibakken</a>
+              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 20, class: 'btn btn-default', id:'add-student-button' %>
+            <h4 class="text-danger hidden" id="max-students-warning">Note: only 20 students may be registered at a time. To book tickets for 20 or more, please visit make separate purchases
             </h4>
             </div>
             <%= f.semantic_errors :students %>
-          </div>          
+          </div>
 
           <div class="row">
           </div>
 
           <hr>
-          
+
       </div>
 
       <div class="row">
@@ -184,7 +189,7 @@
           </div>
 
           <div class="row">
-          </div>          
+          </div>
 
         </div>
       </div>
@@ -198,12 +203,12 @@
             <div class="col-md-6">
                 <label>Room Reservation ID</label> <span class="text-smaller"></span>
                 <%= f.text_field :lodging_reservation_id, placeholder: 'xxxxxx', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
-            </div>          
+            </div>
             <% else %>
             <div class="col-md-6 lodging-reservation-input hidden">
               <label>Room Reservation ID</label> <span class="text-smaller"></span>
               <%= f.text_field :lodging_reservation_id, placeholder: 'Enter ID from reservation confirmation email', class: 'form-control', required:false, include_blank:"Enter your room reservation id" %>
-            </div>          
+            </div>
           <% end %>
 
           <div class="col-md-9">

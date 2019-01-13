@@ -20,7 +20,7 @@ if (Date.now() <= opening_date) {
   var MIN_DATE = '2018-11-22';
   // logs the season start date
   console.log(MIN_DATE);
-}  
+}
 
 var LESSON = {
   init: function(){
@@ -59,9 +59,9 @@ var LESSON = {
 
   // setDatepicker: function() { LESSON._date.datepicker({ minDate: '2016-12-16', dateFormat: 'yy-mm-dd' }); },
 
-  // setDatepicker: function() { LESSON._date.datepicker({ minDate: MIN_DATE, maxDate: '2018-04-15', dateFormat: 'yy-mm-dd' }); },  
+  // setDatepicker: function() { LESSON._date.datepicker({ minDate: MIN_DATE, maxDate: '2018-04-15', dateFormat: 'yy-mm-dd' }); },
 
-  setDatepicker: function() { 
+  setDatepicker: function() {
   var blocked_dates_array = ['2018-03-13','2018-03-14','2018-03-15','2018-03-20','2018-03-21','2018-03-22','2018-03-27','2018-03-28','2018-03-29','2018-04-03','2018-04-04','2018-04-05','2018-04-10','2018-04-11','2018-04-12'];
   LESSON._date.datepicker({
     beforeShowDay: function(date){
@@ -70,7 +70,7 @@ var LESSON = {
     },
     minDate: MIN_DATE,
     maxDate: '2019-04-15',
-    dateFormat: 'yy-mm-dd' 
+    dateFormat: 'yy-mm-dd'
   });
   LESSON._date2.datepicker({
     beforeShowDay: function(date){
@@ -79,9 +79,9 @@ var LESSON = {
     },
     minDate: MIN_DATE,
     maxDate: '2019-04-15',
-    dateFormat: 'yy-mm-dd' 
+    dateFormat: 'yy-mm-dd'
     });
-  },  
+  },
 
   // var TODAYS_DATE = new Date().getDate();
   // var LAUNCH_DATE = new Date('2016','11','16').getDate();
@@ -250,12 +250,12 @@ $(document).ready(function(){
 
 var maxStudentsListener = function(){
   $('#add-student-button').click(function(e){
-    var studentCount = $('.nested-fields').length    
+    var studentCount = $('.nested-fields').length
     console.log('student count is '+studentCount);
-    if (studentCount >= 4){
+    if (studentCount >= 20){
       $('#add-student-button').addClass('hidden');
       $('#max-students-warning').removeClass('hidden');
-      console.log('hide button to add more students.');      
+      console.log('hide button to add more students.');
     }
   });
 }
@@ -338,7 +338,7 @@ var toggleElementListener = function(){
     if (rental_state == 'true') {
     $('.lodging-reservation-input').removeClass('hidden');
     console.log("lodging info revealed");
-    } else { 
+    } else {
       $('.lodging-reservation-input').addClass('hidden');
       console.log('keep lodging info hidden');
     };
