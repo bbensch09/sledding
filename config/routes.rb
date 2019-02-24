@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :promo_codes
   get 'ghost_click' => 'welcome#ghost_click'
   resources :shifts
   resources :product_calendars
