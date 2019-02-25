@@ -3,6 +3,7 @@
   before_action :authenticate_user!
   before_action :set_user
   after_action :store_location
+  before_action :set_promo_code_cookie_and_session
 
 #TO REFACTOR LATER - CUSTOMIZED METHODS TO INTERCEPT DEFAULT ERROR HANDLING FOR 404s and 500s
   # rescue_from ActiveRecord::RecordNotFound, :with => :houston_we_have_a_problem
