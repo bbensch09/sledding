@@ -461,11 +461,33 @@ class Lesson < ActiveRecord::Base
     else
       price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
     end
+    if self.promo_code
+      case self.promo_code.discount_type
+      when 'cash'
+        # puts "!!!discount of #{self.promo_code.discount} is applied to total price."
+        price = (price.to_f - self.promo_code.discount.to_f)
+      when 'percent'
+        # puts "!!!discount percentage of of #{self.promo_code.discount} is applied to total price."
+        price = (price.to_f * (1-self.promo_code.discount.to_f/100))
+      end
+    end
     if self.lodging_guest == true && self.lodging_reservation_id && self.lodging_reservation_id.length == 6
       price = price *0.5
     end
     return price.to_s
   end
+
+  # FLAG for removal -- likely unnecessary
+  def original_price
+    return self.price unless self.promo_code
+    case self.promo_code.discount_type
+      when 'cash'
+        return original_price = self.price.to_f + self.promo_code.discount.to_f
+      when 'percent'
+        return original_price = self.price.to_f / (1-self.promo_code.discount.to_f/100)
+      end
+  end
+
 
   def price_per_student
     return (self.price.to_f) / (self.students.count)

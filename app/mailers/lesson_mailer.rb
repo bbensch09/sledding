@@ -149,6 +149,12 @@ class LessonMailer < ActionMailer::Base
     mail(to: @lesson.guest_email, bcc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
   end
 
+  def send_promo_redemption_notification(lesson)
+    @lesson = lesson
+    mail(to: @lesson.requester.email,  cc: "Adam Garon <#{ENV['SUPERVISOR_EMAIL']}>, notify@snowschoolers.com", subject: "The promo code #{@lesson.promo_code.promo_code} has been redeemed for #{@lesson.date.strftime("%b %-d")}")
+  end
+
+
   def send_lesson_booking_notification(lesson)
     @lesson = lesson
     if @lesson.requester && lesson.requester.email

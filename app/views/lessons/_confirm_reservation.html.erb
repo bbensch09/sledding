@@ -27,10 +27,24 @@
                   <b>Price:</b>
                 </div>
                 <div class="col-xs-8 col-md-9">
-                  <% amount = @lesson.price.to_f*100 %>
                   <span class="left">
-                    <%= number_to_currency(@lesson.price) %>
-                  </span>
+                  <% if @lesson.lesson_price.nil? || @lesson.price == @lesson.lesson_price %>
+                      <% amount = (@lesson.price.to_f*100).to_i %>
+                      <%= number_to_currency(@lesson.price) %>
+    
+                      <% if @lesson.product.calendar_period == 'Holiday' || @lesson.product.calendar_period == 'Peak' %>
+                        (holiday pricing)
+                      <% end %>
+          
+                      <% if @lesson.promo_code %>
+                      <p class="italic">Original price: <%= number_to_currency(@lesson.original_price) %></p>
+                      <p class="italic">Promotional Offer: <%= @lesson.promo_code.description %></p>
+                      <% end %>
+                    <% else %>
+                      <% amount =(@lesson.lesson_price.to_f*100).to_i %>
+                      <p><%= number_to_currency(@lesson.lesson_price.to_s) %></p>
+                  <% end %>
+                  </span>                  
                 </div>
               </div>
               <div class="row">
