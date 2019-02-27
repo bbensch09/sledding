@@ -21,6 +21,45 @@ class PromoCodesController < ApplicationController
   def edit
   end
 
+  def generate_1_ticket_bulk_promo_codes
+    num_codes = 100
+    array = (1..num_codes).to_a
+    array.each do |i|
+      last_id = PromoCode.any? ? PromoCode.last.id : 0
+      new_id = last_id + 1
+      PromoCode.create!({
+        promo_code: "GROUPON_2019-100#{new_id}",
+        status: 'active', 
+        discount: 100,
+        discount_type: 'percent', 
+        description: 'groupon 1-ticket redemption', 
+        single_use: true
+      })
+      puts "promo code created for GROUPON_2019-100#{i}"
+    end
+    redirect_to '/promo_codes'
+  end
+
+  def generate_2_ticket_bulk_promo_codes
+    num_codes = 100
+    array = (1..num_codes).to_a
+    array.each do |i|
+      last_id = PromoCode.any? ? PromoCode.last.id : 0
+      new_id = last_id + 1
+      PromoCode.create!({
+        promo_code: "GROUPON_2019-200#{new_id}",
+        status: 'active', 
+        discount: 100,
+        discount_type: 'percent', 
+        description: 'groupon 2-ticket redemption', 
+        single_use: true
+      })
+      puts "promo code created for GROUPON_2019-100#{i}"
+    end
+    redirect_to '/promo_codes'
+  end
+
+
   # POST /promo_codes
   # POST /promo_codes.json
   def create

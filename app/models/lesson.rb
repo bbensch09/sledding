@@ -25,7 +25,7 @@ class Lesson < ActiveRecord::Base
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
-  validate :confirm_valid_promo_code, on: :update
+  before_save :confirm_valid_promo_code, on: :update
 
 
   #Check to ensure an instructor is available before booking
@@ -1056,7 +1056,19 @@ class Lesson < ActiveRecord::Base
 
   def confirm_valid_promo_code
     return true if self.promo_code.nil?
-    
+    promo_redemptions_count = Lesson.where(promo_code_id:self.promo_code_id,state:'confirmed').count
+    if promo_redemptions_count > 0 && self.promo_code.single_use == true
+      errors.add(:lesson, "ERROR: Unfortunately your promo code has already been redeemed.")
+      return false
+    elsif self.promo_code.description == 'groupon 1-ticket redemption' && self.num_days > 1
+      errors.add(:lesson, "ERROR: Your promo code is only valid for 1 student. Please remove any additional students in order to claim your ticket. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
+      return false
+    elsif self.promo_code.description == 'groupon 2-ticket redemption' && self.num_days != 2
+      errors.add(:lesson, "ERROR: Your promo code is valid for 2 students, please be sure to enter 2 student names.")
+      return false
+    else
+      return true
+    end
   end
 
   def send_lesson_request_to_instructors

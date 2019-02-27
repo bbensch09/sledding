@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   resources :promo_codes
+  post 'generate_1_ticket_bulk_promo_codes' => 'promo_codes#generate_1_ticket_bulk_promo_codes', as: :generate_1_ticket_bulk_promo_codes
+  post 'generate_2_ticket_bulk_promo_codes' => 'promo_codes#generate_2_ticket_bulk_promo_codes', as: :generate_2_ticket_bulk_promo_codes
   get 'ghost_click' => 'welcome#ghost_click'
   resources :shifts
   resources :product_calendars
