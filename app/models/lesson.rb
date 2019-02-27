@@ -25,6 +25,7 @@ class Lesson < ActiveRecord::Base
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
+  validate :confirm_valid_promo_code, on: :update
 
 
   #Check to ensure an instructor is available before booking
@@ -1051,6 +1052,11 @@ class Lesson < ActiveRecord::Base
     elsif lodging_reservation_id.length == 6
         return true
     end
+  end
+
+  def confirm_valid_promo_code
+    return true if self.promo_code.nil?
+    
   end
 
   def send_lesson_request_to_instructors

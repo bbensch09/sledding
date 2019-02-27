@@ -151,7 +151,7 @@ class LessonMailer < ActionMailer::Base
 
   def send_promo_redemption_notification(lesson)
     @lesson = lesson
-    mail(to: @lesson.requester.email,  cc: "Adam Garon <#{ENV['SUPERVISOR_EMAIL']}>, notify@snowschoolers.com", subject: "The promo code #{@lesson.promo_code.promo_code} has been redeemed for #{@lesson.date.strftime("%b %-d")}")
+    mail(to: 'brian@snowschoolers.com',  cc: "Adam Garon <#{ENV['SUPERVISOR_EMAIL']}>, notify@snowschoolers.com", subject: "The promo code #{@lesson.promo_code.promo_code} has been redeemed for #{@lesson.date.strftime("%b %-d")}")
   end
 
 

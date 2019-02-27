@@ -317,6 +317,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     if @lesson.deposit_status != 'confirmed'
         @amount = @lesson.price.to_i
+        if @amount > 0
           customer = Stripe::Customer.create(
             :email => params[:stripeEmail],
             :source  => params[:stripeToken]
@@ -327,6 +328,7 @@ class LessonsController < ApplicationController
             :description => 'Sledding Hill Ticket',
             :currency    => 'usd'
           )
+        end
         @lesson.deposit_status = 'confirmed'
         @lesson.state = 'confirmed'
     end
