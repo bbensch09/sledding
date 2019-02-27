@@ -27,10 +27,27 @@
                   <b>Price:</b>
                 </div>
                 <div class="col-xs-8 col-md-9">
-                  <% amount = @lesson.price.to_f*100 %>
                   <span class="left">
-                    <%= number_to_currency(@lesson.price) %>
-                  </span>
+                  <% amount = (@lesson.price.to_f*100).to_i %>
+                  <% if @lesson.lesson_price.nil? || @lesson.price == @lesson.lesson_price %>
+          
+                      <% if @lesson.promo_code %>
+                        <br><span class="strikethrough">Original: $17.00</span>
+                        <br>Promo: <%= @lesson.promo_code.promo_code %>
+                        <br>Final price: <%= number_to_currency(@lesson.price) %>
+                      <%else%>
+                        <%= number_to_currency(@lesson.price) %>    
+                        <% if @lesson.product.calendar_period == 'Holiday' || @lesson.product.calendar_period == 'Peak' %>
+                          (holiday pricing)
+                        <% end %>
+
+                      <% end %>
+                    <% else %>
+                    <!-- show custom prices for admin setup lessons -->
+                      <% amount =(@lesson.lesson_price.to_f*100).to_i %>
+                      <p><%= number_to_currency(@lesson.lesson_price.to_s) %></p>
+                  <% end %>
+                  </span>                  
                 </div>
               </div>
               <div class="row">
@@ -59,15 +76,19 @@
               <label class="amount">
               </label>
               <%= link_to 'Edit Reservation', edit_lesson_path(@lesson), class: "center btn btn-sm btn-primary" %>
-              <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                      data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-                      data-description="Thanks for booking at Granlibakken!"
-                      data-name="Granlibakken Sledding"
-                      data-image="http://granlibakken.com/wp-content/uploads/cropped-tin-g-32x32.png"
-                      data-amount=<%= amount %>
-                      data-locale="auto"
-                      data-zip-code="true">
-              </script>
+              <% if amount > 0 %>
+                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+                        data-description="Thanks for booking at Granlibakken!"
+                        data-name="Granlibakken Sledding"
+                        data-image="http://granlibakken.com/wp-content/uploads/cropped-tin-g-32x32.png"
+                        data-amount=<%= amount %>
+                        data-locale="auto"
+                        data-zip-code="true">
+                </script>
+              <% else %>
+                <%= link_to 'Confirm Reservation', confirm_reservation_path(@lesson), method: :post, class: "center btn btn-sm btn-primary" %>
+              <% end %>
                 <p class="nonrefundable_disclaimer left">
                   <br>
                     You may cancel or modify your sledding hill ticket up to 24 hours before the day of your reservation. Any cancellation made less than 24 hours before the lesson time will not be refundable, regardless of weather conditions. Please email <a href="mailto:frontdesk@granlibakken.com">frontdesk@granlibakken.com</a> to initiate a cancellation.

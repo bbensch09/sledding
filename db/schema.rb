@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181108085923) do
+ActiveRecord::Schema.define(version: 20190224172630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 20181108085923) do
     t.string   "drivers_license"
     t.date     "date"
     t.string   "check_in_status"
+    t.integer  "promo_code_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -299,6 +300,18 @@ ActiveRecord::Schema.define(version: 20181108085923) do
     t.string   "age_type"
     t.text     "details"
     t.string   "url"
+  end
+
+  create_table "promo_codes", force: :cascade do |t|
+    t.string   "promo_code"
+    t.string   "status"
+    t.float    "discount"
+    t.string   "discount_type"
+    t.integer  "redemptions"
+    t.string   "description"
+    t.boolean  "single_use"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "reviews", force: :cascade do |t|

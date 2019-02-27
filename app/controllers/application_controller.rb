@@ -3,6 +3,7 @@
   before_action :authenticate_user!
   before_action :set_user
   after_action :store_location
+  before_action :set_promo_code_cookie_and_session
 
 #TO REFACTOR LATER - CUSTOMIZED METHODS TO INTERCEPT DEFAULT ERROR HANDLING FOR 404s and 500s
   # rescue_from ActiveRecord::RecordNotFound, :with => :houston_we_have_a_problem
@@ -88,8 +89,16 @@ def confirm_admin_permissions
   redirect_to root_path, notice: 'You do not have permission to view that page.'
 end
 
-
-
-
+def set_promo_code_cookie_and_session
+  if params[:promo_code]
+    puts "!!! detected params for :promo code are #{params[:promo_code]}"
+    cookies[:promo_code] = {
+      value: params[:promo_code],
+      expires: 1.year.from_now
+    }
+    session[:promo_code] = params[:promo_code]
+    puts"!!!! cookie has been set to: #{cookies[:promo_code]}."
+  end
+end
 
 end

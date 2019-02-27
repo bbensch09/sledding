@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  promo_code: MyString
+  status: MyString
+  discount: 1.5
+  redemptions: 1
+  description: MyString
+  single_use: false
+
+two:
+  promo_code: MyString
+  status: MyString
+  discount: 1.5
+  redemptions: 1
+  description: MyString
+  single_use: false

@@ -1,3 +1,6 @@
+.strikethrough {
+  text-decoration: line-through;
+}
 .liability-text p {
   font-size: 0.9em;
 }
@@ -18,7 +21,6 @@
   margin-right: auto;
 }
 .booking-details p, .booking-details span, .booking-details{
-  font-size: 1.2em;
   margin-bottom: 5px;
 }
 .lodging-discount-warning, .lodging-discount-warning p{

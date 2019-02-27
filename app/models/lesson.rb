@@ -4,6 +4,7 @@ class Lesson < ActiveRecord::Base
   belongs_to :lesson_time
   has_many :students
   has_one :review
+  belongs_to :promo_code
   has_many :transactions
   has_many :lesson_actions
   belongs_to :product #, class_name: 'Product', foreign_key: 'product_id'
@@ -24,6 +25,7 @@ class Lesson < ActiveRecord::Base
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
+  before_save :confirm_valid_promo_code, on: :update
 
 
   #Check to ensure an instructor is available before booking
@@ -461,11 +463,33 @@ class Lesson < ActiveRecord::Base
     else
       price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
     end
+    if self.promo_code
+      case self.promo_code.discount_type
+      when 'cash'
+        # puts "!!!discount of #{self.promo_code.discount} is applied to total price."
+        price = (price.to_f - self.promo_code.discount.to_f)
+      when 'percent'
+        # puts "!!!discount percentage of of #{self.promo_code.discount} is applied to total price."
+        price = (price.to_f * (1-self.promo_code.discount.to_f/100))
+      end
+    end
     if self.lodging_guest == true && self.lodging_reservation_id && self.lodging_reservation_id.length == 6
       price = price *0.5
     end
     return price.to_s
   end
+
+  # FLAG for removal -- likely unnecessary
+  def original_price
+    return self.price unless self.promo_code
+    case self.promo_code.discount_type
+      when 'cash'
+        return original_price = self.price.to_f + self.promo_code.discount.to_f
+      when 'percent'
+        return original_price = self.price.to_f / (1-self.promo_code.discount.to_f/100)
+      end
+  end
+
 
   def price_per_student
     return (self.price.to_f) / (self.students.count)
@@ -1027,6 +1051,23 @@ class Lesson < ActiveRecord::Base
       return true
     elsif lodging_reservation_id.length == 6
         return true
+    end
+  end
+
+  def confirm_valid_promo_code
+    return true if self.promo_code.nil?
+    promo_redemptions_count = Lesson.where(promo_code_id:self.promo_code_id,state:'confirmed').count
+    if promo_redemptions_count > 0 && self.promo_code.single_use == true
+      errors.add(:lesson, "ERROR: Unfortunately your promo code has already been redeemed.")
+      return false
+    elsif self.promo_code.description == 'groupon 1-ticket redemption' && self.num_days > 1
+      errors.add(:lesson, "ERROR: Your promo code is only valid for 1 student. Please remove any additional students in order to claim your ticket. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
+      return false
+    elsif self.promo_code.description == 'groupon 2-ticket redemption' && self.num_days != 2
+      errors.add(:lesson, "ERROR: Your promo code is valid for 2 students, please be sure to enter 2 student names.")
+      return false
+    else
+      return true
     end
   end
 

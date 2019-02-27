@@ -274,6 +274,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @product_name = @lesson.product_name
     @date = @lesson.lesson_time.date
+    @promo_code = PromoCode.new
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
@@ -316,6 +317,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     if @lesson.deposit_status != 'confirmed'
         @amount = @lesson.price.to_i
+        if @amount > 0
           customer = Stripe::Customer.create(
             :email => params[:stripeEmail],
             :source  => params[:stripeToken]
@@ -326,6 +328,7 @@ class LessonsController < ApplicationController
             :description => 'Sledding Hill Ticket',
             :currency    => 'usd'
           )
+        end
         @lesson.deposit_status = 'confirmed'
         @lesson.state = 'confirmed'
     end
@@ -333,6 +336,9 @@ class LessonsController < ApplicationController
       LessonMailer.sledding_tickets_confirmation(@lesson).deliver!
       flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
       flash[:conversion] = 'TRUE'
+      if @lesson.promo_code
+        LessonMailer.send_promo_redemption_notification(@lesson).deliver!
+      end
       puts "!!!!!!!! Ticket deposit successfully charged"
       redirect_to @lesson
     else
@@ -344,9 +350,15 @@ class LessonsController < ApplicationController
 
   def update
     puts "!!!!!!begin update action -- shouuld have already passed validations"
+    puts "!!!! counting the number of students attached to this order: #{params[:lesson][:students_attributes].count}"
+    cookies[:student_count] = {
+      value: params[:lesson][:students_attributes].count,
+      expires: 1.year.from_now
+    }
     @lesson = Lesson.find(params[:id])
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
+    @lesson.num_days = params[:lesson][:students_attributes].count
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
@@ -563,7 +575,7 @@ class LessonsController < ApplicationController
 
 
   def lesson_params
-    params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name, :lodging_guest, :lodging_reservation_id, :zip_code, :drivers_license, :state_code, :city, :street_address, :date, :check_in_status,
+    params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name, :lodging_guest, :lodging_reservation_id, :zip_code, :drivers_license, :state_code, :city, :street_address, :date, :check_in_status, :promo_code_id,
       students_attributes: [:id, :name, :age_range, :gender, :relationship_to_requester, :lesson_history, :requester_id, :most_recent_experience, :most_recent_level, :other_sports_experience, :experience, :_destroy])
   end
 
