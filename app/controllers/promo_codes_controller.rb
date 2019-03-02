@@ -59,6 +59,45 @@ class PromoCodesController < ApplicationController
     redirect_to '/promo_codes'
   end
 
+  def generate_2_ticket_wknd_bulk_promo_codes
+    num_codes = 100
+    array = (1..num_codes).to_a
+    array.each do |i|
+      last_id = PromoCode.any? ? PromoCode.last.id : 0
+      new_id = last_id + 1
+      PromoCode.create!({
+        promo_code: "GROUPON_2019-WKND-200#{new_id}",
+        status: 'active', 
+        discount: 100,
+        discount_type: 'percent', 
+        description: 'groupon 2-ticket weekend redemption', 
+        single_use: true
+      })
+      puts "promo code created for GROUPON_2019-WKND-200#{i}"
+    end
+    redirect_to '/promo_codes'
+  end
+
+  def generate_4_ticket_wknd_bulk_promo_codes
+    num_codes = 100
+    array = (1..num_codes).to_a
+    array.each do |i|
+      last_id = PromoCode.any? ? PromoCode.last.id : 0
+      new_id = last_id + 1
+      PromoCode.create!({
+        promo_code: "GROUPON_2019-WKND-400#{new_id}",
+        status: 'active', 
+        discount: 100,
+        discount_type: 'percent', 
+        description: 'groupon 4-ticket weekend redemption', 
+        single_use: true
+      })
+      puts "promo code created for GROUPON_2019-WKND-400#{i}"
+    end
+    redirect_to '/promo_codes'
+  end
+
+
 
   # POST /promo_codes
   # POST /promo_codes.json
