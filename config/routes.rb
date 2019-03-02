@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   post 'generate_4_ticket_bulk_promo_codes' => 'promo_codes#generate_4_ticket_bulk_promo_codes', as: :generate_4_ticket_bulk_promo_codes
   post 'generate_2_ticket_wknd_bulk_promo_codes' => 'promo_codes#generate_2_ticket_wknd_bulk_promo_codes', as: :generate_2_ticket_wknd_bulk_promo_codes
   post 'generate_4_ticket_wknd_bulk_promo_codes' => 'promo_codes#generate_4_ticket_wknd_bulk_promo_codes', as: :generate_4_ticket_wknd_bulk_promo_codes
+  # HACKY SHIT - redundant get requests
+  get 'generate_2_ticket_bulk_promo_codes' => 'promo_codes#generate_2_ticket_bulk_promo_codes', as: :generate_2_ticket_bulk_promo_codes
+  get 'generate_4_ticket_bulk_promo_codes' => 'promo_codes#generate_4_ticket_bulk_promo_codes', as: :generate_4_ticket_bulk_promo_codes
+  get 'generate_2_ticket_wknd_bulk_promo_codes' => 'promo_codes#generate_2_ticket_wknd_bulk_promo_codes', as: :generate_2_ticket_wknd_bulk_promo_codes
+  get 'generate_4_ticket_wknd_bulk_promo_codes' => 'promo_codes#generate_4_ticket_wknd_bulk_promo_codes', as: :generate_4_ticket_wknd_bulk_promo_codes
   get 'ghost_click' => 'welcome#ghost_click'
   resources :shifts
   resources :product_calendars
