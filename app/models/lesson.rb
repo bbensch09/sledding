@@ -1060,11 +1060,19 @@ class Lesson < ActiveRecord::Base
     if promo_redemptions_count > 0 && self.promo_code.single_use == true
       errors.add(:lesson, "ERROR: Unfortunately your promo code has already been redeemed.")
       return false
-    elsif self.promo_code.description == 'groupon 1-ticket redemption' && self.num_days > 1
-      errors.add(:lesson, "ERROR: Your promo code is only valid for 1 student. Please remove any additional students in order to claim your ticket. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
+    # weekday redemptions
+    elsif self.promo_code.description == 'groupon 2-ticket weekday redemption' && (self.num_days !=2 || self.date.wday >4)
+      errors.add(:lesson, "ERROR: Your promo code is valid for 2 students on Mon-Thurs. Please be sure to enter 2 student names and select an appropriate date. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
       return false
-    elsif self.promo_code.description == 'groupon 2-ticket redemption' && self.num_days != 2
-      errors.add(:lesson, "ERROR: Your promo code is valid for 2 students, please be sure to enter 2 student names.")
+    elsif self.promo_code.description == 'groupon 4-ticket weekday redemption' && (self.num_days != 4 || self.date.wday >4)
+      errors.add(:lesson, "ERROR: Your promo code is valid for 4 students on Mon-Thurs. Please be sure to enter 2 student names and select an appropriate date. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
+      return false
+    # weekend redemptions
+    elsif self.promo_code.description == 'groupon 2-ticket weekend redemption' && (self.num_days !=2  || self.date.wday <=4)
+      errors.add(:lesson, "ERROR: Your promo code is valid for 2 students on weekends only (Fri-Sun). Please be sure to enter 2 student names and select an appropriate date. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
+      return false
+    elsif self.promo_code.description == 'groupon 4-ticket weekend redemption' && (self.num_days != 4  || self.date.wday <=4)
+      errors.add(:lesson, "ERROR: Your promo code is valid for 4 students on weekends only (Fri-Sun). Please be sure to enter 2 student names and select an appropriate date. If you've reached this error already, please close this window and reopen your unique URL in a new tab.")
       return false
     else
       return true
