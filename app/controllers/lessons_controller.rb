@@ -356,6 +356,16 @@ class LessonsController < ApplicationController
       expires: 1.year.from_now
     }
     @lesson = Lesson.find(params[:id])
+    if session[:promo_code]
+      puts "!!!!INSERT NEW LOGIC FOR PROMO CODE STRINGS"
+      puts "lesson objectives string = #{@lesson.objectives}"
+      if PromoCode.where(promo_code:@lesson.objectives).count >= 1
+        puts "!!!found PromoCode matching lesson.objectives"
+        pc_id = PromoCode.where(promo_code:@lesson.objectives).first.id
+        @lesson.promo_code_id = pc_id
+      end
+      # @lesson.check_promo_code_manually
+    end
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
     @lesson.num_days = params[:lesson][:students_attributes].count

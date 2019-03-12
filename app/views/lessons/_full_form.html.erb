@@ -196,8 +196,12 @@
           <% if session[:promo_code] %>
           <div class="col-md-6">
             <label class="lesson-label">Promo Code</label>
-          <% pc_id = PromoCode.where(promo_code:session[:promo_code]).first.id %>
-            <%= f.select :promo_code_id, [[session[:promo_code],pc_id],["",nil] ], {}, {class: 'form-control', required:false, include_blank:false} %>
+          <% if PromoCode.where(promo_code:session[:promo_code]).count >= 1 %>
+              <% pc_id = PromoCode.where(promo_code:session[:promo_code]).first.id %>
+              <%= f.select :promo_code_id, [[session[:promo_code],pc_id],["",nil] ], {}, {class: 'form-control', required:false, include_blank:false} %>
+            <% else %>
+              <%= f.text_field :objectives, as: :text, placeholder: 'GROUPON_XXXX-YYYY-ZZZZZZ', class: 'form-control', required:true, include_blank:false %>
+          <% end %>
           </div>
           <% end %>
 
