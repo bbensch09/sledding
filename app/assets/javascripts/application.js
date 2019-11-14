@@ -13,7 +13,7 @@
 //= require bootstrap
 //= require bootstrap-sprockets
 //= require jquery
-//= require jquery-ui/datepicker
+//= require jquery-ui/widgets/datepicker
 //= require datetimepicker
 //= require jquery_ujs
 //= require jquery.timepicker.js

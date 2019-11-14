@@ -25,7 +25,7 @@ class Lesson < ActiveRecord::Base
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
-  before_save :confirm_valid_promo_code, on: :update
+  before_save :confirm_valid_promo_code, if: :update
 
 
   #Check to ensure an instructor is available before booking
