@@ -11,6 +11,8 @@ Rails.application.configure do
   #show additional error messages raised in callbacks
   # config.active_record.raise_in_transactional_callbacks = true
 
+  config.hosts << "sledding.granlibakken.com"
+
   config.cache_classes = false
 
 
