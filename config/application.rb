@@ -6,7 +6,7 @@ require 'csv'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-ActiveSupport.halt_callback_chains_on_return_false = false
+# ActiveSupport.halt_callback_chains_on_r eturn_false = false
 
 module SnowSchoolers
   class Application < Rails::Application

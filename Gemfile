@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "~> 2.3.0"
+ruby "~> 2.6.3"
 
 #Gems for new mobile-friendly calendar w/ gCal support
 gem 'fullcalendar-rails'
@@ -30,7 +30,7 @@ gem 'whenever', :require => false
 #stripe for charging credit cards
 gem 'stripe'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.0.1'
+# gem 'rails', '5.0.0.1'
 # gem 'rails', '5.1' --> for a future time
 #ensure that puma server is available
 gem 'puma'
@@ -67,7 +67,7 @@ end
 # Use SCSS for stylesheets
 gem 'sass-rails'
 gem 'bootstrap-sass'
-gem 'sprockets-rails', :require => 'sprockets/railtie'
+# gem 'sprockets-rails', :require => 'sprockets/railtie'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -80,7 +80,7 @@ gem 'coffee-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-gem 'jquery-ui-rails', '5.0.5'
+gem 'jquery-ui-rails'#, '5.0.5'
 gem 'jquery-timepicker-rails'
 #added to try to replace bootstrap datetimepicker(?)
 gem 'bootstrap-datepicker-rails'
@@ -110,7 +110,7 @@ end
 # gem 'capistrano', group: :development
 
 gem 'devise'
-gem 'formtastic', '~> 3.0'
+gem 'formtastic'#, '~> 3.0'
 gem 'formtastic-bootstrap'
 gem 'omniauth-facebook', '~> 4.0.0'
 gem 'cocoon', '>= 1.2.0'
