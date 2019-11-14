@@ -350,9 +350,9 @@ class LessonsController < ApplicationController
 
   def update
     puts "!!!!!!begin update action -- shouuld have already passed validations"
-    puts "!!!! counting the number of students attached to this order: #{params[:lesson][:students_attributes].count}"
+    puts "!!!! counting the number of students attached to this order: #{params[:lesson][:students_attributes].keys.count}"
     cookies[:student_count] = {
-      value: params[:lesson][:students_attributes].count,
+      value: params[:lesson][:students_attributes].keys.count,
       expires: 1.year.from_now
     }
     @lesson = Lesson.find(params[:id])
@@ -368,7 +368,7 @@ class LessonsController < ApplicationController
     end
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
-    @lesson.num_days = params[:lesson][:students_attributes].count
+    @lesson.num_days = params[:lesson][:students_attributes].keys.count
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
