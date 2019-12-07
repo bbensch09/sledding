@@ -72,6 +72,20 @@ class LocationsController < ApplicationController
     end
   end
 
+  def disable_ticket_sales
+    g = Location.find(24)
+    g.partner_status = "Inactive"
+    g.save!
+    redirect_to root_path
+  end
+
+  def enable_ticket_sales
+    g = Location.find(24)
+    g.partner_status = "Active"
+    g.save!
+    redirect_to root_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location

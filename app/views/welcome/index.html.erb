@@ -47,16 +47,38 @@
     </div>
 </section>
 
-<section class="bg-white" id="sledding-tickets">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-xs12">
-                <%= render "lessons/lesson_new_form" %>
-                <hr class="light text-center">
+<% if Location.find(24).partner_status == 'Inactive' %>
+    <% @cta_visibility = "hidden" %>
+    
+        <section class="bg-white" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-xs12">
+                        <h2 class="warning">
+                            Unfortunately online sledding tickets are currently not available. Please contact guest services at (530) 583-4242 for the latest information on when the sled hill will be open.
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <% else %>    
+    <% @cta_visibility = "active" %>
+
+<% end %>    
+
+<div class=<%=@cta_visibility%> >
+    <section class="bg-white" id="sledding-tickets">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-xs12">
+                    <%= render "lessons/lesson_new_form" %>
+                    <hr class="light text-center">
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
 
 
 <section id="daily-update" class="bg-primary">
