@@ -57,6 +57,9 @@ Rails.application.routes.draw do
   resources :locations do 
         collection {post :import}
   end
+  get 'disable-ticket-sales' => 'locations#disable_ticket_sales'
+  get 'enable-ticket-sales' => 'locations#enable_ticket_sales'
+
   resources :charges
 
   # root to: "lessons#new"
