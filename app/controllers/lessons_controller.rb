@@ -31,7 +31,7 @@ class LessonsController < ApplicationController
   def admin_index
     # Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.where(state:"confirmed")
-    @lessons = Lesson.all.to_a.keep_if{|lesson| lesson.lesson_time && lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
+    @lessons = Lesson.last(200).to_a.keep_if{|lesson| lesson.lesson_time && lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
     @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
     @show_search_options = true
     respond_to do |format|
