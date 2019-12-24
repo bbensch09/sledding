@@ -36,7 +36,7 @@ class LessonsController < ApplicationController
     @show_search_options = true
     respond_to do |format|
           format.html {render 'admin_index'}
-          format.csv { send_data @lessons_to_export.to_csv, filename: "group-lessons-export-#{Date.today}.csv" }
+          format.csv { send_data @lessons_to_export.to_csv, filename: "sledding-emails-export-#{Date.today}.csv" }
     end
   end
 
