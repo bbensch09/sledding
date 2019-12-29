@@ -135,7 +135,12 @@
           <% end %>
             <div class="col-md-3">
               <label>Price</label>
-                <h2> <span id="lesson-price"><%= number_to_currency(Product.find(1).price) %></span></h2>
+                <h2> <span id="lesson-price">
+                  <% if @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
+                    <%= number_to_currency(Product.find(2).price) %></span></h2>
+                    <% else %> 
+                    <%= number_to_currency(Product.find(1).price) %></span></h2>
+                  <% end %>
                 <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
           </div>
