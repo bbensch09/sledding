@@ -77,6 +77,9 @@ gem 'coffee-rails'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+# added Oct2020 in order to get local server running
+gem 'execjs'
+gem 'therubyracer'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
