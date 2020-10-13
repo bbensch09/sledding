@@ -1000,7 +1000,7 @@ class Lesson < ActiveRecord::Base
 
   def self.to_csv(options = {})
     desired_columns = %w{
-      id date confirmation_number requester_name phone_number guest_email price
+      id date created_at confirmation_number requester_name phone_number guest_email price
     }
     CSV.generate(headers: true) do |csv|
       csv << desired_columns
