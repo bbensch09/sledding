@@ -110,7 +110,7 @@ class LessonsController < ApplicationController
     @lessons = Lesson.all
     if params[:date] != ""
         puts "!!!filter by date.  param is #{params['date']}"
-        @lessons = @lessons.to_a.keep_if{|lesson| lesson.date.to_s == params[:date]}
+        @lessons = @lessons.to_a.keep_if{|lesson| lesson.date && lesson.date.to_s == params[:date]}
         puts "found #{@lessons.count} mactching lessons"
     end
     if params[:name] != ""
