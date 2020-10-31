@@ -11,13 +11,13 @@ var day = dt.getDate();
 var month = dt.getMonth() + 1;
 var year = dt.getYear() +1900;
 var date = year + "-" + month + "-" + day;
-var opening_date = new Date("2019-12-13");
+var opening_date = new Date("2020-12-13");
 
 // logs today's date
 console.log(date);
 
 if (Date.now() <= opening_date) {
-  var MIN_DATE = '2019-12-13';
+  var MIN_DATE = '2020-12-13';
   // logs the season start date
   console.log(MIN_DATE);
 }
@@ -69,7 +69,7 @@ var LESSON = {
       return [ blocked_dates_array.indexOf(string) == -1 ]
     },
     minDate: MIN_DATE,
-    maxDate: '2020-04-30',
+    maxDate: '2021-04-30',
     dateFormat: 'yy-mm-dd'
   });
   LESSON._date2.datepicker({
@@ -78,7 +78,7 @@ var LESSON = {
       return [ blocked_dates_array.indexOf(string) == -1 ]
     },
     minDate: MIN_DATE,
-    maxDate: '2020-04-30',
+    maxDate: '2021-04-30',
     dateFormat: 'yy-mm-dd'
     });
   },

@@ -1043,7 +1043,7 @@ class Lesson < ActiveRecord::Base
 
   def room_reservation_validator
     puts "!!!!!checking for valid resrvation id"
-    if lodging_guest == false
+    if lodging_guest == false || lodging_guest.nil?
       return true
     elsif lodging_reservation_id.nil? || lodging_reservation_id.length != 6
       # errors.add(:lesson, "You must enter a valid room reservation id")
