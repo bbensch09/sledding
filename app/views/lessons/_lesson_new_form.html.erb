@@ -8,7 +8,7 @@
       <div class="new-lesson-caption" id="buy-tickets">
 
         <div class="block">
-          <p class="cta-subtext center black-text">Select date to get started</p>
+          <p class="cta-subtext center black-text">Please select the date & time slot for which you wish to purchase tickets</p>
         </div>
         <h1 class="warning">        
           <%= f.semantic_errors :lesson %>
@@ -19,10 +19,14 @@
             <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
 
             <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
-              <div class="col-md-12">
+              <div class="col-md-8"> <!-- offset-md-3 -->
+                <%= lt_f.input :slot, as: :select, collection: ['Early-bird (9-1030am)', 'Morning (11am-1230pm)','Midday (1-230pm)','Closing(3-430pm)'], include_blank: 'Select Time', label: false, required:true %>
+              </div>
+              <div class="col-md-4">
                 <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, class:'date-input center', required:true, autocomplete:"off" }, placeholder: 'Date', label: false %>
                 <!-- <span class="search-area-icon"></span> -->
               </div>
+
             <% end %>
 
               <%= f.input :state, as: :hidden, input_html: { value: 'new' } %>
