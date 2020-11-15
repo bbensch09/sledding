@@ -1,4 +1,4 @@
-class AddAttachmentCoverPhotoToBlog < ActiveRecord::Migration[5.0]
+class AddAttachmentCoverPhotoToBlog < ActiveRecord::Migration[6.0]
   def self.up
     change_table :blogs do |t|
       t.attachment :cover_photo

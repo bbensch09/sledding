@@ -1,4 +1,4 @@
-class CreateSelfies < ActiveRecord::Migration[5.0]
+class CreateSelfies < ActiveRecord::Migration[6.0]
   def change
     create_table :selfies do |t|
       t.string :link

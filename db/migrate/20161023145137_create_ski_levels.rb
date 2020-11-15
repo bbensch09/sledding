@@ -1,4 +1,4 @@
-class CreateSkiLevels < ActiveRecord::Migration
+class CreateSkiLevels < ActiveRecord::Migration[6.0]
   def change
     create_table :ski_levels do |t|
       t.string :name

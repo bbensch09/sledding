@@ -1,4 +1,4 @@
-class CreateLessonTimesTable < ActiveRecord::Migration
+class CreateLessonTimesTable < ActiveRecord::Migration[6.0]
   def change
     create_table :lesson_times do |t|
       t.date :date

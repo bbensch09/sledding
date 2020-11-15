@@ -1,4 +1,4 @@
-class AddAvatarToInstructors < ActiveRecord::Migration
+class AddAvatarToInstructors < ActiveRecord::Migration[6.0]
   def self.up
     change_table :instructors do |t|
       t.attachment :avatar

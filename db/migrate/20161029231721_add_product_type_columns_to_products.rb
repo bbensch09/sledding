@@ -1,4 +1,4 @@
-class AddProductTypeColumnsToProducts < ActiveRecord::Migration
+class AddProductTypeColumnsToProducts < ActiveRecord::Migration[6.0]
   def change
       add_column :products, :product_type, :string #lesson, lift ticket, rental, lift & lesson package, lift + lesson + rental package
       add_column :products, :is_lesson, :boolean, :default => false

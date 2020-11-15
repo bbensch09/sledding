@@ -1,4 +1,4 @@
-class AddFieldsToLesson < ActiveRecord::Migration[5.0]
+class AddFieldsToLesson < ActiveRecord::Migration[6.0]
   def change
   	add_column :lessons, :lodging_guest, :boolean
   	add_column :lessons, :lodging_reservation_id, :string

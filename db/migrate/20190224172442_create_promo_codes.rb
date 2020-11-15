@@ -1,4 +1,4 @@
-class CreatePromoCodes < ActiveRecord::Migration[5.0]
+class CreatePromoCodes < ActiveRecord::Migration[6.0]
   def change
     create_table :promo_codes do |t|
       t.string :promo_code
