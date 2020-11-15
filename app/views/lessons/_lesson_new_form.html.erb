@@ -20,7 +20,7 @@
 
             <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
               <div class="col-md-8"> <!-- offset-md-3 -->
-                <%= lt_f.input :slot, as: :select, collection: ['Early-bird (9-1030am)', 'Morning (11am-1230pm)','Midday (1-230pm)','Closing(3-430pm)'], include_blank: 'Select Time', label: false, required:true %>
+                <%= lt_f.input :slot, as: :select, collection: ['Early-bird (8:30-10am)', 'Morning (10:30am-12pm)','Midday (12:30-2pm)','Closing(2:30-4pm)'], include_blank: 'Select Time', label: false, required:true %>
               </div>
               <div class="col-md-4">
                 <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, class:'date-input center', required:true, autocomplete:"off" }, placeholder: 'Date', label: false %>

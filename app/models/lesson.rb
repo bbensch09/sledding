@@ -24,6 +24,7 @@ class Lesson < ActiveRecord::Base
 
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
+  validate :check_session_capacity
   validate :room_reservation_validator, on: :update
   before_save :confirm_valid_promo_code
 
@@ -281,6 +282,11 @@ class Lesson < ActiveRecord::Base
     active_states = ['confirmed','seeking replacement instructor','pending instructor', 'pending requester','Lesson Complete','finalizing payment & reviews','waiting for review','finalizing','ready_to_book']
     #removed 'confirmed' from active states to avoid sending duplicate SMS messages.
     return true if self.date == Date.today && active_states.include?(state)
+  end
+
+  def paid?
+    active_states = ['booked','confirmed','Lesson Complete','finalizing payment & reviews','waiting for review','finalizing']
+    return true if active_states.include?(state) && self.date > Date.today
   end
 
   def upcoming?
@@ -1009,6 +1015,28 @@ class Lesson < ActiveRecord::Base
       end
     end
   end
+
+  def check_session_capacity
+    if current_session_capacity < SLEDHILL_CAPACITY
+      return current_session_capacity
+    else
+      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot.")
+      return false
+    end
+
+  end
+
+  def current_session_capacity
+    other_bookings_on_same_day = Lesson.where(lesson_time_id:self.lesson_time_id).to_a
+    same_session_bookings = other_bookings_on_same_day.keep_if{|l| l.lesson_time.slot == self.lesson_time.slot && l.paid?}
+    puts "!!! There are #{same_session_bookings.count} other bookings already"
+    return same_session_bookings.count
+  end
+
+  def session_capacity_remaining
+    return SLEDHILL_CAPACITY - current_session_capacity
+  end
+
 
   private
 

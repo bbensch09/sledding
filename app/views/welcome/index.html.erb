@@ -18,27 +18,29 @@
     <div class="header-content">
         <div class="header-content-inner">
             <!-- <h1 id="homeHeading" class="shadow-box-highlight">Private Lessons Made Perfect<br> -->
-                <h1 id="homeHeading" class="home-header"><b>SLEDDING </b> at <b>GRANLIBAKKEN</b><br>
+                <h1 id="homeHeading" class="home-header"><b>SNOWSPORTS </b> at <b>GRANLIBAKKEN</b><br>
                 </h1>
                 <div class="shadow-box-highlight">
                     <h3>
                         <span class="smaller-text">Family Friendly. </span> <br>
                         <span class="smaller-text">Lowest Prices. </span> <br>
+                        <span class="smaller-text">Simple & Safe Winter Fun. </span> <br>
                         <!-- <span class="smaller-text">Tickets now on Sale!</span> -->
                     </h3>
-                <h4><a href="#buy-tickets" class="btn btn-primary btn-xl page-scroll">Book Online</a></h4>
-                <h4><span class="smaller-text">Buy tickets online to save time & skip the line.</span></h4>
-                <hr class="">
+                <h4><a href="#buy-tickets" class="btn btn-primary btn-xl page-scroll">Book Sledding Online</a></h4>
+                <h4><span class="smaller-text">Walk-in purchases are severely limited for 2020/21. Book online to secure your spot!</span></h4>
+                <hr class="hr-brown">
                 <div class="">
                     <p class="welcome-subheader"> Granlibakken is Tahoe's oldest continuously operating ski area, founded in the 1920s. 
-                        <br class="hidden-unless-desktop"> 
+                        <span class="hidden-unless-desktop"> 
                         Our historic ski & sled hill is split between a beginner and intermediate ski hill and a 300-foot long sled hill, perfect for any family adventure.
+                        </span>
                     </p>
                     <span class="welome-ctas">
                         <!-- <a href="#book-a-lesson" class="btn btn-secondary btn-lg page-scroll"> Lift & Lesson prices</a> -->
                     </span>
                 </div>
-                <hr class="subheader-divider">
+                <hr class="hr-brown">
                 </p>
                 <span class="welome-ctas">
                 </span>
@@ -50,7 +52,7 @@
 <% if Location.find(24).partner_status == 'Inactive' %>
     <% @cta_visibility = "hidden" %>
     
-        <section class="bg-white" >
+        <section class="bg-white" id="buy-tickets" >
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-xs12">
