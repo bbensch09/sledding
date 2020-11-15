@@ -12,6 +12,8 @@ Rails.application.configure do
   # config.active_record.raise_in_transactional_callbacks = true
 
   config.hosts << "sledding.granlibakken.com"
+  config.hosts << "sledding.herokuapp.com"
+  config.hosts << "tickets-gb.herokuapp.com"
 
   config.cache_classes = false
 
