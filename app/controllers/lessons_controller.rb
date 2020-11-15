@@ -86,17 +86,16 @@ class LessonsController < ApplicationController
 
   def capacity_last_next_14
     if params[:date]
-        date = params[:date].to_date
-    else date = Date.today
+        min_date = params[:date].to_date
+    else min_date = Date.today - 3
     end
-    min_date = date -13
-    max_date = date + 13
+    max_date = min_date + 16
     lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.booked? }
     lessons = lessons.select{ |lesson| lesson.date >= min_date && lesson.date <= max_date}
     @lessons = lessons.sort_by{|lesson| lesson.date}
     @count = @lessons.count
     dates = []
-    (1..28).each do |x|
+    (0..16).each do |x|
       dates << min_date + x
     end
     @dates = dates    

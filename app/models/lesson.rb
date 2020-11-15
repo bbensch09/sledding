@@ -24,8 +24,8 @@ class Lesson < ActiveRecord::Base
 
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
-  validate :check_session_capacity
   validate :room_reservation_validator, on: :update
+  validate :check_session_capacity
   before_save :confirm_valid_promo_code
 
 
@@ -1017,10 +1017,10 @@ class Lesson < ActiveRecord::Base
   end
 
   def check_session_capacity
-    if current_session_capacity < SLEDHILL_CAPACITY
+    if (current_session_capacity + self.students.count) <= SLEDHILL_CAPACITY
       return current_session_capacity
     else
-      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot.")
+      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, visit tickets.granlibakken.com/sledding/calendar.")
       return false
     end
 
@@ -1029,8 +1029,12 @@ class Lesson < ActiveRecord::Base
   def current_session_capacity
     other_bookings_on_same_day = Lesson.where(lesson_time_id:self.lesson_time_id).to_a
     same_session_bookings = other_bookings_on_same_day.keep_if{|l| l.lesson_time.slot == self.lesson_time.slot && l.paid?}
+    tickets = 0
+    same_session_bookings.each do |booking|
+      tickets+= booking.students.count
+    end
     puts "!!! There are #{same_session_bookings.count} other bookings already"
-    return same_session_bookings.count
+    return tickets
   end
 
   def session_capacity_remaining
