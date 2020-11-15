@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   # root to: "lessons#new"
   root to: "welcome#index"
   get 'tickets' => 'lessons#new'
+  put  'lessons/:id/duplicate'   => 'lessons#duplicate',   as: :duplicate
 
   #backup index
   get 'winter' => 'welcome#index_backup_may2017'
@@ -118,8 +119,9 @@ Rails.application.routes.draw do
         post :revoke
         get :show_candidate
       end
-  end
+  end 
   get '/admin_index' => 'instructors#admin_index'
+  get 'sledding/calendar' => 'lessons#capacity_last_next_14', as: :capacity_calendar
   get 'sledding/admin_index' => 'lessons#admin_index', as: :sledding_admin_index
   get 'sledding/roster-today' => 'lessons#roster_today', as: :sledding_roster_today
   get 'sledding/roster-today-print' => 'lessons#roster_today_print', as: :sledding_roster_today_print
