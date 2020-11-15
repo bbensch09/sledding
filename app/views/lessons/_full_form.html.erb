@@ -8,7 +8,7 @@
     <div id="autofill-container" class="admin-viewable">
       <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a> <br>
       <h3>Total tickets already sold for this date/session: <%=@lesson.current_session_capacity %> tickets.</h3>
-      <h3>Based on capacity of <%=SLEDHILL_CAPACITY %>, there are <%=@lesson.session_capacity_remaining %> tickets remaining.</h3>
+config.assets.initialize_on_precompile = false
       <% if session[:refund] == true %>
         <h3> To issue a full refund: </h3>
           <ol>
@@ -87,6 +87,11 @@
 
       <div class='row'>
         <div class="col-md-6">
+          <%if @lesson.session_capacity_remaining <=10 %> 
+          <h2 class="text-danger">
+            Warning: there's only <%=@lesson.session_capacity_remaining%> ticket(s) available for this session. Book now before we sell out!
+          </h2>
+          <%end%>
           <h4><strong>Customer Info</strong></h4>
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
