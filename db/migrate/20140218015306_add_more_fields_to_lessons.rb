@@ -1,4 +1,4 @@
-class AddMoreFieldsToLessons < ActiveRecord::Migration
+class AddMoreFieldsToLessons < ActiveRecord::Migration[6.0]
   def change
     add_column :lessons, :activity, :string
     add_column :lessons, :requested_location, :string

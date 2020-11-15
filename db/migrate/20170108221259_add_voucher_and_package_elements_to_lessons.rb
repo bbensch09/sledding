@@ -1,4 +1,4 @@
-class AddVoucherAndPackageElementsToLessons < ActiveRecord::Migration[5.0]
+class AddVoucherAndPackageElementsToLessons < ActiveRecord::Migration[6.0]
   def change
       add_column :lessons, :is_gift_voucher, :boolean, :default => false
       add_column :lessons, :includes_lift_or_rental_package, :boolean, :default => false

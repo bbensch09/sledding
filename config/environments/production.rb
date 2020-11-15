@@ -9,6 +9,9 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://localhost:3000','https://snowchoolers-v2-2016.herokuapp.com', '/http:\/\/snowchoolers-v2-2016.herokuapp.com.*/','https://wwww.snowschoolers.com', 'http://wwww.snowschoolers.com.*/' ]
 
   config.hosts << "sledding.granlibakken.com"
+  config.hosts << "tickets.granlibakken.com"
+  config.hosts << "tickets-granlibakken.herokuapp.com"
+
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -38,7 +41,8 @@ Rails.application.configure do
 	  # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.

@@ -1,4 +1,4 @@
-class CreateStudentsTable < ActiveRecord::Migration
+class CreateStudentsTable < ActiveRecord::Migration[6.0]
   def change
     create_table :students do |t|
       t.references :lesson

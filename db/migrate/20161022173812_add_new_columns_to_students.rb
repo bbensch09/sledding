@@ -1,4 +1,4 @@
-class AddNewColumnsToStudents < ActiveRecord::Migration
+class AddNewColumnsToStudents < ActiveRecord::Migration[6.0]
   def change
             add_column :students, :requester_id, :integer
             add_column :students, :most_recent_experience, :string

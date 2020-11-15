@@ -1,4 +1,4 @@
-class CreateCalendarBlocks < ActiveRecord::Migration
+class CreateCalendarBlocks < ActiveRecord::Migration[6.0]
   def change
     create_table :calendar_blocks do |t|
       t.integer :instructor_id

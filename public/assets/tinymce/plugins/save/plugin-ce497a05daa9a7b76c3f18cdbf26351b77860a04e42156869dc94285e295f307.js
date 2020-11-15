@@ -1,0 +1,9 @@
+/**
+ * Copyright (c) Tiny Technologies, Inc. All rights reserved.
+ * Licensed under the LGPL or a commercial license.
+ * For LGPL see License.txt in the project root for license information.
+ * For commercial licenses see https://www.tiny.cloud/
+ *
+ * Version: 5.5.1 (2020-10-01)
+ */
+!function(){"use strict";var e=tinymce.util.Tools.resolve("tinymce.PluginManager"),n=tinymce.util.Tools.resolve("tinymce.dom.DOMUtils"),t=tinymce.util.Tools.resolve("tinymce.util.Tools"),o=function(e){return e.getParam("save_enablewhendirty",!0)},a=function(e,n){e.notificationManager.open({text:n,type:"error"})},i=function(e){e.addCommand("mceSave",function(){!function(e){var t=n.DOM.getParent(e.id,"form");if(!o(e)||e.isDirty()){if(e.save(),e.getParam("save_onsavecallback"))return e.execCallback("save_onsavecallback",e),e.nodeChanged();t?(e.setDirty(!1),t.onsubmit&&!t.onsubmit()||("function"==typeof t.submit?t.submit():a(e,"Error: Form submit field collision.")),e.nodeChanged()):a(e,"Error: No form element found.")}}(e)}),e.addCommand("mceCancel",function(){var n,o;n=e,o=t.trim(n.startContent),n.getParam("save_oncancelcallback")?n.execCallback("save_oncancelcallback",n):n.resetContent(o)})},c=function(e){return function(n){var t=function(){n.setDisabled(o(e)&&!e.isDirty())};return e.on("NodeChange dirty",t),function(){return e.off("NodeChange dirty",t)}}};e.add("save",function(e){var n;(n=e).ui.registry.addButton("save",{icon:"save",tooltip:"Save",disabled:!0,onAction:function(){return n.execCommand("mceSave")},onSetup:c(n)}),n.ui.registry.addButton("cancel",{icon:"cancel",tooltip:"Cancel",disabled:!0,onAction:function(){return n.execCommand("mceCancel")},onSetup:c(n)}),n.addShortcut("Meta+S","","mceSave"),i(e)})}();

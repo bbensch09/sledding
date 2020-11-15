@@ -1,4 +1,4 @@
-class CreateLessonActions < ActiveRecord::Migration
+class CreateLessonActions < ActiveRecord::Migration[6.0]
   def change
     create_table :lesson_actions do |t|
       t.integer :lesson_id

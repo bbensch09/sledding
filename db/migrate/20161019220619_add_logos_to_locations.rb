@@ -1,4 +1,4 @@
-class AddLogosToLocations < ActiveRecord::Migration
+class AddLogosToLocations < ActiveRecord::Migration[6.0]
   def self.up
     change_table :locations do |t|
       t.attachment :logo

@@ -1,4 +1,4 @@
-class CreateJoinTablePricesCalendar < ActiveRecord::Migration[5.0]
+class CreateJoinTablePricesCalendar < ActiveRecord::Migration[6.0]
   def change
   	# create_table :products_calendar do |t|
   	# 	t.integer :product_id

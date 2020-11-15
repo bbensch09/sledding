@@ -1,4 +1,4 @@
-class CreateInstructors < ActiveRecord::Migration
+class CreateInstructors < ActiveRecord::Migration[6.0]
   def change
     create_table :instructors do |t|
       t.string :first_name

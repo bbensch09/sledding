@@ -1,4 +1,4 @@
-class CreateProductCalendars < ActiveRecord::Migration[5.0]
+class CreateProductCalendars < ActiveRecord::Migration[6.0]
   def change
     create_table :product_calendars do |t|
       t.integer :product_id
