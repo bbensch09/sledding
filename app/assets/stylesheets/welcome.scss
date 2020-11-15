@@ -19,6 +19,10 @@ html, body {
     overflow: auto;
 }
 */
+.hr-brown{
+  color:#715845;
+  border: 3px solid #715845;
+}
 #sledding-tickets {
   color: #000;
   min-height: 600px;
@@ -46,7 +50,7 @@ body {
 hr {
   border-width: 3px;
   max-width: 50px;
-  border-top: 3px solid #3b5998 !important;
+  border-top: 3px solid #3b5998;
 
 }
 hr.light {
@@ -382,7 +386,7 @@ margin-right: auto !important;
 }
 .btn-default {
     color: #fff;
-    background-color: #55C9B2;
+    background-color: #715845;
     border-color: #ccc;
     /*border-radius: 10px !important;*/
     font-weight: 500 !important;
@@ -400,8 +404,8 @@ margin-right: auto !important;
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-  color: #222222;
-  background-color: #EB62EB;
+  color: #715845;
+  background-color: #fff;
   border-color: #ededed;
 }
 .btn-default:active,
@@ -436,8 +440,7 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary, .btn-primary:visited {
   color: white;
-  background-color: #55C9B2;
-  /*border-color: #EEE2C9;*/
+  background-color: #715845;
   -webkit-transition: all 0.35s;
   -moz-transition: all 0.35s;
   transition: all 0.35s;
@@ -448,8 +451,8 @@ fieldset[disabled] .btn-default.active {
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
-  color: white !important;
-  background-color: #DF5DDF;
+  color: #715845;
+  background-color: #fff;
   /*padding: 15px 30px;*/
 }
 .btn-primary:active,

@@ -106,7 +106,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   <div class="container">
   <h2>
-    <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> SLEDDING</span>"), root_path, class: 'logo' %>
+    <%= link_to raw("<strong>GRANLIBAKKEN</strong><span class='schoolers'> SNOWSPORTS</span>"), root_path, class: 'logo' %>
 
     <ul id="topOptions">
       <li>
@@ -123,6 +123,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>           
            <li> <a href="/sledding/roster-today" class="btn-success"> Today's Roster</a></li>
            <li> <a href="/sledding/roster-tomorrow" class="btn-success"> Tomorrow's Roster</a></li>
+           <li> <a href="/sledding/calendar" class="btn-success"> Capacity Calendar</a></li>
            <li> <a href="/sledding/admin_index" class="btn-success"> All Ticket Sales</a></li>
            <li> <a href="/disable-ticket-sales" class="btn-success btn-danger"> Disable Sales</a></li>
            <li> <a href="/enable-ticket-sales" class="btn-success btn-success"> Enable Sales</a></li>

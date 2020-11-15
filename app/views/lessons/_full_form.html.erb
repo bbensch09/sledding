@@ -7,6 +7,8 @@
     <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
     <div id="autofill-container" class="admin-viewable">
       <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a> <br>
+      <h3>Total tickets already sold for this date/session: <%=@lesson.current_session_capacity %> tickets.</h3>
+config.assets.initialize_on_precompile = false
       <% if session[:refund] == true %>
         <h3> To issue a full refund: </h3>
           <ol>
@@ -85,6 +87,11 @@
 
       <div class='row'>
         <div class="col-md-6">
+          <%if @lesson.session_capacity_remaining <=10 %> 
+          <h2 class="text-danger">
+            Warning: there's only <%=@lesson.session_capacity_remaining%> ticket(s) available for this session. Book now before we sell out!
+          </h2>
+          <%end%>
           <h4><strong>Customer Info</strong></h4>
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
@@ -124,16 +131,7 @@
               <%= f.text_field :drivers_license, placeholder: 'D555-1111', class: 'form-control', required:false, include_blank:false %>
             </div> -->
 
-          <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
-            <div class='row'>
-              <div class="col-md-3">
-                <label>Date</label>
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, required:true, autocomplete:"off" }, placeholder: 'Pick a date', label: false %>
-                <!-- <span class="search-area-icon"></span> -->
-              </div>
-
-          <% end %>
-            <div class="col-md-3">
+            <div class="col-md-6">
               <label>Price</label>
                 <h2> <span id="lesson-price">
                   <% if @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
@@ -143,6 +141,18 @@
                   <% end %>
                 <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
+
+          <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
+            <div class='row'>
+              <div class="col-md-6">
+                <label>Date</label>
+                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, required:true, autocomplete:"off" }, placeholder: 'Pick a date', label: false %>
+              </div>
+              <div class="col-md-6">
+                <label>Time Slot</label>
+                <%= lt_f.input :slot, as: :select, collection: ['Early-bird (8:30-10am)', 'Morning (10:30am-12pm)','Midday (12:30-2pm)','Closing(2:30-4pm)'], include_blank: 'Select Time', label: false, required:true %>
+              </div>
+          <% end %>
           </div>
 
           </div>

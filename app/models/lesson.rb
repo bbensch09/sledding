@@ -25,6 +25,7 @@ class Lesson < ActiveRecord::Base
   # confirm students are all over the age of 8
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
+  validate :check_session_capacity
   before_save :confirm_valid_promo_code
 
 
@@ -281,6 +282,11 @@ class Lesson < ActiveRecord::Base
     active_states = ['confirmed','seeking replacement instructor','pending instructor', 'pending requester','Lesson Complete','finalizing payment & reviews','waiting for review','finalizing','ready_to_book']
     #removed 'confirmed' from active states to avoid sending duplicate SMS messages.
     return true if self.date == Date.today && active_states.include?(state)
+  end
+
+  def paid?
+    active_states = ['booked','confirmed','Lesson Complete','finalizing payment & reviews','waiting for review','finalizing']
+    return true if active_states.include?(state) && self.date > Date.today
   end
 
   def upcoming?
@@ -1010,6 +1016,32 @@ class Lesson < ActiveRecord::Base
     end
   end
 
+  def check_session_capacity
+    if (current_session_capacity + self.students.count) <= SLEDHILL_CAPACITY
+      return current_session_capacity
+    else
+      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, visit tickets.granlibakken.com/sledding/calendar.")
+      return false
+    end
+
+  end
+
+  def current_session_capacity
+    other_bookings_on_same_day = Lesson.where(lesson_time_id:self.lesson_time_id).to_a
+    same_session_bookings = other_bookings_on_same_day.keep_if{|l| l.lesson_time.slot == self.lesson_time.slot && l.paid?}
+    tickets = 0
+    same_session_bookings.each do |booking|
+      tickets+= booking.students.count
+    end
+    puts "!!! There are #{same_session_bookings.count} other bookings already"
+    return tickets
+  end
+
+  def session_capacity_remaining
+    return SLEDHILL_CAPACITY - current_session_capacity
+  end
+
+
   private
 
   def instructors_must_be_available
@@ -1043,7 +1075,7 @@ class Lesson < ActiveRecord::Base
 
   def room_reservation_validator
     puts "!!!!!checking for valid resrvation id"
-    if lodging_guest == false
+    if lodging_guest == false || lodging_guest.nil?
       return true
     elsif lodging_reservation_id.nil? || lodging_reservation_id.length != 6
       # errors.add(:lesson, "You must enter a valid room reservation id")

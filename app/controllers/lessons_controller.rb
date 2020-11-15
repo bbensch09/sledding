@@ -2,6 +2,7 @@ class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
+  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit]
   # before_action :save_lesson_params_and_redirect, only: [:create]
   # before_action :create_lesson_from_session, only: [:create]
 
@@ -33,7 +34,7 @@ class LessonsController < ApplicationController
     @lessons_to_export = Lesson.where(state:"confirmed")
     # could modify this manually if we want a full export of all bookings to be loaded in the browser
     @lessons = Lesson.last(200).to_a.keep_if{|lesson| lesson.lesson_time && lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.ready_to_book? || lesson.waiting_for_review?}
-    @lessons = @lessons.sort! { |a,b| a.lesson_time.date <=> b.lesson_time.date }
+    @lessons = @lessons.sort! { |a,b| b.lesson_time.date <=> a.lesson_time.date }
     @show_search_options = true
     respond_to do |format|
           format.html {render 'admin_index'}
@@ -81,6 +82,24 @@ class LessonsController < ApplicationController
     respond_to do |format|
           format.html {render 'admin_index', layout: 'liability_release_layout'}
     end
+  end
+
+  def capacity_last_next_14
+    if params[:date]
+        min_date = params[:date].to_date
+    else min_date = Date.today - 3
+    end
+    max_date = min_date + 16
+    lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.booked? }
+    lessons = lessons.select{ |lesson| lesson.date >= min_date && lesson.date <= max_date}
+    @lessons = lessons.sort_by{|lesson| lesson.date}
+    @count = @lessons.count
+    dates = []
+    (0..16).each do |x|
+      dates << min_date + x
+    end
+    @dates = dates    
+    render 'capacity_calendar'
   end
 
   def admin_index_all
@@ -349,6 +368,34 @@ class LessonsController < ApplicationController
     end
   end
 
+  def duplicate
+    new_lesson = @lesson.dup
+    new_lesson.lesson_time =  @lesson.lesson_time #LessonTime.find_or_create_by(lesson_time_params)
+    # new_lesson.students = @lesson.students
+    @lesson.students.each do |student|
+      Student.create!({
+        name: student.name,
+        age_range: student.age_range,
+        gender: student.gender,        
+        lesson_id: nil
+      })
+    end
+    new_lesson.deposit_status = nil
+    #erase previous lesson feedback & start/end times
+    if new_lesson.save
+      @lesson = new_lesson
+      new_students = Student.where(lesson_id:nil)
+      new_students.each do |student|
+        student.lesson_id = @lesson.id
+        student.save!
+      end
+      redirect_to "/lessons/#{@lesson.id}?state=#{@lesson.state}"
+    else
+      flash[:alert] = "Cannot duplicate this booking, as it would cause total bookings to exceed the capacity. Please try another day or time slot."
+      redirect_to sledding_admin_index_path
+    end
+  end
+
   def update
     puts "!!!!!!begin update action -- shouuld have already passed validations"
     puts "!!!! counting the number of students attached to this order: #{params[:lesson][:students_attributes].keys.count}"
@@ -584,6 +631,9 @@ class LessonsController < ApplicationController
     @state = params[:lesson][:state]
   end
 
+  def set_lesson
+      @lesson = Lesson.find(params[:id])
+  end
 
   def lesson_params
     params.require(:lesson).permit(:activity, :phone_number, :requested_location, :state, :student_count, :gear, :lift_ticket_status, :objectives, :duration, :ability_level, :start_time, :actual_start_time, :actual_end_time, :actual_duration, :terms_accepted, :deposit_status, :public_feedback_for_student, :private_feedback_for_student, :instructor_id, :focus_area, :requester_id, :guest_email, :how_did_you_hear, :num_days, :lesson_price, :requester_name, :is_gift_voucher, :includes_lift_or_rental_package, :package_info, :gift_recipient_email, :gift_recipient_name, :lesson_cost, :non_lesson_cost, :product_id, :section_id, :product_name, :lodging_guest, :lodging_reservation_id, :zip_code, :drivers_license, :state_code, :city, :street_address, :date, :check_in_status, :promo_code_id,
