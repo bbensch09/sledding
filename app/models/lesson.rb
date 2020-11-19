@@ -26,6 +26,7 @@ class Lesson < ActiveRecord::Base
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
   validate :check_session_capacity
+  before_save :check_session_capacity
   before_save :confirm_valid_promo_code
 
 
