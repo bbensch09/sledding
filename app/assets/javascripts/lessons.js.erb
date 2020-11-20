@@ -11,13 +11,13 @@ var day = dt.getDate();
 var month = dt.getMonth() + 1;
 var year = dt.getYear() +1900;
 var date = year + "-" + month + "-" + day;
-var opening_date = new Date("2020-11-25");
+var opening_date = new Date("2020-11-26");
 
 // logs today's date
 console.log(date);
 
 if (Date.now() <= opening_date) {
-  var MIN_DATE = '2020-11-25';
+  var MIN_DATE = '2020-11-26';
   // logs the season start date
   console.log(MIN_DATE);
 }
@@ -62,7 +62,10 @@ var LESSON = {
   // setDatepicker: function() { LESSON._date.datepicker({ minDate: MIN_DATE, maxDate: '2018-04-15', dateFormat: 'yy-mm-dd' }); },
 
   setDatepicker: function() {
-  var blocked_dates_array = ['2018-03-13','2018-03-14','2018-03-15','2018-03-20','2018-03-21','2018-03-22','2018-03-27','2018-03-28','2018-03-29','2018-04-03','2018-04-04','2018-04-05','2018-04-10','2018-04-11','2018-04-12'];
+  var blocked_dates_array = ['2020-11-30','2020-12-01','2020-12-02','2020-12-03',
+  '2020-12-07','2020-12-08','2020-12-09','2020-12-10',
+  '2020-12-14','2020-12-15','2020-12-16','2020-12-17'
+  ];
   LESSON._date.datepicker({
     beforeShowDay: function(date){
       var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
