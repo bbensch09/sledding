@@ -85,7 +85,7 @@ def houston_we_have_an_exceptional_problem
 end
 
 def confirm_admin_permissions
-  return if current_user.email == 'brian@snowschoolers.com' ||'AlexDominguez@granlibakken.com' ||'stephanie@granlibakken.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee"
+  return if (current_user.email == 'brian@snowschoolers.com' ||current_user.email == 'AlexDominguez@granlibakken.com' ||current_user.email == 'stephanie@granlibakken.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee")
   redirect_to root_path, notice: 'You do not have permission to view that page.'
 end
 

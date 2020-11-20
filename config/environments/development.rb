@@ -52,6 +52,8 @@ Rails.application.configure do
   # number of complex assets.
   # changed from true to false 11.18.20 for troubleshooting
   config.assets.debug = false
+  # this should be toggled true when doing local testing and updating .JS or .CSS assets
+  # config.assets.debug = true
   config.assets.js_compressor = Uglifier.new(harmony: true)
 
   #Suppress logger output for asset requests
