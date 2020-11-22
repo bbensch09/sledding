@@ -121,6 +121,11 @@ Rails.application.routes.draw do
       end
   end 
   get '/admin_index' => 'instructors#admin_index'
+  get 'browse' => 'instructors#browse'
+  get 'lessons/book_product/:id' => 'lessons#book_product'
+  # post 'search_results' => 'products#search_results', as: :refresh_search_results
+  
+  # sledding key routes
   get 'sledding/calendar' => 'lessons#capacity_last_next_14', as: :capacity_calendar
   get 'sledding/admin_index' => 'lessons#admin_index', as: :sledding_admin_index
   get 'sledding/roster-today' => 'lessons#roster_today', as: :sledding_roster_today
@@ -130,9 +135,6 @@ Rails.application.routes.draw do
   get 'sledding/admin_index_all' => 'lessons#admin_index_all', as: :sledding_admin_index_all
   put 'sledding/check-in/:id' => 'lessons#sledding_check_in', as: :sledding_check_in
   put 'sledding/cancel-check-in/:id' => 'lessons#sledding_check_in_reverse', as: :sledding_check_in_reverse
-  get 'browse' => 'instructors#browse'
-  get 'lessons/book_product/:id' => 'lessons#book_product'
-  # post 'search_results' => 'products#search_results', as: :refresh_search_results
 
   resources :beta_users
   resources :lesson_times
