@@ -19,6 +19,16 @@
       Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please save this email, as you will need to show your confirmation number when you arrive to the sledding hill as your proof of payment. Please also find your reservation details below, including names & ages of all participants in your reservation.
     </p>
 
+      <h4>Reservation Details</h4>
+  <ul>
+    <li>Location: <%= @lesson.location.name %></li>
+    <li>Date: <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %></li>
+    <li>Session Time: <%= @lesson.slot %></li>
+    <li>Number of tickets: <%= @lesson.students.count %></li>
+    <li>Contact phone number: <%= number_to_phone(@lesson.phone_number) %></li>
+  </ul>
+
+
     <%= render partial: 'lessons/student_details' %>
 
     <%= render partial: 'lessons/sled_hill_details' %>

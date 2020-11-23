@@ -23,8 +23,9 @@
       <h4 class="slot-details-mobile">
         <span class="lesson-detail-topic"><b>Reservation Name:</b></span> <%= @lesson.requester_name %> <br>
         <span class="lesson-detail-topic"><b>Email:</b></span> <%= @lesson.guest_email %> <br>
-        <span class="lesson-detail-topic"><b>Number of tickets:</b></span>  <%= @lesson.students.count %><br>
         <span class="lesson-detail-topic"><b>Date:</b></span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
+        <span class="lesson-detail-topic"><b>Session Time:</b></span> <%= @lesson.slot %><br>
+        <span class="lesson-detail-topic"><b>Number of tickets:</b></span>  <%= @lesson.students.count %><br>
         <% if @lesson.package_info && @lesson.package_info.length > 1 %>
           <span class="lesson-detail-topic"><b>Adjustments:</b></span>  <%= @lesson.package_info %>
           <br><br>                  

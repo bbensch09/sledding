@@ -321,7 +321,7 @@ class Lesson < ActiveRecord::Base
     self.state == 'confirmed'
   end
 
-   def new?
+  def new?
     state == 'new'
   end
 
