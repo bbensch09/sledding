@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   root to: "welcome#index"
   get 'tickets' => 'lessons#new'
   put  'lessons/:id/duplicate'   => 'lessons#duplicate',   as: :duplicate
+  put   'lessons/:id/admin_confirm_deposit'      => 'lessons#admin_confirm_deposit',      as: :admin_confirm_deposit
 
   #backup index
   get 'winter' => 'welcome#index_backup_may2017'

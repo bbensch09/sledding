@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
-  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit]
+  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state]
   # before_action :save_lesson_params_and_redirect, only: [:create]
   # before_action :create_lesson_from_session, only: [:create]
 
@@ -65,9 +65,11 @@ class LessonsController < ApplicationController
 
   def roster_tomorrow
     # Lesson.set_dates_for_sample_bookings
-    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.tomorrow}
-    @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
-    @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
+    @date = params[:date].to_date
+    @date.nil? ? @date = Date.today+2 : @date
+    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date}
+    @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date && (lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?)}
+    # @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
     @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index'}
@@ -455,6 +457,13 @@ class LessonsController < ApplicationController
       # flash[:error] = 'Please enter a valid reservation id.'
       render 'edit'
     end
+  end
+
+  def admin_confirm_deposit
+    @lesson.deposit_status = 'confirmed'
+    @lesson.state = 'booked'
+    @lesson.save
+    redirect_to "/lessons/#{@lesson.id}?state=#{@lesson.state}&admin_deposit_confirmed=true"
   end
 
   def show
