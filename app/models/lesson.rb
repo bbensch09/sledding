@@ -346,7 +346,9 @@ class Lesson < ActiveRecord::Base
   end
 
   def booked?
-    state == 'booked'
+    eligible_states = ['booked','confirmed']
+    eligible_states.include?(state)
+
   end
 
   def ready_to_book?
