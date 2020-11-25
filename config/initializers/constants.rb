@@ -1,4 +1,4 @@
-SLEDHILL_CAPACITY=50
+SLEDHILL_CAPACITY=5
 LESSON_SLOTS = [
 '09:00  -  10:00am (first-timers only)',
 '10:10 - 11:10am (first-timers only)',

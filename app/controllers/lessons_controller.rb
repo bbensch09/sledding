@@ -2,7 +2,8 @@ class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
-  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state]
+  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations]
+  before_action :set_admin_skip_validations
   # before_action :save_lesson_params_and_redirect, only: [:create]
   # before_action :create_lesson_from_session, only: [:create]
 
@@ -65,8 +66,8 @@ class LessonsController < ApplicationController
 
   def roster_tomorrow
     # Lesson.set_dates_for_sample_bookings
-    @date = params[:date].to_date
-    @date.nil? ? @date = Date.today+2 : @date
+    @date = params[:date]
+    @date.nil? ? @date = Date.today+2 : @date.to_date
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date}
     @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date && (lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?)}
     # @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
@@ -365,6 +366,7 @@ class LessonsController < ApplicationController
       redirect_to @lesson
     else
       determine_update_state
+      puts "!!!!!most likely charge was completed but lesson could not save due to capacity being reached."
       puts "!!!!!Ticket NOT saved, update notices determined by 'determine update state' method...?"
       redirect_to @lesson
     end
@@ -627,17 +629,37 @@ class LessonsController < ApplicationController
     # end
   end
 
+  def set_admin_skip_validations
+    if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
+      session[:skip_validations] = true
+      if @lesson
+        @lesson.skip_validations = true
+        @lesson.save!
+        puts "!!!marking this lesson free of all other validations"
+      else
+      puts "!!!no lesson found yet, likely means :set_lesson was not applied"
+      end
+    end
+  end
+
+
   def determine_update_state
-    @lesson.state = 'new' unless params[:lesson][:terms_accepted] == '1'
+    if @lesson.check_session_capacity == false
+        @lesson.state = 'booking-error due to capacity constraint'
+    end
     if @lesson.deposit_status == 'confirmed' && @lesson.is_gift_voucher == false
       flash.now[:notice] = "Your lesson deposit has been recorded, but your lesson reservation is incomplete. Please fix the fields below and resubmit."
       @lesson.state = 'booked'
     elsif @lesson.deposit_status == 'confirmed' && @lesson.is_gift_voucher == true
       flash.now[:notice] = "Lesson voucher information has been updated."
       @lesson.state = 'booked_voucher'
+    elsif @lesson.students.count >= 1
+      @lesson.state = 'ready_to_bookZZZZ'
+    else 
+      @lesson.state = 'new'
     end
     @lesson.save
-    @state = params[:lesson][:state]
+    # @state = params[:lesson][:state]
   end
 
   def set_lesson
