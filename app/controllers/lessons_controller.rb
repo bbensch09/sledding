@@ -2,8 +2,8 @@ class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
   before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
-  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations]
-  before_action :set_admin_skip_validations
+  before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations, :confirm_reservation]
+  before_action :set_admin_skip_validations, only: [:update, :confirm_reservation]
   # before_action :save_lesson_params_and_redirect, only: [:create]
   # before_action :create_lesson_from_session, only: [:create]
 
@@ -281,7 +281,12 @@ class LessonsController < ApplicationController
       @lesson.requested_location = 24
       @lesson.product_id = 1
       @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
-      # @lesson.save!
+    if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
+      puts "!!!current user is admin, preparing to set skip_validations boolean to true."
+      session[:skip_validations] = true
+      @lesson.skip_validations = true
+    end
+
     if @lesson.save
       @user_email = current_user ? current_user.email : "unknown"
       redirect_to complete_lesson_path(@lesson)
@@ -630,15 +635,14 @@ class LessonsController < ApplicationController
   end
 
   def set_admin_skip_validations
+    # @lesson = Lesson.new(lesson_params)
     if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
+      puts "!!!current user is admin, preparing to set skip_validations boolean to true."
       session[:skip_validations] = true
-      if @lesson
-        @lesson.skip_validations = true
-        @lesson.save!
-        puts "!!!marking this lesson free of all other validations"
-      else
-      puts "!!!no lesson found yet, likely means :set_lesson was not applied"
-      end
+      @lesson.skip_validations = true
+      puts "!!!marking this lesson free of all other validations"
+    else
+        puts "!!!user is not admin, and so regular lesson checks will proceeed. "
     end
   end
 
