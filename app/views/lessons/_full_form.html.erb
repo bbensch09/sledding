@@ -87,11 +87,15 @@ config.assets.initialize_on_precompile = false
 
       <div class='row'>
         <div class="col-md-6">
-          <%if @lesson.session_capacity_remaining <=10 %> 
-          <h2 class="text-danger">
-            Warning: there's only <%=@lesson.session_capacity_remaining%> ticket(s) available for this session. Book now before we sell out!
-          </h2>
-          <%end%>
+        <%if @lesson.session_capacity_remaining <=10 && @lesson.session_capacity_remaining >0 %> 
+            <h2 class="text-danger">
+              Warning: there's only <%=@lesson.session_capacity_remaining%> ticket(s) available for this session. Book now before we sell out!
+            </h2>
+        <%elsif @lesson.session_capacity_remaining <=0  %> 
+            <h2 class="text-danger">
+              Unfortunately this time slot is SOLD OUT. Please try a different time slot. If you cannot find an available slot, please email us at <a href="mailto:frontdesk@granlibakken.com?subject=Sledding%Capacity?" target="_blank" class="navy-link">frontdesk@granlibakken.com</a> and we can tell you what days and times still have availability.
+            </h2>
+        <%end%>
           <h4><strong>Customer Info</strong></h4>
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
