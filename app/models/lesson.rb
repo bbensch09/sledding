@@ -1020,7 +1020,7 @@ class Lesson < ActiveRecord::Base
   end
 
   def check_session_capacity
-    return true if self.skip_validations #Admin is always allowed to confirm/book tickets
+    return true if self.skip_validations == true #Admin is always allowed to confirm/book tickets
     if (current_session_capacity + self.students.count) <= SLEDHILL_CAPACITY
       return current_session_capacity
     else
