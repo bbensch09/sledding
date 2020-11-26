@@ -287,7 +287,7 @@ class Lesson < ActiveRecord::Base
 
   def paid?
     active_states = ['booked','confirmed','Lesson Complete','finalizing payment & reviews','waiting for review','finalizing']
-    return true if active_states.include?(state) && self.date > Date.today
+    return true if active_states.include?(state) #&& self.date > Date.today #mother fucker!!!
   end
 
   def upcoming?
@@ -1020,29 +1020,34 @@ class Lesson < ActiveRecord::Base
   end
 
   def check_session_capacity
-    return true if self.skip_validations == true #Admin is always allowed to confirm/book tickets
-    if (current_session_capacity + self.students.count) <= SLEDHILL_CAPACITY
-      return current_session_capacity
+    #Admin should always allowed to confirm/book tickets;
+    return true if self.skip_validations == true #|| session[:skip_validations] == true 
+    puts "lesson id, lesson_time_id, and skip_validations is #{self.id}, #{self.lesson_time_id}, and #{self.skip_validations}"
+    if (current_session_tickets_sold + self.students.count) <= SLEDHILL_CAPACITY
+      return current_session_tickets_sold
     else
-      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, visit tickets.granlibakken.com/sledding/calendar.")
+      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, visit sledding.granlibakken.com/sledding/calendar.")
       return false
     end
 
   end
 
-  def current_session_capacity
-    other_bookings_on_same_day = Lesson.where(lesson_time_id:self.lesson_time_id).to_a
-    same_session_bookings = other_bookings_on_same_day.keep_if{|l| l.lesson_time.slot == self.lesson_time.slot && l.paid?}
+  def current_session_tickets_sold
+    same_session_entries = Lesson.where(lesson_time_id:self.lesson_time_id).to_a
+    puts "!!! there are #{same_session_entries.count} bookings found in same_session_entries"
+    same_session_paid_bookings = same_session_entries.keep_if{|l| l.paid?}
+    puts "!!! there are #{same_session_paid_bookings.count} bookings found in same_session_paid_bookings"
     tickets = 0
-    same_session_bookings.each do |booking|
+    same_session_paid_bookings.each do |booking|
       tickets+= booking.students.count
+      puts "!!! added #{booking.students.count} tickets to running total"
     end
-    puts "!!! There are #{same_session_bookings.count} other bookings already"
+    puts "!!! There are #{tickets} other ticets already sold"
     return tickets
   end
 
   def session_capacity_remaining
-    return SLEDHILL_CAPACITY - current_session_capacity
+    return SLEDHILL_CAPACITY - current_session_tickets_sold
   end
 
 
