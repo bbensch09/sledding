@@ -1,4 +1,7 @@
+SLEDDING_SLOTS=['Early-bird (8:30-10am)','Morning (10:30am-12pm)','Midday (12:30-2pm)','Closing(2:30-4pm)']
+
 SLEDHILL_CAPACITY=ENV['SLEDHILL_CAPACITY'].to_i
+
 LESSON_SLOTS = [
 '09:00  -  10:00am (first-timers only)',
 '10:10 - 11:10am (first-timers only)',

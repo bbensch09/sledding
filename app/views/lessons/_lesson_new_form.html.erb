@@ -24,7 +24,7 @@
                 <!-- <span class="search-area-icon"></span> -->
               </div>
               <div class="col-md-7"> <!-- offset-md-3 -->
-                <%= lt_f.input :slot, as: :select, collection: ['Early-bird (8:30-10am)', 'Morning (10:30am-12pm)','Midday (12:30-2pm)','Closing(2:30-4pm)'], include_blank: 'Time Slot', label: false, required:true %>
+                <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, include_blank: 'Time Slot', label: false, required:true %>
               </div>
 
             <% end %>

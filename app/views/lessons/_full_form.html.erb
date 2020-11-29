@@ -150,17 +150,18 @@ config.assets.initialize_on_precompile = false
             <div class='row'>
               <div class="col-md-6">
                 <label>Date</label>
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, required:true, autocomplete:"off" }, placeholder: 'Pick a date', label: false %>
+                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@lesson.date, required:true, autocomplete:"off" }, placeholder: 'Pick a date', label: false %>
               </div>
               <div class="col-md-6">
                 <label>Time Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: ['Early-bird (8:30-10am)', 'Morning (10:30am-12pm)','Midday (12:30-2pm)','Closing(2:30-4pm)'], include_blank: 'Select Time', label: false, required:true %>
+                <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
               </div>
           <% end %>
           </div>
 
           </div>
 
+          <h4><strong>Slot found: <%=@slot %></strong></h4>
           <h4><strong>Participants Info</strong></h4>
 
           <h4 class="text-warning"">Note: please add the names and ages of sledding participants, including your own name from above if your are participating.</h4>
