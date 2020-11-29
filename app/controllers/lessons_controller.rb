@@ -302,6 +302,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @product_name = @lesson.product_name
     @date = @lesson.lesson_time.date
+    @slot = @lesson.slot
     @promo_code = PromoCode.new
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
