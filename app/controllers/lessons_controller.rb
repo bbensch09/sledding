@@ -1,7 +1,7 @@
 class LessonsController < ApplicationController
   respond_to :html
   skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit]
-  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index]
+  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund]
   before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations, :confirm_reservation]
   before_action :set_admin_skip_validations, only: [:update, :confirm_reservation]
   # before_action :save_lesson_params_and_redirect, only: [:create]
