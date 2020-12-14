@@ -336,6 +336,7 @@ class LessonsController < ApplicationController
 
   def issue_full_refund
     @lesson = Lesson.find(params[:id])
+    @lesson.skip_validations = true
     @lesson.state = 'Canceled - full refund issued.'
     @lesson.save
     session[:refund] = nil
