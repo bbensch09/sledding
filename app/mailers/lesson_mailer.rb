@@ -1,5 +1,5 @@
 class LessonMailer < ActionMailer::Base
-  default from: 'Granlibakken Sledding <info@snowschoolers.com>'
+  default from: 'Granlibakken Sledding <gb-snowsports@snowschoolers.com>'
 
   def track_apply_visits(email="Unknown user")
       @email = email
