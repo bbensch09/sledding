@@ -1026,7 +1026,7 @@ class Lesson < ActiveRecord::Base
     if (current_session_tickets_sold + self.students.count) <= SLEDHILL_CAPACITY
       return current_session_tickets_sold
     else
-      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, visit sledding.granlibakken.com/sledding/calendar.")
+      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
       return false
     end
 
