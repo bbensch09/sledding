@@ -377,7 +377,15 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time
     session[:refund] = true
-    render 'edit'
+    # render 'edit'
+    if @lesson.activity == 'sledding'
+      render 'full_form'
+    elsif @lesson.activity == 'snowplay'
+      render 'full_snowplay_form'
+    elsif @lesson.activity == 'lift_ticket'
+      render 'full_lift_ticket_form'
+    else
+    end
   end
 
   def issue_full_refund
