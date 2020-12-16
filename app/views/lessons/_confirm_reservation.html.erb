@@ -32,12 +32,12 @@
                   <% if @lesson.lesson_price.nil? || @lesson.price == @lesson.lesson_price %>
           
                       <% if @lesson.promo_code %>
-                        <br><span class="strikethrough">Original: $17.00</span>
+                        <br><span class="strikethrough">Original: $20.00</span>
                         <br>Promo: <%= @lesson.promo_code.promo_code %>
                         <br>Final price: <%= number_to_currency(@lesson.price) %>
                       <%else%>
                         <%= number_to_currency(@lesson.price) %>    
-                        <% if @lesson.product.calendar_period == 'Holiday' || @lesson.product.calendar_period == 'Peak' %>
+                        <% if @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
                           (holiday pricing)
                         <% end %>
 

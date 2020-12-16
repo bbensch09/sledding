@@ -191,7 +191,9 @@ Rails.application.routes.draw do
   put   'lessons/:id/remove_instructor'   => 'lessons#remove_instructor',   as: :remove_instructor
   put   'lessons/:id/mark_lesson_complete'   => 'lessons#mark_lesson_complete',   as: :mark_lesson_complete
   patch 'lessons/:id/confirm_lesson_time' => 'lessons#confirm_lesson_time', as: :confirm_lesson_time
-  get   'lessons/:id/complete'            => 'lessons#complete',            as: :complete_lesson
+  get   'sledding/:id/complete'            => 'lessons#complete',            as: :complete_lesson
+  get   'lift-tickets/:id/complete'            => 'lessons#complete_lift_ticket',            as: :complete_lift_ticket
+  get   'snowplay/:id/complete'            => 'lessons#complete_snowplay_ticket',            as: :complete_snowplay_ticket
   get   'lessons/:id/send_reminder_sms_to_instructor' => 'lessons#send_reminder_sms_to_instructor',  as: :send_reminder_sms_to_instructor
   post 'lessons/:id/confirm_reservation'              => 'lessons#confirm_reservation', as: :confirm_reservation
   put 'lessons/:id/issue_refund'              => 'lessons#issue_refund', as: :issue_refund

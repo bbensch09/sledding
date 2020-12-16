@@ -149,6 +149,16 @@ class LessonMailer < ActionMailer::Base
     mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
   end
 
+  def snowplay_tickets_confirmation(lesson)
+    @lesson = lesson
+    mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Snowplay Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+  end
+
+  def lift_tickets_confirmation(lesson)
+    @lesson = lesson
+    mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Ski Hill Lift Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+  end
+
   def send_promo_redemption_notification(lesson)
     @lesson = lesson
     mail(to: 'brian@snowschoolers.com',  cc: "Adam Garon <#{ENV['SUPERVISOR_EMAIL']}>, notify@snowschoolers.com", subject: "The promo code #{@lesson.promo_code.promo_code} has been redeemed for #{@lesson.date.strftime("%b %-d")}")

@@ -27,6 +27,7 @@ var LESSON = {
     // important objects
     LESSON._date = $('#datepicker');
     LESSON._date2 = $('#datepicker2');
+    LESSON._date3 = $('#datepicker3');
     LESSON._slot = $('#lesson_lesson_time_slot');
     LESSON._duration = $('#lesson_duration');
     LESSON._durations = {
@@ -76,6 +77,15 @@ var LESSON = {
     dateFormat: 'yy-mm-dd'
   });
   LESSON._date2.datepicker({
+    beforeShowDay: function(date){
+      var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+      return [ blocked_dates_array.indexOf(string) == -1 ]
+    },
+    minDate: MIN_DATE,
+    maxDate: '2021-04-30',
+    dateFormat: 'yy-mm-dd'
+    });
+  LESSON._date3.datepicker({
     beforeShowDay: function(date){
       var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
       return [ blocked_dates_array.indexOf(string) == -1 ]

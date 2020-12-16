@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <% if @lesson.requester_name %>
+      <p>Hello <%= @lesson.requester_name.split(" ").first %>,</p>
+      <% else %>
+      <p>Hello,</p>
+    <% end %>
+
+    <p>
+      Thank you for booking your tickets online for the Granlibakken Ski Hill!
+    </p>
+
+    <h4>Reservation Receipt</h4>
+    <p>
+      Your reservation confirmation number is: <span style="font-size:18px;"><%=@lesson.confirmation_number%></span>. Please save this email, as you will need to show your confirmation number when you arrive to the sledding hill as your proof of payment. Please also find your reservation details below, including names & ages of all participants in your reservation.
+    </p>
+
+      <h4>Reservation Details</h4>
+  <ul>
+    <li>Location: <%= @lesson.location.name %></li>
+    <li>Date: <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %></li>
+    <li>Session Time: <%= @lesson.slot %></li>
+    <li>Number of tickets: <%= @lesson.students.count %></li>
+    <li>Contact phone number: <%= number_to_phone(@lesson.phone_number) %></li>
+  </ul>
+
+
+    <%= render partial: 'lessons/student_details' %>
+
+    <%= render partial: 'lessons/sled_hill_details' %>
+    
+    <p>
+      If you need to make any changes to your reservation, please visit: <a href="<%= lesson_url(@lesson)%>"</a><%=lesson_url(@lesson) %>.
+    </p>
+
+    <p>
+      Did you know that Granlibakken Tahoe also offers <a href="http://granlibakken.com/room-types/">lodging</a> and <a href="http://granlibakken.com/conferences/"> venues</a> for <a href="http://granlibakken.com/weddings/">weddings</a> and events? Lodging ranges from standard bedrooms to three-bedroom townhomes, and all rates include breakfast. 16 onsite venue spaces can accommodate events, groups, and retreats of any size. <a href="http://granlibakken.com/">Learn more! </a>
+    </p>
+
+    <p>If you have any questions or if there is anything we can do to help you prepare for your upcoming visit, please don't be afraid to reach out.</p>
+    <p>
+      - The Granlibakken Team <br>      
+    </p>
+  </body>
+</html>
