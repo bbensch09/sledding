@@ -1,1 +1,0 @@
-$(function(){$(".datetimepicker1").datetimepicker({sideBySide:!0,useCurrent:!0,format:"YYYY-MM-DD HH:mm A"})});

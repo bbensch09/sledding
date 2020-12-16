@@ -431,6 +431,8 @@ class Lesson < ActiveRecord::Base
     date = date.to_s
     if HOLIDAYS.include?(date)
       return 'Holiday'
+    elsif WEEKENDS.include?(date)
+      return 'Holiday'
     elsif NON_HOLIDAYS.include?(date)
       return 'Regular'
     else

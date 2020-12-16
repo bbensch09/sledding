@@ -1,5 +1,5 @@
 class LessonMailer < ActionMailer::Base
-  default from: 'Granlibakken Sledding <gb-snowsports@snowschoolers.com>'
+  default from: 'Granlibakken Snowsports <tickets@granlibakken.com>'
 
   def track_apply_visits(email="Unknown user")
       @email = email
@@ -146,7 +146,7 @@ class LessonMailer < ActionMailer::Base
 
   def sledding_tickets_confirmation(lesson)
     @lesson = lesson
-    mail(to: @lesson.guest_email, bcc:"Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+    mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
   end
 
   def send_promo_redemption_notification(lesson)

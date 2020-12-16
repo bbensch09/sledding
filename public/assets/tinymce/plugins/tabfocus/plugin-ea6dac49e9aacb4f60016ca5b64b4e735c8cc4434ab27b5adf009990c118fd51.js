@@ -1,9 +1,0 @@
-/**
- * Copyright (c) Tiny Technologies, Inc. All rights reserved.
- * Licensed under the LGPL or a commercial license.
- * For LGPL see License.txt in the project root for license information.
- * For commercial licenses see https://www.tiny.cloud/
- *
- * Version: 5.5.1 (2020-10-01)
- */
-!function(){"use strict";var e=tinymce.util.Tools.resolve("tinymce.PluginManager"),t=tinymce.util.Tools.resolve("tinymce.dom.DOMUtils"),n=tinymce.util.Tools.resolve("tinymce.EditorManager"),i=tinymce.util.Tools.resolve("tinymce.Env"),o=tinymce.util.Tools.resolve("tinymce.util.Delay"),l=tinymce.util.Tools.resolve("tinymce.util.Tools"),u=tinymce.util.Tools.resolve("tinymce.util.VK"),r=t.DOM,s=function(e){e.keyCode!==u.TAB||e.ctrlKey||e.altKey||e.metaKey||e.preventDefault()},c=function(e){function t(t){function s(i){function o(e){return/INPUT|TEXTAREA|BUTTON/.test(e.tagName)&&n.get(t.id)&&-1!==e.tabIndex&&function i(e){return"BODY"===e.nodeName||"hidden"!==e.type&&"none"!==e.style.display&&"hidden"!==e.style.visibility&&i(e.parentNode)}(e)}var u=r.select(":input:enabled,*[tabindex]:not(iframe)");if(l.each(u,function(t,n){if(t.id===e.id)return c=n,!1}),0<i){for(a=c+1;a<u.length;a++)if(o(u[a]))return u[a]}else for(a=c-1;0<=a;a--)if(o(u[a]))return u[a];return null}var c,a,y,d,f,m;t.keyCode!==u.TAB||t.ctrlKey||t.altKey||t.metaKey||t.isDefaultPrevented()||(1===(y=l.explode((d=e).getParam("tab_focus",d.getParam("tabfocus_elements",":prev,:next")))).length&&(y[1]=y[0],y[0]=":prev"),(f=t.shiftKey?":prev"===y[0]?s(-1):r.get(y[0]):":next"===y[1]?s(1):r.get(y[1]))&&(m=n.get(f.id||f.name),f.id&&m?m.focus():o.setTimeout(function(){i.webkit||window.focus(),f.focus()},10),t.preventDefault()))}e.on("init",function(){e.inline&&r.setAttrib(e.getBody(),"tabIndex",null),e.on("keyup",s),i.gecko?e.on("keypress keydown",t):e.on("keydown",t)})};e.add("tabfocus",function(e){c(e)})}();

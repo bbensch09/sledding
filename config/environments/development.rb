@@ -17,6 +17,10 @@ Rails.application.configure do
 
   config.cache_classes = false
 
+  # DEBUGGING DEC2020 - load CSS changes in local server
+  # config.assets.debug = true
+  # config.assets.initialize_on_precompile = false
+
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -51,8 +55,9 @@ Rails.application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   # changed from true to false 11.18.20 for troubleshooting
-  config.assets.debug = false
+  # changed back from false to true 12.16.20 to allow local CSS changes to be pushed; also removed assets in public/assets folder; took ~2min to load first time after
   # this should be toggled true when doing local testing and updating .JS or .CSS assets
+  config.assets.debug = true
   # config.assets.debug = true
   config.assets.js_compressor = Uglifier.new(harmony: true)
 
