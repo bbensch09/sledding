@@ -24,7 +24,7 @@ module SnowSchoolers
     # config.i18n.default_locale = :de
 
     # troubleshooting Heroku deploy failures - 11.15.20
-    config.assets.initialize_on_precompile = true
+    config.assets.initialize_on_precompile = false
 
 
   #LOAD all files in library
