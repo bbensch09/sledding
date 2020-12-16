@@ -17,10 +17,6 @@ Rails.application.configure do
 
   config.cache_classes = false
 
-  # DEBUGGING DEC2020 - load CSS changes in local server
-  # config.assets.debug = true
-  # config.assets.initialize_on_precompile = false
-
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -51,7 +47,7 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
 
-  # Debug mode disables concatenation and preprocessing of assets.
+  # Debug mode disables concatenation and preprocessing of CSS assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   # changed from true to false 11.18.20 for troubleshooting
