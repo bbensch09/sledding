@@ -279,7 +279,14 @@ class LessonsController < ApplicationController
       @lesson = Lesson.new(lesson_params)
       @lesson.requester = current_user
       @lesson.requested_location = 24
-      @lesson.product_id = 1
+      temp_slot = params[:lesson]["lesson_time"]["slot"]
+      if LIFT_TICKET_SLOTS.include?(temp_slot)
+        @lesson.activity = 'lift_ticket'
+        elsif SNOWPLAY_SLOTS.include?(temp_slot)
+        @lesson.activity = 'snowplay'
+        else
+        @lesson.activity = 'sledding'
+      end
       @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
     if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
       puts "!!!current user is admin, preparing to set skip_validations boolean to true."
@@ -289,8 +296,14 @@ class LessonsController < ApplicationController
 
     if @lesson.save
       @user_email = current_user ? current_user.email : "unknown"
-      redirect_to complete_lesson_path(@lesson)
-      # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
+      if @lesson.activity == 'sledding'
+        redirect_to complete_lesson_path(@lesson)
+        elsif @lesson.activity == 'snowplay'
+        redirect_to complete_snowplay_ticket_path(@lesson)
+        elsif @lesson.activity == 'lift_ticket'
+        redirect_to complete_lift_ticket_path(@lesson)
+        # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
+      end
       else
       flash[:notice] = 'Unfortunately, there has been a problem.'
       render 'new'
@@ -307,6 +320,31 @@ class LessonsController < ApplicationController
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
+    render 'full_form'
+  end
+
+  def complete_lift_ticket
+    @lesson = Lesson.find(params[:id])
+    @product_name = @lesson.product_name
+    @date = @lesson.lesson_time.date
+    @slot = @lesson.slot
+    @promo_code = PromoCode.new
+    # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    flash.now[:notice] = "You're almost there! We just need a few more details."
+    flash[:complete_form] = 'TRUE'
+    render 'full_lift_ticket_form'
+  end
+
+  def complete_snowplay_ticket
+    @lesson = Lesson.find(params[:id])
+    @product_name = @lesson.product_name
+    @date = @lesson.lesson_time.date
+    @slot = @lesson.slot
+    @promo_code = PromoCode.new
+    # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    flash.now[:notice] = "You're almost there! We just need a few more details."
+    flash[:complete_form] = 'TRUE'
+    render 'full_snowplay_form'
   end
 
   def edit
@@ -315,6 +353,14 @@ class LessonsController < ApplicationController
     @slot = @lesson.lesson_time.slot
     @date = @lesson.lesson_time.date
     @state = @lesson.instructor ? 'pending instructor' : @lesson.state
+    if @lesson.activity == 'sledding'
+        redirect_to complete_lesson_path(@lesson)
+      elsif @lesson.activity == 'snowplay'
+        redirect_to complete_snowplay_ticket_path(@lesson)
+      elsif @lesson.activity == 'lift_ticket'
+        redirect_to complete_lift_ticket_path(@lesson)
+      else
+    end
   end
 
   def reissue_invoice
@@ -363,9 +409,20 @@ class LessonsController < ApplicationController
         @lesson.state = 'confirmed'
     end
     if @lesson.save
-      LessonMailer.sledding_tickets_confirmation(@lesson).deliver!
-      flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
-      flash[:conversion] = 'TRUE'
+      if @lesson.activity == 'sledding'
+          LessonMailer.sledding_tickets_confirmation(@lesson).deliver!
+          flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:conversion] = 'TRUE'
+        elsif @lesson.activity == 'snowplay'
+          LessonMailer.snowplay_tickets_confirmation(@lesson).deliver!
+          flash[:notice] = 'Thank you, your snowplay tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:conversion] = 'TRUE'
+        elsif @lesson.activity == 'lift_ticket'
+          LessonMailer.lift_tickets_confirmation(@lesson).deliver!
+          flash[:notice] = 'Thank you, your lift tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:conversion] = 'TRUE'
+        else
+      end
       if @lesson.promo_code
         LessonMailer.send_promo_redemption_notification(@lesson).deliver!
       end

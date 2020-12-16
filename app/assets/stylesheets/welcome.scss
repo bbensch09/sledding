@@ -28,7 +28,7 @@ html, body {
 }
 #sledding-tickets {
   color: #000;
-  min-height: 850px;
+  min-height: 700px;
 }
 .sledding-details{
     line-height: 1.2;
@@ -1134,8 +1134,8 @@ section.pricing-new-lesson{
   max-width: 90% !important;
 }
 .btn-secondary{
-  color: white !important;
-  background-color: #DF5DDF;
+  color: #715845;
+  background-color: #fff;
   margin-top: 4px;
   margin-bottom: 4px;
 }
@@ -1143,9 +1143,21 @@ section.pricing-new-lesson{
   margin-top: 4px;
   margin-bottom: 4px;  
 }
-.btn-secondary:hover{
-  background-color: #55C9B2;
+.btn-primary:hover, .btn-secondary:hover, .btn-tertiary:hover{
+  background-color: #000;
+  color: #fff;
 }
+.btn-tertiary, .btn-tertiary:visited {
+  color: #715845;
+  background-color: #EEE2C9;
+  -webkit-transition: all 0.35s;
+  -moz-transition: all 0.35s;
+  transition: all 0.35s;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  /*font-size: 0.5em;*/
+}
+
 .blog-container{
   max-width: 1100px;
   margin: auto;

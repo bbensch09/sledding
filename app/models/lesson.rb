@@ -76,6 +76,12 @@ class Lesson < ActiveRecord::Base
         else
           l = 'XX'
       end
+      if self.activity == 'lift_ticket'
+        l = 'LIFT'
+      elsif self.activity == 'snowplay'
+        l = 'PLAY'
+      else
+      end
       ticket_count = self.students.count.to_s
       id = self.id.to_s.rjust(4,"0")
       confirmation_number = l+'-'+id+'-'+date+'-'+ticket_count
@@ -210,7 +216,7 @@ class Lesson < ActiveRecord::Base
 
   def product
     if self.product_id.nil?
-      Product.where(location_id:self.location.id, name:self.lesson_time.slot,calendar_period:self.location.calendar_status).first
+      Product.where(location_id:self.location.id, name:self.lesson_time.slot,calendar_period:self.lookup_calendar_period(self.lesson_time.date)).first
     else
       Product.where(id:self.product_id).first
     end
@@ -463,6 +469,16 @@ class Lesson < ActiveRecord::Base
     return count
   end
 
+  def count_participants_under12
+    count = 0
+    self.students.each do |participant|
+      if participant.age_range.to_i <= 12
+        count +=1
+      end
+    end
+    return count
+  end
+
   def price
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
       # puts "!!!!lookup calendar period status, it is: #{calendar_period}"
@@ -471,6 +487,20 @@ class Lesson < ActiveRecord::Base
       return "Lesson price or product not found" #99 #default lesson price - temporary
     elsif self.lesson_price
       price = self.lesson_price
+    elsif self.activity == "lift_ticket"
+      children = self.count_participants_under12
+      adults = self.students.count - children
+      if calendar_period == 'Holiday'
+          price = (children * 35) + (adults * 45)
+        else
+          price = (children * 30) + (adults * 40)
+      end
+    elsif self.activity == "snowplay"
+      if calendar_period == 'Holiday'
+          price = self.students.count * 15
+        else
+          price = self.students.count * 10
+      end
     else
       price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
     end
@@ -1025,11 +1055,23 @@ class Lesson < ActiveRecord::Base
     #Admin should always allowed to confirm/book tickets;
     return true if self.skip_validations == true #|| session[:skip_validations] == true 
     puts "lesson id, lesson_time_id, and skip_validations is #{self.id}, #{self.lesson_time_id}, and #{self.skip_validations}"
-    if (current_session_tickets_sold + self.students.count) <= SLEDHILL_CAPACITY
-      return current_session_tickets_sold
+    if self.activity == 'lift_ticket'
+      if (current_day_lift_tickets_sold + self.students.count) <= SKIHILL_CAPACITY
+        return current_day_lift_tickets_sold
+      else
+        errors.add(:lesson,"Unfortunately there are no more lift tickets available. Please try another day. To see what days are not sold out, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
+        return false
+      end
+    elsif self.activity == 'sledding'
+      if (current_session_tickets_sold + self.students.count) <= SLEDHILL_CAPACITY
+        return current_session_tickets_sold
+      else
+        errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
+        return false
+      end
+    elsif self.activity == 'snowplay'
+      return true
     else
-      errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
-      return false
     end
 
   end
@@ -1048,8 +1090,25 @@ class Lesson < ActiveRecord::Base
     return tickets
   end
 
+  def current_day_lift_tickets_sold
+    all_tix = Lesson.where(activity:'lift_ticket').to_a
+    same_day_paid_bookings = all_tix.keep_if{|l| l.paid? && l.date == self.date}
+    puts "!!! there are #{same_day_paid_bookings.count} bookings found in same_session_paid_bookings"
+    tickets = 0
+    same_day_paid_bookings.each do |booking|
+      tickets+= booking.students.count
+      puts "!!! added #{booking.students.count} tickets to running total"
+    end
+    puts "!!! There are #{tickets} other ticets already sold"
+    return tickets
+  end
+
   def session_capacity_remaining
     return SLEDHILL_CAPACITY - current_session_tickets_sold
+  end
+
+  def skihill_capacity_remaining
+    return SKIHILL_CAPACITY - current_day_lift_tickets_sold
   end
 
 

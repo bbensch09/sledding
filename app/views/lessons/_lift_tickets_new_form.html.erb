@@ -2,13 +2,13 @@
   <div class="lesson-form-container">
     
       <div class="new-lesson-pricing-container">
-        <%= render partial: "welcome/prices_sledding" %>
+        <%= render partial: "welcome/prices_lift_tickets" %>
       </div>
 
       <div class="new-lesson-caption" id="buy-tickets">
 
         <div class="block">
-          <p class="cta-subtext center black-text">Please select the date & time slot for which you wish to purchase tickets</p>
+          <p class="cta-subtext center black-text">Please select the date and ticket type (adult or child) for which you wish to purchase tickets</p>
         </div>
         <h1 class="warning">        
           <%= f.semantic_errors :lesson %>
@@ -19,12 +19,11 @@
             <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
 
             <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
-              <div class="col-md-4">
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, class:'date-input center', required:true, autocomplete:"off" }, placeholder: 'Date', label: false %>
-                <!-- <span class="search-area-icon"></span> -->
-              </div>
               <div class="col-md-7"> <!-- offset-md-3 -->
-                <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, include_blank: 'Time Slot', label: false, required:true %>
+                <%= lt_f.input :slot, as: :select, collection: LIFT_TICKET_SLOTS, include_blank: 'Ticket Type', label: false, required:true %>
+              </div>
+              <div class="col-md-4">
+                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker2', value:@date, class:'date-input center', required:true, autocomplete:"off" }, placeholder: 'Date', label: false %>
               </div>
 
             <% end %>
@@ -33,7 +32,7 @@
               <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
             <div class="col-md-12">
                 <h1 class="new-lesson-ctas-list center">
-                      <%= f.action :submit, :label => "GET STARTED", as: :input, button_html: { class: 'btn btn-default btn-lg' } %>
+                      <%= f.action :submit, :label => "BOOK TICKETS", as: :input, button_html: { class: 'btn btn-default btn-lg' } %>
                 </h1>
             </div>
 
