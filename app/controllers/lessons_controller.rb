@@ -355,8 +355,11 @@ class LessonsController < ApplicationController
     @state = @lesson.instructor ? 'pending instructor' : @lesson.state
     if @lesson.activity == 'sledding'
         redirect_to complete_lesson_path(@lesson)
+      elsif @lesson.activity == 'snowplay'
+        redirect_to complete_snowplay_ticket_path(@lesson)
       elsif @lesson.activity == 'lift_ticket'
         redirect_to complete_lift_ticket_path(@lesson)
+      else
     end
   end
 
