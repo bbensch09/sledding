@@ -320,7 +320,7 @@ class LessonsController < ApplicationController
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
-    render 'full_form'
+    render 'full_sledding_form'
   end
 
   def complete_lift_ticket
@@ -360,6 +360,7 @@ class LessonsController < ApplicationController
       elsif @lesson.activity == 'lift_ticket'
         redirect_to complete_lift_ticket_path(@lesson)
       else
+        redirect_to complete_lesson_path(@lesson)
     end
   end
 
@@ -379,12 +380,13 @@ class LessonsController < ApplicationController
     session[:refund] = true
     # render 'edit'
     if @lesson.activity == 'sledding'
-      render 'full_form'
+      render 'full_sledding_form'
     elsif @lesson.activity == 'snowplay'
       render 'full_snowplay_form'
     elsif @lesson.activity == 'lift_ticket'
       render 'full_lift_ticket_form'
     else
+      render 'full_sledding_form'
     end
   end
 
@@ -517,10 +519,10 @@ class LessonsController < ApplicationController
       @lesson.state = 'ready_to_book'
     end
     if @lesson.save
-      # GoogleAnalyticsApi.new.event('lesson-requests', 'full_form-updated', params[:ga_client_id])
+      # GoogleAnalyticsApi.new.event('lesson-requests', 'full_sledding_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.state == "ready_to_book"
-      # LessonMailer.notify_admin_lesson_full_form_updated(@lesson, @user_email).deliver!
+      # LessonMailer.notify_admin_lesson_full_sledding_form_updated(@lesson, @user_email).deliver!
       end
       puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
     redirect_to @lesson
