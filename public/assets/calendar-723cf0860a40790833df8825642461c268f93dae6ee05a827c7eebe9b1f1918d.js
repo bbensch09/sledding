@@ -1,0 +1,1 @@
+console.log("calendard.js has loaded."),$(document).ready(function(){$("#calendar").fullCalendar({header:{left:"prev,next today",right:"month,basicWeek,listMonth"},defaultView:"listMonth",editable:!0,googleCalendarApiKey:"AIzaSyCCXnv6RXbEy9NZ_x6huXAX7bhiB81ODKE",eventSources:[{googleCalendarId:"brian@snowschoolers.com"}]})});
