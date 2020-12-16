@@ -47,12 +47,13 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
 
-  # Debug mode disables concatenation and preprocessing of assets.
+  # Debug mode disables concatenation and preprocessing of CSS assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   # changed from true to false 11.18.20 for troubleshooting
-  config.assets.debug = false
+  # changed back from false to true 12.16.20 to allow local CSS changes to be pushed; also removed assets in public/assets folder; took ~2min to load first time after
   # this should be toggled true when doing local testing and updating .JS or .CSS assets
+  config.assets.debug = true
   # config.assets.debug = true
   config.assets.js_compressor = Uglifier.new(harmony: true)
 

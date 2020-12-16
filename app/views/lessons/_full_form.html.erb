@@ -8,7 +8,6 @@
     <div id="autofill-container" class="admin-viewable">
       <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a> <br>
       <h3>Total tickets already sold for this date/session: <%=@lesson.current_session_tickets_sold %> tickets.</h3>
-config.assets.initialize_on_precompile = false
       <% if session[:refund] == true %>
         <h3> To issue a full refund: </h3>
           <ol>
