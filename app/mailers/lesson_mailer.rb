@@ -3,18 +3,18 @@ class LessonMailer < ActionMailer::Base
 
   def track_apply_visits(email="Unknown user")
       @email = email
-      mail(to: 'brian@snowschoolers.com', subject: "TESTING: tracked pageview at lessons#show")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "TESTING: tracked pageview at lessons#show")
   end
 
   def notify_admin_preseason_request(request)
       @location_name = request.name
-      mail(to: 'brian@snowschoolers.com', subject: "New Preseason Resort request - #{@location_name}.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "New Preseason Resort request - #{@location_name}.")
   end
 
   def notify_admin_lesson_request_begun(lesson,email)
       @lesson = lesson
       @user_email = email
-      mail(to: 'brian@snowschoolers.com', subject: "New Lesson Request begun - #{@lesson.date} - #{@lesson.guest_email}.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "New Lesson Request begun - #{@lesson.date} - #{@lesson.guest_email}.")
   end
 
   def notify_admin_section_sold_out(section)
@@ -25,85 +25,85 @@ class LessonMailer < ActionMailer::Base
   def notify_admin_lesson_full_form_updated(lesson,email)
       @lesson = lesson
       @user_email = email
-      mail(to: 'brian@snowschoolers.com', subject: "Granlibakken - sled tickets ready for purchase - #{@lesson.date.strftime("%b %-d")}.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Granlibakken - sled tickets ready for purchase - #{@lesson.date.strftime("%b %-d")}.")
   end
 
   def notify_admin_beta_user(beta_user)
       @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "New Beta User - #{@beta_user.email}.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "New Beta User - #{@beta_user.email}.")
   end
 
   def notify_sumo_success(email="Unknown Sumo User")
       @email = email
-      mail(to: 'brian@snowschoolers.com', subject: "Sumo Success - #{@email} has subscribed.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Sumo Success - #{@email} has subscribed.")
   end
 
   def notify_resort_referral(resort,user)
       @resort = resort
       @user = user
-      mail(to: 'brian@snowschoolers.com', subject: "#{@user} has clicked thru from GB to #{@resort}")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "#{@user} has clicked thru from GB to #{@resort}")
   end
 
   def notify_tahoedaves_referral
-      mail(to: 'brian@snowschoolers.com', subject: "Tahoe Daves's referral click-thru")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Tahoe Daves's referral click-thru")
   end
 
   def notify_beginner_concierge(beta_user)
       @beta_user = beta_user
-      mail(to: 'brian@snowschoolers.com', subject: "Concierge request - #{@beta_user.email}.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Concierge request - #{@beta_user.email}.")
   end
 
   def notify_admin_sms_logs(lesson,recipient,body)
       @lesson = lesson
       @recipient = recipient
       @body = body
-      mail(to: 'brian@snowschoolers.com', subject: "SMS sent to #{@recipient}")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "SMS sent to #{@recipient}")
   end
 
   def send_admin_notify_invalid_phone_number(lesson)
       @lesson = lesson
-      mail(to: 'brian@snowschoolers.com', subject: "Alert - Failed to send SMSto #{@lesson.phone_number}")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Alert - Failed to send SMSto #{@lesson.phone_number}")
   end
 
   def application_begun(email="Unknown user",first_name="John", last_name="Doe")
       @email = email
       @name = first_name + last_name
-      mail(to: 'brian@snowschoolers.com', subject: "Application begun - #{email} has entered their email.")
+      mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Application begun - #{email} has entered their email.")
   end
 
   def new_user_signed_up(user)
     @user = user
-    mail(to: 'brian@snowschoolers.com', subject: "A new user has registered for Granlibakken Lessons")
+    mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "A new user has registered for Granlibakken Snowsports")
   end
 
   def new_instructor_application_received(instructor)
     @instructor = instructor
-    mail(to: 'brian@snowschoolers.com', subject: "Submitted Application: #{@instructor.username} has applied to join Granlibakken")
+    mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Submitted Application: #{@instructor.username} has applied to join Granlibakken")
   end
 
   def send_new_instructor_application_confirmation(instructor)
     @instructor = instructor
-    mail(to: @instructor.username, cc: 'brian@snowschoolers.com', subject: "Thanks for applying to Granlibakken -- please schedule your interview!")
+    mail(to: @instructor.username, cc: 'brian+gb-snowsports@snowschoolers.com', subject: "Thanks for applying to Granlibakken -- please schedule your interview!")
   end
 
   def new_homewood_application_received(applicant)
     @applicant = applicant
-    mail(to: 'brian+marc@snowschoolers.com', cc:'brian@snowschoolers.com', subject: "Submitted Application: #{@applicant.email} has applied to join Homewood")
+    mail(to: 'brian+marc@snowschoolers.com', cc:'brian+gb-snowsports@snowschoolers.com', subject: "Submitted Application: #{@applicant.email} has applied to join Homewood")
   end
 
   def new_review_submitted(review)
     @review = review
-    mail(to: 'brian@snowschoolers.com', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Review submitted: #{@review.reviewer.email} has provided their review")
+    mail(to: 'brian+gb-snowsports@snowschoolers.com', cc: "Chris Parson <#{ENV['SUPERVISOR_EMAIL']}>", subject: "Review submitted: #{@review.reviewer.email} has provided their review")
   end
 
   def instructor_status_activated(instructor)
     @instructor = instructor
-    mail(to: @instructor.user.email, cc: 'brian@snowschoolers.com', subject: "Instructor status is now Active!")
+    mail(to: @instructor.user.email, cc: 'brian+gb-snowsports@snowschoolers.com', subject: "Instructor status is now Active!")
   end
 
   def subscriber_sign_up(beta_user)
     @beta_user = beta_user
-    mail(to: 'brian@snowschoolers.com', subject: "Someone has subscribed to the Granlibakken mailing list")
+    mail(to: 'brian+gb-snowsports@snowschoolers.com', subject: "Someone has subscribed to the Granlibakken mailing list")
   end
 
   def send_lesson_request_to_instructors(lesson, excluded_instructor=nil)
@@ -161,7 +161,7 @@ class LessonMailer < ActionMailer::Base
 
   def send_promo_redemption_notification(lesson)
     @lesson = lesson
-    mail(to: 'brian@snowschoolers.com',  cc: "Adam Garon <#{ENV['SUPERVISOR_EMAIL']}>, notify@snowschoolers.com", subject: "The promo code #{@lesson.promo_code.promo_code} has been redeemed for #{@lesson.date.strftime("%b %-d")}")
+    mail(to: 'brian+gb-snowsports@snowschoolers.com',  cc: "Adam Garon <#{ENV['SUPERVISOR_EMAIL']}>, notify@snowschoolers.com", subject: "The promo code #{@lesson.promo_code.promo_code} has been redeemed for #{@lesson.date.strftime("%b %-d")}")
   end
 
 
