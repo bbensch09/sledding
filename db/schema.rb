@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_24_172630) do
+ActiveRecord::Schema.define(version: 2020_11_25_060852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 2019_02_24_172630) do
     t.date "date"
     t.string "check_in_status"
     t.integer "promo_code_id"
+    t.boolean "skip_validations"
   end
 
   create_table "locations", id: :serial, force: :cascade do |t|
