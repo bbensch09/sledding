@@ -62,11 +62,26 @@ class Location < ActiveRecord::Base
       lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today &&lesson.confirmed?}
   end
 
+
   def today_revenue
     lessons = self.today_lessons
     revenue = 0
     lessons.each do |lesson|
         revenue += lesson.price.to_f
+    end
+    return revenue
+  end
+
+  def today_lift_tickets
+      lessons = Lesson.where(requested_location:self.id.to_s,state:'confirmed',activity:"lift_ticket")
+      lessons.to_a.keep_if {|lesson| lesson.lesson_time.date == Date.today &&lesson.confirmed?}
+  end
+  
+  def today_lift_revenue
+    bookings = self.today_lift_tickets
+    revenue = 0
+    bookings.each do |booking|
+        revenue += booking.price.to_f
     end
     return revenue
   end
