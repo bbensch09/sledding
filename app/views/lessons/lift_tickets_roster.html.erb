@@ -24,15 +24,15 @@
 <%= link_to "Print Today's Roster", sledding_roster_today_print_path(format: "html"), class: 'btn btn btn-default', target:'_blank' %>
 <%= link_to "Print Tomorrow's Roster", sledding_roster_tomorrow_print_path(format: "html"), class: 'btn btn btn-default', target:'_blank' %>
 
-<h1> Roster for Early Bird Session </h1>
+<h1> Roster for Lift Tickets </h1>
 
-    <% @lessons1 = @lessons.select{|lesson| lesson.slot == "Early-bird (8:30-10am)"} %>
+    <!-- % @lessons1 = @lessons.select{|lesson| lesson.slot == "Child Lift Ticket" || lesson.slot = "Adult Lift Ticket"} %> -->
 
 <table class="instructors-table daily-roster">
   <thead>
     <tr>
       <th class="lessons-table-cells lesson-date">Reservation Date</th>
-      <th class="lessons-table-cells lesson-date">Time Slot</th>
+      <th class="lessons-table-cells lesson-date">Ticket Type</th>
       <th class="lessons-table-cells lesson-date">Booking Date+Time</th>
       <!-- <th class="lessons-table-cells">#Tickets</th> -->
       <th class="lessons-table-cells lesson-instructor"> Confirmation #</th>
@@ -48,7 +48,7 @@
   </thead>
 
   <tbody>
-    <% @lessons1.each do |lesson| %>
+    <% @lessons.each do |lesson| %>
           <tr>
             <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.lesson_time.date.strftime("%Y-%m-%d") %></td>
             <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.slot %></td>
@@ -73,154 +73,6 @@
   </tbody>
 </table>
 
-<h1> Roster for Morning 10:30am Session </h1>
-
-    <% @lessons2 = @lessons.select{|lesson| lesson.slot == "Morning (10:30am-12pm)"} %>
-
-<table class="instructors-table daily-roster">
-  <thead>
-    <tr>
-      <th class="lessons-table-cells lesson-date">Reservation Date</th>
-      <th class="lessons-table-cells lesson-date">Time Slot</th>
-      <th class="lessons-table-cells lesson-date">Booking Date+Time</th>
-      <!-- <th class="lessons-table-cells">#Tickets</th> -->
-      <th class="lessons-table-cells lesson-instructor"> Confirmation #</th>
-      <th class="lessons-table-cells lesson-instructor"> Status</th>
-      <th class="lessons-table-cells">Waiver</th>
-      <th class="lessons-table-cells lesson-student">Phone</th>
-      <th class="lessons-table-cells lesson-student">Name</th>
-      <th class="lessons-table-cells lesson-student">Email</th>
-      <th class="lessons-table-cells">State</th>
-      <th class="lessons-table-cells">Price</th>
-      <!-- <th class="lessons-table-cells"></th> -->
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @lessons2.each do |lesson| %>
-          <tr>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.lesson_time.date.strftime("%Y-%m-%d") %></td>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.slot %></td>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.created_at %></td>
-            <!-- <td class="lessons-table-cells"><%= lesson.students.count %></td> -->
-            <td class="lessons-table-cells lesson-instructor"><%= link_to lesson.confirmation_number, lesson, class: "btn btn-sledding-admin" %></td>
-            <% if lesson.check_in_status.nil? %>
-            <td class="lessons-table-cells"><%= link_to 'Check-in', sledding_check_in_path(lesson.id), method: :put, class:"btn btn-default btn-sledding-admin" %>
-              <% else %>
-            <td class="lessons-table-cells roster-smaller"><%= lesson.check_in_status %></td>
-            <% end %>
-            <td class="lessons-table-cells"><%= link_to 'Print', release_of_liability_path(lesson.id), target:"_blank", class:"btn btn-sledding-admin" %>
-            <td class="lessons-table-cells roster-smaller"><%= lesson.phone_number %></td>
-            <td class="lessons-table-cells"><%= lesson.name %></td>
-            <td class="lessons-table-cells table-word-wrap email-smallest"><%= lesson.guest_email %></td>
-            <td class="lessons-table-cells"><%= lesson.state %></td>
-            <td class="lessons-table-cells"><%= number_to_currency(lesson.price) %></td>
-            <!-- <td><%= link_to 'Delete', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %></td> -->
-            <td class="lessons-table-cells"><%= link_to 'Cancel Check-in', sledding_check_in_reverse_path(lesson.id), method: :put, class:"btn btn-danger btn-sledding-admin" %>
-          </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
-<h1> Roster for Midday Session </h1>
-
-    <% @lessons3 = @lessons.select{|lesson| lesson.slot == "Midday (12:30-2pm)"} %>
-
-<table class="instructors-table daily-roster">
-  <thead>
-    <tr>
-      <th class="lessons-table-cells lesson-date">Reservation Date</th>
-      <th class="lessons-table-cells lesson-date">Time Slot</th>
-      <th class="lessons-table-cells lesson-date">Booking Date+Time</th>
-      <!-- <th class="lessons-table-cells">#Tickets</th> -->
-      <th class="lessons-table-cells lesson-instructor"> Confirmation #</th>
-      <th class="lessons-table-cells lesson-instructor"> Status</th>
-      <th class="lessons-table-cells">Waiver</th>
-      <th class="lessons-table-cells lesson-student">Phone</th>
-      <th class="lessons-table-cells lesson-student">Name</th>
-      <th class="lessons-table-cells lesson-student">Email</th>
-      <th class="lessons-table-cells">State</th>
-      <th class="lessons-table-cells">Price</th>
-      <!-- <th class="lessons-table-cells"></th> -->
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @lessons3.each do |lesson| %>
-          <tr>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.lesson_time.date.strftime("%Y-%m-%d") %></td>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.slot %></td>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.created_at %></td>
-            <!-- <td class="lessons-table-cells"><%= lesson.students.count %></td> -->
-            <td class="lessons-table-cells lesson-instructor"><%= link_to lesson.confirmation_number, lesson, class: "btn btn-sledding-admin" %></td>
-            <% if lesson.check_in_status.nil? %>
-            <td class="lessons-table-cells"><%= link_to 'Check-in', sledding_check_in_path(lesson.id), method: :put, class:"btn btn-default btn-sledding-admin" %>
-              <% else %>
-            <td class="lessons-table-cells roster-smaller"><%= lesson.check_in_status %></td>
-            <% end %>
-            <td class="lessons-table-cells"><%= link_to 'Print', release_of_liability_path(lesson.id), target:"_blank", class:"btn btn-sledding-admin" %>
-            <td class="lessons-table-cells roster-smaller"><%= lesson.phone_number %></td>
-            <td class="lessons-table-cells"><%= lesson.name %></td>
-            <td class="lessons-table-cells table-word-wrap email-smallest"><%= lesson.guest_email %></td>
-            <td class="lessons-table-cells"><%= lesson.state %></td>
-            <td class="lessons-table-cells"><%= number_to_currency(lesson.price) %></td>
-            <!-- <td><%= link_to 'Delete', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %></td> -->
-            <td class="lessons-table-cells"><%= link_to 'Cancel Check-in', sledding_check_in_reverse_path(lesson.id), method: :put, class:"btn btn-danger btn-sledding-admin" %>
-          </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
-<h1> Roster for Closing Session </h1>
-
-    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Closing(2:30-4pm)"} %>
-
-<table class="instructors-table daily-roster">
-  <thead>
-    <tr>
-      <th class="lessons-table-cells lesson-date">Reservation Date</th>
-      <th class="lessons-table-cells lesson-date">Time Slot</th>
-      <th class="lessons-table-cells lesson-date">Booking Date+Time</th>
-      <!-- <th class="lessons-table-cells">#Tickets</th> -->
-      <th class="lessons-table-cells lesson-instructor"> Confirmation #</th>
-      <th class="lessons-table-cells lesson-instructor"> Status</th>
-      <th class="lessons-table-cells">Waiver</th>
-      <th class="lessons-table-cells lesson-student">Phone</th>
-      <th class="lessons-table-cells lesson-student">Name</th>
-      <th class="lessons-table-cells lesson-student">Email</th>
-      <th class="lessons-table-cells">State</th>
-      <th class="lessons-table-cells">Price</th>
-      <!-- <th class="lessons-table-cells"></th> -->
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @lessons4.each do |lesson| %>
-          <tr>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.lesson_time.date.strftime("%Y-%m-%d") %></td>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.slot %></td>
-            <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.created_at %></td>
-            <!-- <td class="lessons-table-cells"><%= lesson.students.count %></td> -->
-            <td class="lessons-table-cells lesson-instructor"><%= link_to lesson.confirmation_number, lesson, class: "btn btn-sledding-admin" %></td>
-            <% if lesson.check_in_status.nil? %>
-            <td class="lessons-table-cells"><%= link_to 'Check-in', sledding_check_in_path(lesson.id), method: :put, class:"btn btn-default btn-sledding-admin" %>
-              <% else %>
-            <td class="lessons-table-cells roster-smaller"><%= lesson.check_in_status %></td>
-            <% end %>
-            <td class="lessons-table-cells"><%= link_to 'Print', release_of_liability_path(lesson.id), target:"_blank", class:"btn btn-sledding-admin" %>
-            <td class="lessons-table-cells roster-smaller"><%= lesson.phone_number %></td>
-            <td class="lessons-table-cells"><%= lesson.name %></td>
-            <td class="lessons-table-cells table-word-wrap email-smallest"><%= lesson.guest_email %></td>
-            <td class="lessons-table-cells"><%= lesson.state %></td>
-            <td class="lessons-table-cells"><%= number_to_currency(lesson.price) %></td>
-            <!-- <td><%= link_to 'Delete', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %></td> -->
-            <td class="lessons-table-cells"><%= link_to 'Cancel Check-in', sledding_check_in_reverse_path(lesson.id), method: :put, class:"btn btn-danger btn-sledding-admin" %>
-          </tr>
-    <% end %>
-  </tbody>
-</table>
 </div>
 <hr>
 </div>
