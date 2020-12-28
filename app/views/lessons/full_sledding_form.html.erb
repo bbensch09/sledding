@@ -170,8 +170,8 @@
               <%= render 'student_fields', f: student %>
             <% end %>
             <div class='links'>
-              <!-- %= link_to_add_association 'Add Another Participant', f, :students, limit: 20, class: 'btn btn-default', id:'add-student-button' %> -->
-            <h4 class="text-danger hidden" id="max-students-warning">Note: only 20 students may be registered at a time. To book tickets for 20 or more, please visit make separate purchases
+              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 10, class: 'btn btn-default', id:'add-student-button' %>
+            <h4 class="text-danger hidden" id="max-students-warning">Note: only 10 participants may be on one reservation. To book tickets for 11 or more, please complete one booking and then make a second separate booking for the remainign tickets.
             </h4>
             </div>
             <%= f.semantic_errors :students %>
