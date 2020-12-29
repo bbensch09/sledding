@@ -259,6 +259,7 @@ class LessonsController < ApplicationController
   #   @lesson = Lesson.new
   # end
 
+
   def new_request
     puts "!!! processing instructor request; Session variable is: #{session[:lesson]}"
     @lesson = Lesson.new
@@ -322,6 +323,40 @@ class LessonsController < ApplicationController
     end
 
   end
+
+  def create_nye_sledding_ticket
+    nye_params = {
+      date:"2020-12-31",
+      slot:NYE_SLOTS.first,
+    }
+    @lesson = Lesson.new
+    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(nye_params)
+    @lesson.package_info = "NYE Special Sled Ticket"
+    @slot = @lesson_time.slot
+    @lesson.requested_location = 24
+    if @lesson.save
+        redirect_to complete_nye_2020_path(@lesson)
+        # flash[:notice] = "Almost there! We just need a few more details."
+    else
+        # flash[:alert] = "Unfortunately that sledding session is already at capacity. Please pick another time."
+        render 'new'
+    end
+  end
+
+
+  def complete_nye_2020
+    @lesson = Lesson.find(params[:id])
+    @product_name = "NYE Special Sled Ticket"
+    # @date = "2020-12-31"
+    # @slot = NYE_SLOTS.first
+    @promo_code = "NYE"
+    # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    flash.now[:notice] = "Thanks for planning to spend New Years Eve at Granlibakken. We just need a few more details."
+    flash[:complete_form] = 'TRUE'
+    render 'full_sledding_form'
+
+  end
+
 
   def complete
     @lesson = Lesson.find(params[:id])
