@@ -192,6 +192,10 @@ Rails.application.routes.draw do
   put   'lessons/:id/mark_lesson_complete'   => 'lessons#mark_lesson_complete',   as: :mark_lesson_complete
   patch 'lessons/:id/confirm_lesson_time' => 'lessons#confirm_lesson_time', as: :confirm_lesson_time
   get   'sledding/:id/complete'            => 'lessons#complete',            as: :complete_lesson
+  # one-off customized event for NYE sledding
+  get   'sledding/book-new-years-eve'            => 'lessons#create_nye_sledding_ticket',            as: :create_nye_sledding_ticket
+  get   'sledding/:id/register_nye'            => 'lessons#complete_nye_2020',            as: :complete_nye_2020
+
   get   'lift-tickets/:id/complete'            => 'lessons#complete_lift_ticket',            as: :complete_lift_ticket
   get   'lift-tickets/roster-today'            => 'lessons#lift_tickets_today',            as: :lift_tickets_today
   get   'snowplay/:id/complete'            => 'lessons#complete_snowplay_ticket',            as: :complete_snowplay_ticket
