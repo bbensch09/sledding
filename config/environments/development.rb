@@ -53,8 +53,8 @@ Rails.application.configure do
   # changed from true to false 11.18.20 for troubleshooting
   # changed back from false to true 12.16.20 to allow local CSS changes to be pushed; also removed assets in public/assets folder; took ~2min to load first time after
   # this should be toggled true when doing local testing and updating .JS or .CSS assets
-  config.assets.debug = true
   # config.assets.debug = true
+  config.assets.debug = true
   config.assets.js_compressor = Uglifier.new(harmony: true)
 
   #Suppress logger output for asset requests
