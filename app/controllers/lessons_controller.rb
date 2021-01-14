@@ -363,8 +363,8 @@ class LessonsController < ApplicationController
     @product_name = @lesson.product_name
     unless @lesson.lesson_time.nil?
       @date = @lesson.lesson_time.date
+      @slot = @lesson.slot
     end
-    @slot = @lesson.slot
     @promo_code = PromoCode.new
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
@@ -377,8 +377,8 @@ class LessonsController < ApplicationController
     @product_name = @lesson.product_name
     unless @lesson.lesson_time.nil?
       @date = @lesson.lesson_time.date
+      @slot = @lesson.slot
     end
-    @slot = @lesson.slot
     @promo_code = PromoCode.new
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
