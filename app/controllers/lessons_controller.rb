@@ -361,7 +361,9 @@ class LessonsController < ApplicationController
   def complete
     @lesson = Lesson.find(params[:id])
     @product_name = @lesson.product_name
-    @date = @lesson.lesson_time.date
+    unless @lesson.lesson_time.nil?
+      @date = @lesson.lesson_time.date
+    end
     @slot = @lesson.slot
     @promo_code = PromoCode.new
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
