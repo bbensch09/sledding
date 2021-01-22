@@ -26,6 +26,8 @@ class Lesson < ActiveRecord::Base
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
   validate :check_session_capacity
+  validate :block_midweek_early_bird_sessions
+  validate :block_night_sessions_unless_saturday
   before_save :check_session_capacity
   before_save :confirm_valid_promo_code
 
@@ -501,7 +503,8 @@ class Lesson < ActiveRecord::Base
         else
           price = self.students.count * 10
       end
-    elsif self.package_info == "NYE Special Sled Ticket"
+    elsif self.package_info == "Spicy Saturdays"
+    # elsif self.package_info == "NYE Special Sled Ticket"
         price = self.students.count * 40
     else
       price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
@@ -1061,6 +1064,7 @@ class Lesson < ActiveRecord::Base
       if (current_day_lift_tickets_sold + self.students.count) <= SKIHILL_CAPACITY
         return current_day_lift_tickets_sold
       else
+        puts "!!! reservation rejected due to lift tickets being sold out"
         errors.add(:lesson,"Unfortunately there are no more lift tickets available. Please try another day. To see what days are not sold out, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
         return false
       end
@@ -1068,6 +1072,7 @@ class Lesson < ActiveRecord::Base
       if (current_session_tickets_sold + self.students.count) <= SLEDHILL_CAPACITY
         return current_session_tickets_sold
       else
+        puts "!!! reservation rejected due to sledding session capacity being sold out"
         errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
         return false
       end
@@ -1143,6 +1148,31 @@ class Lesson < ActiveRecord::Base
       end
     end
     return true
+  end
+
+  def block_midweek_early_bird_sessions
+    puts "!!!checking to see if user is trying to book Tues-Thurs at 8:30am"
+    weekday = self.date.strftime('%A')
+    midweek_blocked = ['Tuesday','Wednesday','Thursday']
+    if midweek_blocked.include?(weekday) && self.slot == "Early-bird (8:30-10am)"
+          puts "!!!!!guest tried to book a midweek 830am session. "
+          errors.add(:lesson, "The 8:30am session start time is not available midweek (Tues-Thurs). Please select another slot.")
+          return false
+    else
+      return true
+    end
+  end
+
+  def block_night_sessions_unless_saturday
+    puts "!!!checking to see if user is trying to book night sledding for any day but Saturdays"
+    weekday = self.date.strftime('%A')
+    if weekday != 'Saturday' && (self.slot == 'Saturday Dusk (4:30-6pm)' || self.slot == 'Spicy Saturday Night (6:30-8pm)')
+          puts "!!!!!guest tried to book a nighttime session but not on Saturday."
+          errors.add(:lesson, "Nightime sledding sessions are only available on Saturday. Please select another session time or date.")
+          return false
+    else
+      return true
+    end
   end
 
   def room_reservation_validator

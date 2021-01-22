@@ -137,7 +137,7 @@
             <div class="col-md-6">
               <label>Price</label>
                 <h2> <span id="lesson-price">
-                  <% if @promo_code == "NYE" %> 
+                  <% if @promo_code == "Saturday" %> 
                       <%= number_to_currency(40) %>
                     <% elsif @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
                       <%= number_to_currency(Product.find(2).price) %></span></h2>
@@ -155,7 +155,7 @@
               </div>
               <div class="col-md-6">
                 <label>Time Slot</label>
-                <% if @promo_code && @promo_code == "NYE" %>
+                <% if @promo_code && @promo_code == "Saturday" %>
                   <%= lt_f.input :slot, as: :select, collection: NYE_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
                     <% else %>
                   <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>

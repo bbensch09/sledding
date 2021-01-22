@@ -301,6 +301,9 @@ class LessonsController < ApplicationController
         @lesson.activity = 'sledding'
       end
       @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+    if @lesson.slot == 'Saturday Dusk (4:30-6pm)' || @lesson.slot == 'Spicy Saturday Night (6:30-8pm)'
+          @lesson.package_info = "Spicy Saturdays"
+    end
     if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
       puts "!!!current user is admin, preparing to set skip_validations boolean to true."
       session[:skip_validations] = true
@@ -325,13 +328,15 @@ class LessonsController < ApplicationController
   end
 
   def create_nye_sledding_ticket
+    days_til_sat = 6 - Date.today.wday
+    promo_date = Date.today + days_til_sat
     nye_params = {
-      date:"2020-12-31",
+      date:promo_date.to_s,
       slot:NYE_SLOTS.first,
     }
     @lesson = Lesson.new
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(nye_params)
-    @lesson.package_info = "NYE Special Sled Ticket"
+    @lesson.package_info = "Spicy Saturdays"
     @slot = @lesson_time.slot
     @lesson.requested_location = 24
     if @lesson.save
@@ -346,10 +351,10 @@ class LessonsController < ApplicationController
 
   def complete_nye_2020
     @lesson = Lesson.find(params[:id])
-    @product_name = "NYE Special Sled Ticket"
+    @product_name = "Spicy Saturdays"
     # @date = "2020-12-31"
     # @slot = NYE_SLOTS.first
-    @promo_code = "NYE"
+    @promo_code = "Saturday"
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "Thanks for planning to spend New Years Eve at Granlibakken. We just need a few more details."
     flash[:complete_form] = 'TRUE'
@@ -365,7 +370,11 @@ class LessonsController < ApplicationController
       @date = @lesson.lesson_time.date
       @slot = @lesson.slot
     end
-    @promo_code = PromoCode.new
+    if @lesson.package_info == "Spicy Saturdays"
+          @promo_code = "Saturday"
+        else
+      @promo_code = PromoCode.new
+    end
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "You're almost there! We just need a few more details."
     flash[:complete_form] = 'TRUE'
