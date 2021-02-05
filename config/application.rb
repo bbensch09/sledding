@@ -23,8 +23,8 @@ module SnowSchoolers
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # troubleshooting Heroku deploy failures - 11.15.20
-    config.assets.initialize_on_precompile = false
+    # troubleshooting Heroku deploy failures - 11.15.20; setting to false 2.5.21
+    config.assets.initialize_on_precompile = true
 
 
   #LOAD all files in library
