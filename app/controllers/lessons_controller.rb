@@ -338,6 +338,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.new
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(nye_params)
     @lesson.package_info = "Spicy Saturdays"
+    @lesson.activity = "sledding"
     @slot = @lesson_time.slot
     @lesson.requested_location = 24
     if @lesson.save
@@ -357,7 +358,7 @@ class LessonsController < ApplicationController
     # @slot = NYE_SLOTS.first
     @promo_code = "Saturday"
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
-    flash.now[:notice] = "Thanks for planning to spend New Years Eve at Granlibakken. We just need a few more details."
+    flash.now[:notice] = "Thanks for planning to spend Saturday Night at Granlibakken. We just need a few more details."
     flash[:complete_form] = 'TRUE'
     render 'full_sledding_form'
 
