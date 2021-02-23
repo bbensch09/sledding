@@ -1153,7 +1153,7 @@ class Lesson < ActiveRecord::Base
   def block_midweek_early_bird_sessions
     puts "!!!checking to see if user is trying to book Tues-Thurs at 8:30am"
     weekday = self.date.strftime('%A')
-    midweek_blocked = ['Tuesday','Wednesday','Thursday']
+    midweek_blocked = ['Monday','Tuesday','Wednesday','Thursday','Friday']
     if midweek_blocked.include?(weekday) && self.slot == "Early-bird (8:30-10am)"
           puts "!!!!!guest tried to book a midweek 830am session. "
           errors.add(:lesson, "The 8:30am session start time is not available midweek (Tues-Thurs). Please select another slot.")
