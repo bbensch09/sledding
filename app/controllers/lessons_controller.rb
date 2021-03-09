@@ -1,8 +1,8 @@
 class LessonsController < ApplicationController
   respond_to :html
-  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020]
+  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special]
   skip_before_action :verify_authenticity_token, only: [:confirm_reservation, :create, :update]
-  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020]
+  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special]
   before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations, :confirm_reservation, :issue_full_refund]
   before_action :set_admin_skip_validations, only: [:update, :confirm_reservation]
   # before_action :save_lesson_params_and_redirect, only: [:create]
@@ -359,6 +359,42 @@ class LessonsController < ApplicationController
     @promo_code = "Saturday"
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "Thanks for planning to spend Saturday Night at Granlibakken. We just need a few more details."
+    flash[:complete_form] = 'TRUE'
+    render 'full_sledding_form'
+
+  end
+
+  def create_wed_sledding_ticket
+    days_til_wed = 3 - Date.today.wday
+    promo_date = Date.today + days_til_wed
+    nye_params = {
+      date:promo_date.to_s,
+      slot:AFTERSCHOOL_SLOTS.first,
+    }
+    @lesson = Lesson.new
+    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(nye_params)
+    @lesson.package_info = "Afterschool Special"
+    @lesson.activity = "sledding"
+    @slot = @lesson_time.slot
+    @lesson.requested_location = 24
+    if @lesson.save
+        redirect_to complete_wednesday_special_path(@lesson)
+        # flash[:notice] = "Almost there! We just need a few more details."
+    else
+        # flash[:alert] = "Unfortunately that sledding session is already at capacity. Please pick another time."
+        render 'new'
+    end
+  end
+
+
+  def complete_wednesday_special
+    @lesson = Lesson.find(params[:id])
+    @product_name = "Afterschool Special"
+    # @date = "2020-12-31"
+    # @slot = NYE_SLOTS.first
+    @promo_code = "Afterschool Special"
+    # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
+    flash.now[:notice] = "Thanks for planning to spend your Wednesday afternoon at Granlibakken. We just need a few more details."
     flash[:complete_form] = 'TRUE'
     render 'full_sledding_form'
 
