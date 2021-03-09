@@ -506,6 +506,9 @@ class Lesson < ActiveRecord::Base
     elsif self.package_info == "Spicy Saturdays"
     # elsif self.package_info == "NYE Special Sled Ticket"
         price = self.students.count * 40
+    elsif self.package_info == "Afterschool Special"
+    # elsif self.package_info == "NYE Special Sled Ticket"
+        price = self.students.count * 12.50
     else
       price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
     end

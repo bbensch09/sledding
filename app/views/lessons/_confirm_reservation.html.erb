@@ -32,7 +32,7 @@
                   <% if @lesson.lesson_price.nil? || @lesson.price == @lesson.lesson_price %>
           
                       <% if @lesson.promo_code %>
-                        <br><span class="strikethrough">Original: $20.00</span>
+                        <br><span class="strikethrough">Original: $35.00</span>
                         <br>Promo: <%= @lesson.promo_code.promo_code %>
                         <br>Final price: <%= number_to_currency(@lesson.price) %>
                       <%else%>
@@ -76,7 +76,11 @@
               <label class="amount">
               </label>
               <%= link_to 'Edit Reservation', edit_lesson_path(@lesson), class: "center btn btn-sm btn-primary" %>
-              <% if amount > 0 %>
+              <% if (@lesson.package_info == "Spicy Saturdays" && @lesson.date.wday != 6) || (@lesson.package_info == "Afterschool Special" && @lesson.date.wday != 3)%>
+                <h3 class="text-danger">
+                  Unfortunately you've attempted to book a special rate but have selected the wrong date. Please edit your reservation and select an appropriate date.            
+                </h3>
+              <% elsif amount > 0 %>
                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                         data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
                         data-description="Thanks for booking at Granlibakken!"

@@ -195,6 +195,8 @@ Rails.application.routes.draw do
   # one-off customized event for NYE sledding
   get   'sledding/book-saturday-sledding'            => 'lessons#create_nye_sledding_ticket',            as: :create_nye_sledding_ticket
   get   'sledding/:id/register-for-saturday-sledding'            => 'lessons#complete_nye_2020',            as: :complete_nye_2020
+  get   'sledding/book-wednesday-sledding'            => 'lessons#create_wed_sledding_ticket',            as: :create_wed_sledding_ticket
+  get   'sledding/:id/register-for-wednesday-sledding'            => 'lessons#complete_wednesday_special',            as: :complete_wednesday_special
 
   get   'lift-tickets/:id/complete'            => 'lessons#complete_lift_ticket',            as: :complete_lift_ticket
   get   'lift-tickets/roster-today'            => 'lessons#lift_tickets_today',            as: :lift_tickets_today

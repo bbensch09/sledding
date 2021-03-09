@@ -2,6 +2,7 @@ SLEDDING_SLOTS=['Early-bird (8:30-10am)','Morning (10:30am-12pm)','Midday (12:30
 LIFT_TICKET_SLOTS=['Child Lift Ticket','Adult Lift Ticket']
 SNOWPLAY_SLOTS=['Snowplay Ticket']
 NYE_SLOTS=['Saturday Dusk (4:30-6pm)','Spicy Saturday Night (6:30-8pm)']
+AFTERSCHOOL_SLOTS=['Wed Afternoon(2:30-4pm)']
 
 SLEDHILL_CAPACITY=ENV['SLEDHILL_CAPACITY'].to_i
 SKIHILL_CAPACITY=ENV['SKIHILL_CAPACITY'].to_i
