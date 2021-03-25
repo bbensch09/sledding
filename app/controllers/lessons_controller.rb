@@ -70,8 +70,8 @@ class LessonsController < ApplicationController
     @date = params[:date]
     @date.nil? ? @date = Date.today+2 : @date.to_date
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date}
-    @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date && (lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?)}
-    # @lessons = @lessons.select{ |lesson| lesson.date == Date.tomorrow}
+    @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date}
+    # @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed"}
     @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index'}
