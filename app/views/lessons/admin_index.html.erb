@@ -26,8 +26,6 @@
 <%= link_to "Print Today's Roster", sledding_roster_today_print_path(format: "html"), class: 'btn btn btn-default', target:'_blank' %>
 <%= link_to "Print Tomorrow's Roster", sledding_roster_tomorrow_print_path(format: "html"), class: 'btn btn btn-default', target:'_blank' %>
 
-<h1>Lesson Count from Controller: <%=@lessons.count %></h1>
-
 <h1> Roster for Early Bird Session </h1>
 
     <% @lessons1 = @lessons.select{|lesson| lesson.slot == "Early-bird (8:30-10am)"} %>
