@@ -175,9 +175,9 @@
 </table>
 
 
-<h1> Roster for Closing Session </h1>
+<h1> Roster for Closing Session (including Wednesday Promo Tix) </h1>
 
-    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Closing(2:30-4pm)"} %>
+    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Closing(2:30-4pm)" || lesson.slot =="Wed Afternoon(2:30-4pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
