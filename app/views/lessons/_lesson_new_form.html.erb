@@ -1,49 +1,54 @@
 <%= semantic_form_for @lesson do |f| %>
-  <div class="lesson-form-container">
-    
-      <div class="new-lesson-pricing-container">
-        <%= render partial: "welcome/prices_sledding" %>
-      </div>
+<div class="lesson-form-container">
 
-      <div class="new-lesson-caption" id="buy-tickets">
-
-        <div class="block">
-          <p class="cta-subtext center black-text">Please select the date & time slot for which you wish to purchase tickets</p>
-        </div>
-        <h1 class="warning">        
-          <%= f.semantic_errors :lesson %>
-        </h1>
-        
-        <div class="block inputs">
-
-            <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
-
-            <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
-              <div class="col-md-4">
-                <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, class:'date-input center', required:true, autocomplete:"off" }, placeholder: 'Date', label: false %>
-                <!-- <span class="search-area-icon"></span> -->
-              </div>
-              <div class="col-md-7"> <!-- offset-md-3 -->
-                <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, include_blank: 'Time Slot', label: false, required:true %>
-              </div>
-              <div class="col-md-12">                
-                <!-- <h4 class="text-warning">*Please note that 8:30am session is only available on Fri/Sat/Sun/Mon. For midweek sledding, the first session begins at 10am.</h4> -->
-              </div>
-
-            <% end %>
-
-              <%= f.input :state, as: :hidden, input_html: { value: 'new' } %>
-              <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
-            <div class="col-md-12">
-                <h1 class="new-lesson-ctas-list center">
-                      <%= f.action :submit, :label => "GET STARTED", as: :input, button_html: { class: 'btn btn-default btn-lg' } %>
-                </h1>
-            </div>
-
-        </div>    
-
-      </div>
-          
+  <div class="new-lesson-pricing-container">
+    <%= render partial: "welcome/prices_sledding" %>
   </div>
+
+  <div class="alert alert-danger fade in" role="alert">
+    <h2 class="center">Unfortunately sledding tickets are no longer available for the spring 2021 season. <br> We plan to reopen in late November!</h2>
+  </div>
+
+
+  <div class="new-lesson-caption hidden" id="buy-tickets">
+
+    <div class="block">
+      <p class="cta-subtext center black-text">Please select the date & time slot for which you wish to purchase tickets</p>
+    </div>
+    <h1 class="warning">        
+      <%= f.semantic_errors :lesson %>
+    </h1>
+
+    <div class="block inputs">
+
+      <%= f.input :requested_location , as: :hidden, collection: Location.active_partners.sort_by { |location| location.name.downcase} , selected: 24, include_blank: 'Location', label: false %>
+
+      <%= f.semantic_fields_for :lesson_time, @lesson_time do |lt_f| %>
+      <div class="col-md-4">
+        <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker', value:@date, class:'date-input center', required:true, autocomplete:"off" }, placeholder: 'Date', label: false %>
+        <!-- <span class="search-area-icon"></span> -->
+      </div>
+      <div class="col-md-7"> <!-- offset-md-3 -->
+        <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, include_blank: 'Time Slot', label: false, required:true %>
+      </div>
+      <div class="col-md-12">                
+        <!-- <h4 class="text-warning">*Please note that 8:30am session is only available on Fri/Sat/Sun/Mon. For midweek sledding, the first session begins at 10am.</h4> -->
+      </div>
+
+      <% end %>
+
+      <%= f.input :state, as: :hidden, input_html: { value: 'new' } %>
+      # <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
+      <div class="col-md-12">
+        <h1 class="new-lesson-ctas-list center">
+          <!-- %= f.action :submit, :label => "GET STARTED", as: :input, button_html: { class: 'btn btn-default btn-lg' } %> -->
+        </h1>
+      </div>
+
+    </div>    
+
+  </div>
+
+</div>
 
 <% end %>

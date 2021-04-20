@@ -20,42 +20,57 @@
             <!-- <h1 id="homeHeading" class="shadow-box-highlight">Private Lessons Made Perfect<br> -->
                 <h1 id="homeHeading" class="home-header"><b>SNOWSPORTS </b> at <b>GRANLIBAKKEN</b><br>
                 </h1>
-                <!-- test comment -->
                 <div class="shadow-box-highlight">
-                    <h3>
-                        <span class="smaller-text">Family Friendly. </span> <br>
-                        <span class="smaller-text">Lowest Prices. </span> <br>
-                        <span class="smaller-text">Simple & Safe Winter Fun. </span> <br>
-                        <!-- <span class="smaller-text">Tickets now on Sale!</span> -->
-                    </h3>
-                <h4>
-                    <a href="#sledding-tickets" class="btn btn-primary btn-xl page-scroll">Book Sledding Tickets</a>
-                    <a href="#lift-tickets" class="btn btn-secondary btn-xl page-scroll">Book Lift Tickets</a>
-                </h4>
-                <div class="">  <!-- [promo] This can be hidden and removed while live. -->
-                    <h3>Spring After-School Sledding Starts this Wednesday! <br> Join us for 50% off sledding tickets every Wednesday at 2:30pm
-                    <h4><a href="/sledding/book-wednesday-sledding" class="btn btn-blackwhite btn-xl page-scroll">Book Spring Sledding this Wednesday</a></h4>
-                    <hr class="hr-white">
-                </div>
-                <div class="hidden">  <!-- [promo] This can be hidden and removed while live. -->
-                    <h3>Join us for a special night-time sledding session this Saturday night! <br> Night-sledding tickets include a free glow stick.</h3>
-                    <h4><a href="/sledding/book-saturday-sledding" class="btn btn-tertiary btn-xl page-scroll">Book Nightime Sledding!</a></h4>
-=                </div>
-
-                <h4><a href="#snowplay-tickets" class="hidden btn btn-tertiary btn-xl page-scroll">Snowplay for Toddlers</a></h4>
-                <!-- <h4><span class="smaller-text">Walk-in purchases are severely limited for 2020/21. Book online to secure your spot!</span></h4> -->
-                <!-- <hr class="hr-white"> -->
-                <div class="">
-                    <p class="welcome-subheader"> Granlibakken is Tahoe's oldest continuously operating ski area, founded in the 1920s. 
-                        <span class="hidden-unless-desktop"> 
-                        Our historic ski & sled hill is split between a beginner and intermediate ski hill and a 300-foot long sled hill, perfect for any family adventure.
-                        </span>
+                    <p class="welcome-subheader"> 
+                        Thanks for a great season! As of April 20th, we are no longer accepting online reseravations for the season. Walk-in sledding tickets will be available for a few more days while snow conditions last. Feel free to call the front desk to check today's status.
+                    <a href="ph:5305834242" class="white-text">(530) 583-4242</a>
                     </p>
-                    <span class="welome-ctas">
-                        <!-- <a href="#book-a-lesson" class="btn btn-secondary btn-lg page-scroll"> Lift & Lesson prices</a> -->
-                    </span>
+
                 </div>
-                <hr class="hr-white">
+
+                <!-- hidden during off-season -->
+                <div class="hidden"> 
+                    <div class="shadow-box-highlight">
+                        <h3>
+                            <span class="smaller-text">Family Friendly. </span> <br>
+                            <span class="smaller-text">Lowest Prices. </span> <br>
+                            <span class="smaller-text">Simple & Safe Winter Fun. </span> <br>
+                            <!-- <span class="smaller-text">Tickets now on Sale!</span> -->
+                        </h3>
+                    </div>
+                </div>
+
+                <h4>
+                    <a href="#sledding-tickets" class="btn btn-primary btn-xl page-scroll">Sledding Tickets</a>
+                    <a href="#lift-tickets" class="btn btn-secondary btn-xl page-scroll">Lift Tickets</a>
+                </h4>
+
+                <div class="hidden">  <!-- [promo] This can be hidden and removed while live. -->
+                    <h3>Spring After-School Sledding Starts this Wednesday! <br> Join us for 50% off sledding tickets every Wednesday at 2:30pm
+                        <h4><a href="/sledding/book-wednesday-sledding" class="btn btn-blackwhite btn-xl page-scroll">Book Spring Sledding this Wednesday</a></h4>
+                        <hr class="hr-white">
+                    </div>
+                    <div class="hidden">  <!-- [promo] This can be hidden and removed while live. -->
+                        <h3>Join us for a special night-time sledding session this Saturday night! <br> Night-sledding tickets include a free glow stick.</h3>
+                        <h4><a href="/sledding/book-saturday-sledding" class="btn btn-tertiary btn-xl page-scroll">Book Nightime Sledding!</a></h4>
+                    =                </div>
+
+                    <h4><a href="#snowplay-tickets" class="hidden btn btn-tertiary btn-xl page-scroll">Snowplay for Toddlers</a></h4>
+                    <!-- <h4><span class="smaller-text">Walk-in purchases are severely limited for 2020/21. Book online to secure your spot!</span></h4> -->
+                    <!-- <hr class="hr-white"> -->
+
+                    <!-- hidden during off-season -->
+                    <div class="hidden">
+                        <p class="welcome-subheader"> Granlibakken is Tahoe's oldest continuously operating ski area, founded in the 1920s. 
+                            <span class="hidden-unless-desktop"> 
+                                Our historic ski & sled hill is split between a beginner and intermediate ski hill and a 300-foot long sled hill, perfect for any family adventure.
+                            </span>
+                        </p>
+                        <span class="welome-ctas">
+                            <!-- <a href="#book-a-lesson" class="btn btn-secondary btn-lg page-scroll"> Lift & Lesson prices</a> -->
+                        </span>
+                    </div>
+                    <hr class="hr-white">
                 </p>
                 <span class="welome-ctas">
                 </span>
@@ -65,22 +80,22 @@
 </section>
 
 <% if Location.find(24).partner_status == 'Inactive' %>
-    <% @cta_visibility = "hidden" %>
-    
-        <section class="bg-white" id="buy-tickets" >
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-xs12">
-                        <h2 class="warning">
-                            Unfortunately online sledding tickets are currently not available. Please contact guest services at (530) 583-4242 for the latest information on when the sled hill will be open.
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </section>
+<% @cta_visibility = "hidden" %>
 
-    <% else %>    
-    <% @cta_visibility = "active" %>
+<section class="bg-white" id="buy-tickets" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-xs12">
+                <h2 class="warning">
+                    Unfortunately online sledding tickets are currently not available. Please contact guest services at (530) 583-4242 for the latest information on when the sled hill will be open.
+                </h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<% else %>    
+<% @cta_visibility = "active" %>
 
 <% end %>    
 
@@ -139,54 +154,54 @@
                 <!-- <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
             </div>
         </div>
-</section>
+    </section>
 
 
 
-<section class="bg-primary" id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-xs12 text-center">
-                <hr class="hr-black">
-                <h3 class="beta-sign-up-offer" id="subscribe">
-                   Not ready to book today? <br> Enter your email below to subscribe to free weekly offers and Tahoe weather reports.
-               </h3>
-               <div class="col-md-12 beta_user-sign-up">
-                <%= form_for(@beta_user = BetaUser.new) do |f| %>
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-xs12 text-center">
+                    <hr class="hr-black">
+                    <h3 class="beta-sign-up-offer" id="subscribe">
+                       Not ready to book today? <br> Enter your email below to subscribe to free weekly offers and Tahoe weather reports.
+                   </h3>
+                   <div class="col-md-12 beta_user-sign-up">
+                    <%= form_for(@beta_user = BetaUser.new) do |f| %>
                     <% if @beta_user.errors.any? %>
-                        <div id="error_explanation">
-                          <h2><%= pluralize(@beta_user.errors.count, "error") %> prohibited this beta_user from being saved:</h2>
-                          <ul>
-                              <% @beta_user.errors.full_messages.each do |message| %>
-                              <li><%= message %></li>
-                              <% end %>
-                          </ul>
-                        </div>
-                    <% end %>
-                    <div class="email-input">
-                        <%= f.email_field :email, autofocus: false, class:"black-text form-control beta-sign-up", placeholder:"Enter Email", required: true  %>
-                        <%= f.submit "Subscribe for Updates", class:"btn btn-success btn-lg page-scroll" %>
-                    </div>
-                <% end %>
+                    <div id="error_explanation">
+                      <h2><%= pluralize(@beta_user.errors.count, "error") %> prohibited this beta_user from being saved:</h2>
+                      <ul>
+                          <% @beta_user.errors.full_messages.each do |message| %>
+                          <li><%= message %></li>
+                          <% end %>
+                      </ul>
+                  </div>
+                  <% end %>
+                  <div class="email-input">
+                    <%= f.email_field :email, autofocus: false, class:"black-text form-control beta-sign-up", placeholder:"Enter Email", required: true  %>
+                    <%= f.submit "Subscribe for Updates", class:"btn btn-success btn-lg page-scroll" %>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading black-text">Any Questions? Let us know!</h2>
-                <hr class="hr-black">
-                <p class="black-text">Give us a call or send us an email and we will get back to you as soon as possible!</p>
-            </div>
-            <div class="col-lg-4 col-lg-offset-2 text-center">
-                <i class="fa fa-phone fa-3x sr-contact"></i>
-                <a href="ph:5305834242" class="black-text">(530) 583-4242</a>
-            </div>
-            <div class="col-lg-4 text-center">
-                <i class="fa fa-envelope-o fa-3x sr-contact"></i>
-                <p><a href="mailto:frontdesk@granlibakken.com" class="black-text" target="_blank">frontdesk@granlibakken.com</a></p>
+                <% end %>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+            <h2 class="section-heading black-text">Any Questions? Let us know!</h2>
+            <hr class="hr-black">
+            <p class="black-text">Give us a call or send us an email and we will get back to you as soon as possible!</p>
+        </div>
+        <div class="col-lg-4 col-lg-offset-2 text-center">
+            <i class="fa fa-phone fa-3x sr-contact"></i>
+            <a href="ph:5305834242" class="black-text">(530) 583-4242</a>
+        </div>
+        <div class="col-lg-4 text-center">
+            <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+            <p><a href="mailto:tickets@granlibakken.com" class="black-text" target="_blank">tickets@granlibakken.com</a></p>
+        </div>
+    </div>
+</div>
 </section>
 
 <!-- <script src="//load.sumome.com/" data-sumo-site-id="a1fbda8d7365cdee08d4a5985659bb680581b2dd4281ce27f0f246ffaa655693" async="async"></script> -->
