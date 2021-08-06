@@ -235,7 +235,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    pg (0.21.0)
+    pg (1.2.3)
     puma (5.4.0)
       nio4r (~> 2.0)
     racc (1.5.2)
@@ -388,7 +388,7 @@ DEPENDENCIES
   momentjs-rails
   omniauth-facebook (~> 4.0.0)
   paperclip
-  pg (~> 0.15)
+  pg
   puma
   rails-assets-datetimepicker!
   rails-controller-testing
