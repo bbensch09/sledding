@@ -35,7 +35,7 @@ gem 'stripe'
 #ensure that puma server is available
 gem 'puma'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.15'
+gem 'pg' #, '~> 0.15'
 
 #twilio for SMS notifications
 gem 'twilio-ruby', '4.13.0'
