@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "~> 2.6.3"
+ruby "~> 2.6.8"
 
 #Gems for new mobile-friendly calendar w/ gCal support
 gem 'fullcalendar-rails'
