@@ -44,6 +44,19 @@ class LessonsController < ApplicationController
     end
   end
 
+  def all_sledding_sales
+    # Lesson.set_dates_for_sample_bookings
+    @lessons = Lesson.where(state:"confirmed")
+    # could modify this manually if we want a full export of all bookings to be loaded in the browser
+    # @lessons = Lesson.last(2)
+    # @lessons = @lessons.sort! { |a,b| b.lesson_time.date <=> a.lesson_time.date }
+    respond_to do |format|
+          format.html {render 'all_sledding_sales'}
+          format.csv { send_data @lessons_to_export.to_csv, filename: "sledding-emails-export-#{Date.today}.csv" }
+    end
+  end
+  
+
   def roster_today
     # Lesson.set_dates_for_sample_bookings
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.today}
