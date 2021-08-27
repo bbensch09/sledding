@@ -113,7 +113,7 @@ end
 # gem 'capistrano', group: :development
 
 gem 'devise'
-gem 'formtastic'#, '~> 3.0'
+gem 'formtastic', '~> 3.0'
 gem 'formtastic-bootstrap'
 gem 'omniauth-facebook', '~> 4.0.0'
 gem 'cocoon', '>= 1.2.0'
