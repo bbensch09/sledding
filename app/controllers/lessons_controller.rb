@@ -90,13 +90,24 @@ class LessonsController < ApplicationController
 
   def lift_tickets_today
     # Lesson.set_dates_for_sample_bookings
-    @lessons_to_export = Lesson.all.select{|lesson| lesson.deposit_status == "confirmed" && lesson.activity == "lift_ticket" && lesson.date == Date.today}
-    @lessons = @lessons_to_export
-    @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
+    @tickets_to_export = Lesson.all.select{|lesson| lesson.deposit_status == "confirmed" && lesson.activity == "lift_ticket" && lesson.date == Date.today}
+    @tickets = @tickets_to_export
+    @tickets = @tickets.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'lift_tickets_roster'}
-          format.csv { send_data @lessons_to_export.to_csv, filename: "lift-tickets-export-#{Date.today}.csv" }
+          format.csv { send_data @tickets_to_export.to_csv, filename: "lift-tickets-export-#{Date.today}.csv" }
     end
+  end
+
+  def all_lift_tickets
+    @tickets_to_export = Lesson.all.select{|lesson| lesson.deposit_status == "confirmed" && lesson.activity == "lift_ticket"}
+    @tickets = @tickets_to_export
+    @tickets = @tickets.sort! { |a,b| a.id <=> b.id }
+    respond_to do |format|
+          format.html {render 'lift_tickets_roster'}
+          format.csv { send_data @tickets_to_export.to_csv, filename: "lift-tickets-export-#{Date.today}.csv" }
+    end
+
   end
 
 
