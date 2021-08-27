@@ -200,6 +200,7 @@ Rails.application.routes.draw do
 
   get   'lift-tickets/:id/complete'            => 'lessons#complete_lift_ticket',            as: :complete_lift_ticket
   get   'lift-tickets/roster-today'            => 'lessons#lift_tickets_today',            as: :lift_tickets_today
+  get   'lift-tickets/index'            => 'lessons#all_lift_tickets',            as: :all_lift_tickets
   get   'snowplay/:id/complete'            => 'lessons#complete_snowplay_ticket',            as: :complete_snowplay_ticket
   get   'lessons/:id/send_reminder_sms_to_instructor' => 'lessons#send_reminder_sms_to_instructor',  as: :send_reminder_sms_to_instructor
   post 'lessons/:id/confirm_reservation'              => 'lessons#confirm_reservation', as: :confirm_reservation
