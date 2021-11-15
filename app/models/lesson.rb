@@ -1,6 +1,7 @@
 class Lesson < ActiveRecord::Base
   belongs_to :requester, class_name: 'User', foreign_key: 'requester_id'
   belongs_to :instructor
+  belongs_to :shopping_cart
   belongs_to :lesson_time
   has_many :students
   has_one :review
@@ -479,6 +480,16 @@ class Lesson < ActiveRecord::Base
       end
     end
     return count
+  end
+
+  def product_name
+    case self.activity
+    when 'sledding'
+      return 'Sledding Ticket'
+    when 'lift_ticket'
+      return 'Ski Hill Lift Tickets'
+    else 'Other'
+    end
   end
 
   def price

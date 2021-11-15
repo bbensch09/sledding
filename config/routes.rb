@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :shopping_carts
   resources :promo_codes
   # HACKY SHIT - previous post routes
   # post 'generate_2_ticket_bulk_promo_codes' => 'promo_codes#generate_2_ticket_bulk_promo_codes', as: :generate_2_ticket_bulk_promo_codes

@@ -640,6 +640,8 @@ class LessonsController < ApplicationController
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
+    @shopping_cart = current_shopping_cart
+    @lesson.shopping_cart_id = @shopping_cart.id
     if @lesson.save
       # GoogleAnalyticsApi.new.event('lesson-requests', 'full_sledding_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
