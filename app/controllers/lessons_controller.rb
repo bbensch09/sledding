@@ -486,6 +486,24 @@ class LessonsController < ApplicationController
     end
   end
 
+  def view_cart
+    if current_shopping_cart.empty?
+      if current_user
+        @orders = current_user.shopping_carts.select{|sc| sc.status == 'purchased'}
+        @lessons = []
+        @orders.each do |order| 
+          order.lessons.each do |lesson|
+            @lessons << lesson
+          end
+        end
+      end
+      render 'view_all_orders'
+    else
+      @lesson = current_shopping_cart.lessons.first
+      render 'show'
+    end
+  end
+
   def reissue_invoice
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time
@@ -539,6 +557,9 @@ class LessonsController < ApplicationController
         end
         @lesson.deposit_status = 'confirmed'
         @lesson.state = 'confirmed'
+        @lesson.shopping_cart.status = 'purchased'
+        @lesson.shopping_cart.transaction_id = Time.now.to_i
+        @lesson.shopping_cart.save!
     end
     if @lesson.save
       if @lesson.activity == 'sledding'

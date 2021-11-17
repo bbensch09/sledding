@@ -1,5 +1,5 @@
 <div class="col-md-12">
-        <%= form_tag confirm_reservation_path do %>
+        <%= form_tag confirm_reservation_path(@lesson) do %>
 
           <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
           <article class="center">

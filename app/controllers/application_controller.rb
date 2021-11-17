@@ -15,15 +15,25 @@
   # rescue_from Exception, :with => :houston_we_have_an_exceptional_problem
 
 def current_shopping_cart
-  if current_user
-    @shopping_cart = @user.shopping_cart
-  else
-    if session[:shopping_cart]
+    if session[:shopping_cart]      
       @shopping_cart = ShoppingCart.find(session[:shopping_cart])
+      # once a shopping cart is purchased it is emptied and a new one is created
+      if @shopping_cart.status == "purchased"
+          @shopping_cart = ShoppingCart.create
+          session[:shopping_cart] = @shopping_cart.id
+      end
+      set_user_id_for_shopping_cart_if_logged_in
     else
       @shopping_cart = ShoppingCart.create
       session[:shopping_cart] = @shopping_cart.id
     end
+    return @shopping_cart
+end
+
+def set_user_id_for_shopping_cart_if_logged_in
+  if current_user
+    @shopping_cart.user_id = current_user.id
+    @shopping_cart.save!
   end
 end
 

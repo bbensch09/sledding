@@ -31,6 +31,7 @@ class Lesson < ActiveRecord::Base
   validate :block_night_sessions_unless_saturday
   before_save :check_session_capacity
   before_save :confirm_valid_promo_code
+  after_update :update_lesson_state_of_siblings
 
 
   #Check to ensure an instructor is available before booking
@@ -41,6 +42,20 @@ class Lesson < ActiveRecord::Base
   # after_save :confirm_section_valid
   # after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
+
+  def lesson_siblings
+    self.shopping_cart.lessons
+  end
+
+  def update_lesson_state_of_siblings
+    return true if self.state != "confirmed"
+    self.lesson_siblings.each do |l|
+      unless l.state == "confirmed"
+        l.state = "confirmed"
+        l.save!
+      end
+    end
+  end
 
   def is_sample_booking?
     return false if self.requester_name.nil?
@@ -71,22 +86,30 @@ class Lesson < ActiveRecord::Base
   end
 
   def confirmation_number
-      date = self.lesson_time.date.to_s.gsub("-","")
+    array=[]
+    self.lesson_siblings.each do |l|
+      array << l.unique_confirmation_number(l)
+    end
+    return array.join(", ")
+  end
+
+  def unique_confirmation_number(lesson)
+      date = lesson.lesson_time.date.to_s.gsub("-","")
       date = date[4..-1]
-      case self.location.name
+      case lesson.location.name
         when 'Granlibakken'
           l = 'SLED'
         else
           l = 'XX'
       end
-      if self.activity == 'lift_ticket'
+      if lesson.activity == 'lift_ticket'
         l = 'LIFT'
-      elsif self.activity == 'snowplay'
+      elsif lesson.activity == 'snowplay'
         l = 'PLAY'
       else
       end
-      ticket_count = self.students.count.to_s
-      id = self.id.to_s.rjust(4,"0")
+      ticket_count = lesson.students.count.to_s
+      id = lesson.id.to_s.rjust(4,"0")
       confirmation_number = l+'-'+id+'-'+date+'-'+ticket_count
   end
 

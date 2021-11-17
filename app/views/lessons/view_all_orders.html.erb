@@ -1,0 +1,27 @@
+<div id="middle" class="container">
+	<div class="white">
+
+	<% if @shopping_cart.empty? %>
+		<div class="empty cart">			
+			<h1 class="center">Your shopping cart is currently empty. Please continue shopping.</h1>
+            <h4 class="center">
+                <a href="/index#sledding-tickets" class="btn btn-primary btn-xl page-scroll">Book Sledding Tickets</a>
+                <a href="/index#lift-tickets" class="btn btn-tertiary btn-xl page-scroll">Book Lift Tickets</a>
+            </h4>
+
+		</div>
+
+		<hr>
+	<% end %>		
+
+		<h3>To review your past orders, please click into any of your confirmation numbers below:</h3>
+
+		<% if @lessons %>
+		<ul>
+			<% @lessons.each do |lesson| %>
+			<li class="past-orders"><%= link_to lesson.unique_confirmation_number(lesson), lesson_path(lesson.id), class:"btn btn-tertiary" %></li>
+			<% end %> 
+		</ul>
+		<% end %> 
+	</div>
+</div>
