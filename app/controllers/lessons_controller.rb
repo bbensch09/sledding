@@ -1,8 +1,8 @@
 class LessonsController < ApplicationController
   respond_to :html
-  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special]
+  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special, :destroy, :view_cart]
   skip_before_action :verify_authenticity_token, only: [:confirm_reservation, :create, :update]
-  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special]
+  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special, :destroy, :view_cart]
   before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations, :confirm_reservation, :issue_full_refund]
   before_action :set_admin_skip_validations, only: [:update, :confirm_reservation]
   # before_action :save_lesson_params_and_redirect, only: [:create]
@@ -499,7 +499,7 @@ class LessonsController < ApplicationController
       end
       render 'view_all_orders'
     else
-      @lesson = current_shopping_cart.lessons.first
+      @lesson = current_shopping_cart.ready_to_book.first
       render 'show'
     end
   end
@@ -699,9 +699,9 @@ class LessonsController < ApplicationController
   def destroy
     @lesson = Lesson.find(params[:id])
     @lesson.update(state: 'canceled')
-    send_cancellation_email_to_instructor
-    flash[:notice] = 'Your lesson has been canceled.'
-    redirect_to sledding_admin_index_path
+    @lesson.update(shopping_cart_id: nil)
+    flash[:notice] = 'Your ticket has been canceled.'
+    redirect_to view_cart_path
   end
 
   def admin_reconfirm_state

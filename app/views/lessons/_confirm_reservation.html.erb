@@ -13,7 +13,7 @@
             <h1 class="center">Review Cart & Checkout</h1>
             
 <!-- BEGIN LESSON SUMMARY FOR ALL CART ITEMS -->
-            <% @lessons = @shopping_cart.lessons %>
+            <% @lessons = @shopping_cart.ready_to_book %>
             <% @lessons.each do |cart_item| %>
 
             <div id="booking-details-container" class="booking-details">
@@ -86,6 +86,10 @@
               </div>
               <h4 class="center">
                   <%= link_to 'Edit Reservation', edit_lesson_path(cart_item), class: "center btn btn-sm btn-primary" %>
+                  <!-- %= link_to 'Remove from Cart', delete_lesson_path(cart_item), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %> -->
+                  <%= link_to 'Remove from Cart', cart_item, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-sm btn-danger" %>
+
+
               </h4>
             </div>
 
@@ -100,6 +104,8 @@
               Number of reservations: <%=@shopping_cart.lessons.count %>
               <br>
               Order Total: <%= number_to_currency(amount) %> 
+              <br>
+              <h4><a href="/index" class="btn btn-tertiary btn-sm page-scroll">Continue Shopping</a></h4>
             </h3>
               <label class="amount">
               </label>

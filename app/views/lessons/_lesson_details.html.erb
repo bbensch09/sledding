@@ -1,12 +1,9 @@
 <div id='full-details-container'>
-  <%if @lesson.public_feedback_for_student %>
-      <%= render partial: 'lessons/confirmed_time_and_feedback' %>
-  <% end %>
 
   <div class="details-info-box">    
 
     <h3><b>Booking Summary</b></h3>
-    <% if @lesson.deposit_status == 'confirmed' || @lesson.date == Date.today %>
+    <% if @lesson.deposit_status == 'confirmed' || @lesson.state == 'confirmed' || @lesson.date == Date.today %>
       <p>
         Your ticket confirmation number is: 
         <ul>
@@ -16,7 +13,20 @@
                 <%=@lesson.confirmation_number%>                
               </p>
           </li>
-        </ul>Please either print this page or save the confirmation email you should automatically receive, as you will need to show your confirmation number to a staff member as proof of payment. 
+        </ul>
+        <p>
+          Please either print this page or save the confirmation email you should automatically receive, as you will need to show your confirmation number to a staff member as proof of payment. 
+        </p>
+        <% if @lesson.lesson_siblings.count >= 2 %>
+        <p>
+          Please note that if you purchased multiple types of tickets, you will see multiple confirmation numbers above, but will only see the participant info for one type below. To view participant information for each individual ticket type, please click the respective confirmation numbers below.
+        </p>    
+        <ul>          
+          <% @lesson.lesson_siblings.each do |lesson| %>
+          <li class="past-orders"><%= link_to lesson.unique_confirmation_number(lesson), lesson_path(lesson.id), class:"btn btn-tertiary" %></li>
+          <% end %> 
+        </ul>
+        <% end %>
       </p>
     <% end %>
 

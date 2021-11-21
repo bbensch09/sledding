@@ -506,12 +506,11 @@ class Lesson < ActiveRecord::Base
   end
 
   def product_name
-    case self.activity
-    when 'sledding'
-      return 'Sledding Ticket'
-    when 'lift_ticket'
-      return 'Ski Hill Lift Tickets'
-    else 'Other'
+    if self.activity == 'sledding'
+      return "Sledding Ticket(s) - #{self.slot}"
+    elsif self.activity == 'lift_ticket'      
+      return "Ski Hill - #{self.slot}"
+    else 'Snowplay Tickets'
     end
   end
 

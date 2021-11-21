@@ -22,4 +22,14 @@ class ShoppingCart < ApplicationRecord
 		return total
 	end
 
+	def ready_to_book
+		lessons_ready_to_book = []
+		self.lessons.each do |lesson|
+			if lesson.state = "ready_to_book"
+				lessons_ready_to_book << lesson
+			end
+		end
+		lessons_ready_to_book
+	end
+
 end

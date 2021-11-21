@@ -1,6 +1,5 @@
 <% if @lesson.activity == 'sledding' %>
-	<%= render 'lessons/full_sledding_form' %>
-	<!-- need to update line above to match render partial logic in line 5 -->
+	<%= render partial: 'lessons/full_sledding_form' %>
 	<% elsif @lesson.activity == 'lift_ticket' %>
 	<%= render partial: 'lessons/full_lift_ticket_form' %>
 	<% elsif @lesson.activity == 'snowplay' %>
