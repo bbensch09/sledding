@@ -633,7 +633,6 @@ class LessonsController < ApplicationController
         pc_id = PromoCode.where(promo_code:@lesson.objectives).first.id
         @lesson.promo_code_id = pc_id
       end
-      # @lesson.check_promo_code_manually
     end
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
@@ -642,22 +641,6 @@ class LessonsController < ApplicationController
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
     end
-    # if @lesson.is_gift_voucher? && current_user.user_type == "Granlibakken Employee"
-    #   @user = User.new({
-    #       email: @lesson.gift_recipient_email,
-    #       password: 'sstemp2017',
-    #       user_type: "Student",
-    #       name: "#{@lesson.gift_recipient_name}"
-    #     })
-    #   @user.skip_confirmation!
-    #   @user.save!
-    #   @lesson.requester_id = User.last.id
-    #   puts "!!!! admin is creating a new user to receive a gift voucher; new user need not be confirmed"
-    # end
-    # if current_user && @lesson.is_gift_voucher? && current_user.email == @lesson.gift_recipient_email.downcase
-    #   @lesson.state = 'booked'
-    #   puts "!!!! marking voucher as booked & sending SMS to instructors"
-    # end
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
