@@ -4,6 +4,7 @@
   before_action :set_user
   after_action :store_location
   before_action :set_promo_code_cookie_and_session
+  before_action :current_shopping_cart
 
 #TO REFACTOR LATER - CUSTOMIZED METHODS TO INTERCEPT DEFAULT ERROR HANDLING FOR 404s and 500s
   # rescue_from ActiveRecord::RecordNotFound, :with => :houston_we_have_a_problem
@@ -12,6 +13,29 @@
   #   rescue_from ActionController::UnknownController, :with => :houston_we_have_500_routing_problems
   # end
   # rescue_from Exception, :with => :houston_we_have_an_exceptional_problem
+
+def current_shopping_cart
+    if session[:shopping_cart]      
+      @shopping_cart = ShoppingCart.find(session[:shopping_cart])
+      # once a shopping cart is purchased it is emptied and a new one is created
+      if @shopping_cart.status == "purchased"
+          @shopping_cart = ShoppingCart.create
+          session[:shopping_cart] = @shopping_cart.id
+      end
+      set_user_id_for_shopping_cart_if_logged_in
+    else
+      @shopping_cart = ShoppingCart.create
+      session[:shopping_cart] = @shopping_cart.id
+    end
+    return @shopping_cart
+end
+
+def set_user_id_for_shopping_cart_if_logged_in
+  if current_user
+    @shopping_cart.user_id = current_user.id
+    @shopping_cart.save!
+  end
+end
 
 def store_location
   # store last url - this is needed for post-login redirect to whatever the user last visited.

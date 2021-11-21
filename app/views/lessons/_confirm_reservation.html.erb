@@ -1,5 +1,5 @@
 <div class="col-md-12">
-        <%= form_tag confirm_reservation_path do %>
+        <%= form_tag confirm_reservation_path(@lesson) do %>
 
           <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
           <article class="center">
@@ -10,42 +10,57 @@
             <% end %>
           </article>
 
-            <h1 class="center">Authorize Payment</h1>
+            <h1 class="center">Review Cart & Checkout</h1>
+            
+<!-- BEGIN LESSON SUMMARY FOR ALL CART ITEMS -->
+            <% @lessons = @shopping_cart.ready_to_book %>
+            <% @lessons.each do |cart_item| %>
+
             <div id="booking-details-container" class="booking-details">
               <div class="row full-width">
-                <div class="col-xs-4 col-md-3">
-                  <b>Date:</b>
+                <div class="col-xs-4 col-md-4">
+                  <b>Type:</b>
                 </div>
-                <div class="col-xs-8 col-md-9">
+                <div class="col-xs-8 col-md-8">
                     <span class="left">
-                      <%= @lesson.lesson_time.date.strftime("%b %d, %Y") %>
+                      <%= cart_item.product_name %>
                     </span>
                 </div>
               </div>
               <div class="row full-width">
-                <div class="col-xs-4 col-md-3">
+                <div class="col-xs-4 col-md-4">
+                  <b>Date:</b>
+                </div>
+                <div class="col-xs-8 col-md-8">
+                    <span class="left">
+                      <%= cart_item.lesson_time.date.strftime("%b %d, %Y") %>
+                    </span>
+                </div>
+              </div>
+              <div class="row full-width">
+                <div class="col-xs-4 col-md-4">
                   <b>Price:</b>
                 </div>
-                <div class="col-xs-8 col-md-9">
+                <div class="col-xs-8 col-md-8">
                   <span class="left">
-                  <% amount = (@lesson.price.to_f*100).to_i %>
-                  <% if @lesson.lesson_price.nil? || @lesson.price == @lesson.lesson_price %>
+                  <% amount = (cart_item.price.to_f*100).to_i %>
+                  <% if cart_item.lesson_price.nil? || cart_item.price == cart_item.lesson_price %>
           
-                      <% if @lesson.promo_code %>
+                      <% if cart_item.promo_code %>
                         <br><span class="strikethrough">Original: $35.00</span>
-                        <br>Promo: <%= @lesson.promo_code.promo_code %>
-                        <br>Final price: <%= number_to_currency(@lesson.price) %>
+                        <br>Promo: <%= cart_item.promo_code.promo_code %>
+                        <br>Final price: <%= number_to_currency(cart_item.price) %>
                       <%else%>
-                        <%= number_to_currency(@lesson.price) %>    
-                        <% if @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
+                        <%= number_to_currency(cart_item.price) %>    
+                        <% if cart_item.lookup_calendar_period(cart_item.date) == 'Holiday' %>
                           (holiday pricing)
                         <% end %>
 
                       <% end %>
                     <% else %>
                     <!-- show custom prices for admin setup lessons -->
-                      <% amount =(@lesson.lesson_price.to_f*100).to_i %>
-                      <p><%= number_to_currency(@lesson.lesson_price.to_s) %></p>
+                      <% amount =(cart_item.lesson_price.to_f*100).to_i %>
+                      <p><%= number_to_currency(cart_item.lesson_price.to_s) %></p>
                   <% end %>
                   </span>                  
                 </div>
@@ -53,29 +68,48 @@
               <div class="row">
                 <div class="col-xs-12">
                   <ul class="student-list-confirm-reservation">
-                    <% @lesson.students.each do |student| %>
+                    <% cart_item.students.each do |student| %>
                       <li><%= student.name %>, age <%= student.age_range %></li>
                     <% end %>
                   </ul>
-                  <% if @lesson.participants_3_and_under > 0 %>
+                  <% if cart_item.participants_3_and_under > 0 %>
                       <h4 class="text-danger" id="age-warning">Note: Kids age 3 and under are FREE.</h4>
                   <% end %>
                 </div>
               </div>
               <div class="row lodging-discount-warning">
                 <div class="col-xs-12">
-                  <% if @lesson.lodging_guest == true && @lesson.lodging_reservation_id.length != 6 %>
+                  <% if cart_item.lodging_guest == true && cart_item.lodging_reservation_id.length != 6 %>
                     <h5 class="text-danger text-larger">*You may have mis-entered your lodging reservation number. Please confirm and re-enter the reservation id you received when booking your accommdations, and we will apply the 50% discount.</h5>
                   <% end %>
                 </div>
               </div>
+              <h4 class="center">
+                  <%= link_to 'Edit Reservation', edit_lesson_path(cart_item), class: "center btn btn-sm btn-primary" %>
+                  <!-- %= link_to 'Remove from Cart', delete_lesson_path(cart_item), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %> -->
+                  <%= link_to 'Remove from Cart', cart_item, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-sm btn-danger" %>
+
+
+              </h4>
             </div>
 
 
+            <% end %> 
+          <!-- ENDLESSON SUMMARY FOR ALL CART ITEMS -->
+
+
             <div class="col-md-12 center">
+            <% amount = @shopping_cart.total_price %>
+            <h3>
+              Number of reservations: <%=@shopping_cart.lessons.count %>
+              <br>
+              Order Total: <%= number_to_currency(amount) %> 
+              <br>
+              <h4><a href="/index" class="btn btn-tertiary btn-sm page-scroll">Continue Shopping</a></h4>
+            </h3>
               <label class="amount">
               </label>
-              <%= link_to 'Edit Reservation', edit_lesson_path(@lesson), class: "center btn btn-sm btn-primary" %>
+              <!-- %= link_to 'Edit Reservation', edit_lesson_path(@lesson), class: "center btn btn-sm btn-primary" %> -->
               <% if (@lesson.package_info == "Spicy Saturdays" && @lesson.date.wday != 6) || (@lesson.package_info == "Afterschool Special" && @lesson.date.wday != 3)%>
                 <h3 class="text-danger">
                   Unfortunately you've attempted to book a special rate but have selected the wrong date. Please edit your reservation and select an appropriate date.            
@@ -86,7 +120,7 @@
                         data-description="Thanks for booking at Granlibakken!"
                         data-name="Granlibakken Sledding"
                         data-image="http://granlibakken.com/wp-content/uploads/cropped-tin-g-32x32.png"
-                        data-amount=<%= amount %>
+                        data-amount=<%= amount*100 %>
                         data-locale="auto"
                         data-zip-code="true">
                 </script>

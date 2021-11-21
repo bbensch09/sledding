@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :shopping_carts
   resources :promo_codes
   # HACKY SHIT - previous post routes
   # post 'generate_2_ticket_bulk_promo_codes' => 'promo_codes#generate_2_ticket_bulk_promo_codes', as: :generate_2_ticket_bulk_promo_codes
@@ -209,6 +210,7 @@ Rails.application.routes.draw do
   post 'lessons/:id/issue_full_refund'              => 'lessons#issue_full_refund', as: :issue_full_refund
   put 'lessons/:id/reissue_invoice'              => 'lessons#reissue_invoice', as: :reissue_invoice
   get 'filtered-lesson-reservations' => 'lessons#filtered_lesson_reservations', as: :filtered_lesson_reservations 
+  get 'view-cart' => 'lessons#view_cart', as: :view_cart
 
   unless Rails.application.config.consider_all_requests_local
     # having created corresponding controller and action

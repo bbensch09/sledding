@@ -1,8 +1,8 @@
 class LessonsController < ApplicationController
   respond_to :html
-  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special]
+  skip_before_action :authenticate_user!, only: [:new, :new_specific_slot, :new_request, :create, :complete, :confirm_reservation, :update, :show, :edit, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special, :destroy, :view_cart]
   skip_before_action :verify_authenticity_token, only: [:confirm_reservation, :create, :update]
-  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special]
+  before_action :confirm_admin_permissions, except: [:schedule, :book_product, :new, :new_request, :new_specific_slot, :create, :complete, :edit, :update, :confirm_reservation, :show, :index, :issue_full_refund, :complete_lift_ticket, :complete_snowplay_ticket, :create_nye_sledding_ticket, :complete_nye_2020, :create_wed_sledding_ticket, :complete_wednesday_special, :destroy, :view_cart]
   before_action :set_lesson, only: [:show, :duplicate, :complete, :update, :edit, :admin_confirm_deposit, :admin_reconfirm_state,:set_admin_skip_validations, :confirm_reservation, :issue_full_refund]
   before_action :set_admin_skip_validations, only: [:update, :confirm_reservation]
   # before_action :save_lesson_params_and_redirect, only: [:create]
@@ -486,6 +486,24 @@ class LessonsController < ApplicationController
     end
   end
 
+  def view_cart
+    if current_shopping_cart.empty?
+      if current_user
+        @orders = current_user.shopping_carts.select{|sc| sc.status == 'purchased'}
+        @lessons = []
+        @orders.each do |order| 
+          order.lessons.each do |lesson|
+            @lessons << lesson
+          end
+        end
+      end
+      render 'view_all_orders'
+    else
+      @lesson = current_shopping_cart.ready_to_book.first
+      render 'show'
+    end
+  end
+
   def reissue_invoice
     @lesson = Lesson.find(params[:id])
     @lesson_time = @lesson.lesson_time
@@ -539,6 +557,9 @@ class LessonsController < ApplicationController
         end
         @lesson.deposit_status = 'confirmed'
         @lesson.state = 'confirmed'
+        @lesson.shopping_cart.status = 'purchased'
+        @lesson.shopping_cart.transaction_id = Time.now.to_i
+        @lesson.shopping_cart.save!
     end
     if @lesson.save
       if @lesson.activity == 'sledding'
@@ -612,7 +633,6 @@ class LessonsController < ApplicationController
         pc_id = PromoCode.where(promo_code:@lesson.objectives).first.id
         @lesson.promo_code_id = pc_id
       end
-      # @lesson.check_promo_code_manually
     end
     @original_lesson = @lesson.dup
     @lesson.assign_attributes(lesson_params)
@@ -621,25 +641,11 @@ class LessonsController < ApplicationController
     unless current_user && current_user.user_type == "Granlibakken Employee"
       @lesson.requester = current_user
     end
-    # if @lesson.is_gift_voucher? && current_user.user_type == "Granlibakken Employee"
-    #   @user = User.new({
-    #       email: @lesson.gift_recipient_email,
-    #       password: 'sstemp2017',
-    #       user_type: "Student",
-    #       name: "#{@lesson.gift_recipient_name}"
-    #     })
-    #   @user.skip_confirmation!
-    #   @user.save!
-    #   @lesson.requester_id = User.last.id
-    #   puts "!!!! admin is creating a new user to receive a gift voucher; new user need not be confirmed"
-    # end
-    # if current_user && @lesson.is_gift_voucher? && current_user.email == @lesson.gift_recipient_email.downcase
-    #   @lesson.state = 'booked'
-    #   puts "!!!! marking voucher as booked & sending SMS to instructors"
-    # end
     unless @lesson.deposit_status == 'confirmed'
       @lesson.state = 'ready_to_book'
     end
+    @shopping_cart = current_shopping_cart
+    @lesson.shopping_cart_id = @shopping_cart.id
     if @lesson.save
       # GoogleAnalyticsApi.new.event('lesson-requests', 'full_sledding_form-updated', params[:ga_client_id])
       @user_email = current_user ? current_user.email : "unknown"
@@ -676,9 +682,9 @@ class LessonsController < ApplicationController
   def destroy
     @lesson = Lesson.find(params[:id])
     @lesson.update(state: 'canceled')
-    send_cancellation_email_to_instructor
-    flash[:notice] = 'Your lesson has been canceled.'
-    redirect_to sledding_admin_index_path
+    @lesson.update(shopping_cart_id: nil)
+    flash[:notice] = 'Your ticket has been canceled.'
+    redirect_to view_cart_path
   end
 
   def admin_reconfirm_state

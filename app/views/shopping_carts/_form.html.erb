@@ -1,0 +1,13 @@
+<%= semantic_form_for @shopping_cart do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :status %>
+    <%= f.input :user_id %>
+    <%= f.input :transaction_id %>
+    <%= f.input :promotions %>
+    <%= f.input :admin_notes %>
+  <% end %>
+
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :input %>
+  <% end %>
+<% end %>

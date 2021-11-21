@@ -7,7 +7,7 @@
     <% if ENV['HOST_DOMAIN'] == "localhost:3000" || current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
     <div id="autofill-container" class="admin-viewable">
       <a href="#fill" id="autofill_complete_form" class="btn btn-success">Autocomplete all fields</a> <br>
-      <h3>Total snowplay tickets  sold for this day: TBD.</h3>
+      <h3>Total tickets already sold for this date/session: <%=@lesson.current_session_tickets_sold %> tickets.</h3>
       <% if session[:refund] == true %>
         <h3> To issue a full refund: </h3>
           <ol>
@@ -34,6 +34,35 @@
       <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
       <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>
       <div id="available-lessons" class="admin-viewable ">
+          <div class="col-md-12 vertical-padding">
+          <h4> ADMIN ONLY: Select user email to assign this lesson to a new requester.</h4>
+              <div class="col-md-4">
+                <label> Assign to User: </label> <br>
+                <%= f.select :requester_id, options_from_collection_for_select(User.all.sort {|a,b| a.username_for_admin <=> b.username_for_admin}, :id, :username_for_admin, selected:@lesson.requester_id), include_blank:true %>
+              </div>
+              <div class="col-md-4">
+                <label>Number of Days</label>
+                <%= f.input :num_days, as: :string, placeholder: "How many consecutive days?", label: false %>
+              </div>
+            <div class="col-md-4">
+                <label>Includes a lift ticket and/or rental package?</label>
+                <%= f.input :includes_lift_or_rental_package, as: :radio, :collection=> [true, false], label: false %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+                <label>Is gift voucher?</label>
+                <%= f.input :is_gift_voucher, as: :radio, :collection=> [true, false], label: false %>
+            </div>
+            <div class="col-md-4">
+                <label>Gift Recipient Name</label>
+                <%= f.input :gift_recipient_name, as: :string, placeholder: "Full Name", label: false %>
+            </div>
+            <div class="col-md-4">
+                <label>Gift Recipient Email</label>
+                <%= f.input :gift_recipient_email, as: :string, placeholder: "Email", label: false %>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-6">
                 <label>Package info</label>
@@ -57,6 +86,15 @@
 
       <div class='row'>
         <div class="col-md-6">
+        <%if @lesson.session_capacity_remaining <=10 && @lesson.session_capacity_remaining >0 && @lesson.activity != "snowplay" %> 
+            <h2 class="text-danger">
+              Warning: there's only <%=@lesson.session_capacity_remaining%> ticket(s) available for this session. Book now before we sell out!
+            </h2>
+        <%elsif @lesson.session_capacity_remaining <=0  %> 
+            <h2 class="text-danger">
+              Unfortunately this time slot is SOLD OUT. Please try a different time slot. If you cannot find an available slot, please email us at <a href="mailto:frontdesk@granlibakken.com?subject=Sledding%Capacity?" target="_blank" class="navy-link">frontdesk@granlibakken.com</a> and we can tell you what days and times still have availability.
+            </h2>
+        <%end%>
           <h4><strong>Customer Info</strong></h4>
           <% if current_user.nil? || current_user.email == "brian@snowschoolers.com" %>
           <div class='row'>
@@ -98,16 +136,16 @@
 
             <div class="col-md-6">
               <label>Price</label>
-                  <% if @lesson.slot == 'Snowplay Ticket' %>
-                      <% ticket_price = 10.00 %>
-                    <% else %> 
-                      <% ticket_price = 0 %>
+                <h2> <span id="lesson-price">
+                  <% if @promo_code == "Saturday" %> 
+                      <%= number_to_currency(40) %>
+                    <% elsif @promo_code == 'Afterschool Special' %>
+                      <%= number_to_currency(12.50) %>
+                    <% elsif @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
+                      <%= number_to_currency(Product.find(2).price) %></span></h2>
+                    <% else %>
+                      <%= number_to_currency(Product.find(1).price) %></span></h2>
                   <% end %>
-
-                  <% if @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
-                    <% ticket_price = ticket_price + 5.00 %>
-                  <% end %>
-                <h2> <span id="lesson-price"> <%= number_to_currency(ticket_price) %> </span> </h2>
                 <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
 
@@ -119,7 +157,13 @@
               </div>
               <div class="col-md-6">
                 <label>Time Slot</label>
-                <%= lt_f.input :slot, as: :select, collection: SNOWPLAY_SLOTS, selected:SNOWPLAY_SLOTS.first, include_blank: 'Select Time', label: false, required:true %>
+                <% if @promo_code && @promo_code == "Saturday" %>
+                  <%= lt_f.input :slot, as: :select, collection: NYE_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
+                    <% elsif @promo_code && @promo_code == "Afterschool Special" %>
+                  <%= lt_f.input :slot, as: :select, collection: AFTERSCHOOL_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
+                    <% else %>
+                  <%= lt_f.input :slot, as: :select, collection: SLEDDING_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
+                  <% end %> 
               </div>
           <% end %>
           </div>
@@ -127,16 +171,17 @@
           </div>
 
           <!-- <h4><strong>Slot found: <%=@slot %></strong></h4> -->
-          <h4><strong>Ticket-holder Info</strong></h4>
+          <h4><strong>Participants Info</strong></h4>
 
-          <h4 class="text-warning"">Please add the names and ages of each lift ticket recipient, including your own name from above if your are participating. If you are purchasing multiple tickets for kids and adults, the final price will be calculated on the following page.</h4>
+          <h4 class="text-warning"">Note: please add the names and ages of sledding participants, including your own name from above if your are participating.</h4>
+          <h4 class="text-danger hidden" id="age-warning">Kids age 3 and under are FREE and do not need tickets.</h4>
           <div id='lesson_students_input'>
             <%= f.semantic_fields_for :students do |student| %>
               <%= render 'student_fields', f: student %>
             <% end %>
             <div class='links'>
-              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 20, class: 'btn btn-default', id:'add-student-button' %>
-            <h4 class="text-danger hidden" id="max-students-warning">Note: only 20 students may be registered at a time. To book tickets for 20 or more, please visit make separate purchases
+              <%= link_to_add_association 'Add Another Participant', f, :students, limit: 10, class: 'btn btn-default', id:'add-student-button' %>
+            <h4 class="text-danger hidden" id="max-students-warning">Note: only 10 participants may be on one reservation. To book tickets for 11 or more, please complete one booking and then make a second separate booking for the remainign tickets.
             </h4>
             </div>
             <%= f.semantic_errors :students %>
@@ -211,7 +256,8 @@
           <div class="col-md-3">
             <%= f.input :state, as: :hidden, input_html: { value: @state } %>
             <% if @lesson.product_name && @lesson.product_name.length !=0 %>
-            <%= f.input :product_id, as: :hidden, input_html: { value: Product.where(location_id:@lesson.requested_location,calendar_period:@lesson.lookup_calendar_period(self.lesson_time.date),name:@lesson.slot).first.id } %>
+            <!-- hacky shit >> for some reason getting nil error as if products can't be found -->
+            <!-- %= f.input :product_id, as: :hidden, input_html: { value: Product.where(location_id:@lesson.requested_location,calendar_period:@lesson.location.calendar_status,name:@lesson.product_name).first.id } %> -->
             <% end %>
             <%= f.submit button_text, class: 'btn sign-up-btn pull-right', id: 'finalize-lesson' %>
           </div>

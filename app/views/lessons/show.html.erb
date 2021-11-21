@@ -8,8 +8,8 @@
         <%= link_to 'Edit Lesson', edit_lesson_path(@lesson), class: "btn btn-success" %> <span> </span>
         <%= link_to 'Edit Lesson & Reissue Payment', reissue_invoice_path(@lesson), method: :put, class: "btn btn-warning" %><span> </span>
         <%= link_to 'Issue Refund', issue_refund_path(@lesson), method: :put, class: "btn btn-danger" %><span> </span>
-        <%= link_to "Mark confirmed", admin_reconfirm_state_path, method: :put, class: "btn btn-default" %><span> </span>
-        <%= link_to "Confirm Payment", admin_confirm_deposit_path, method: :put, class: "btn btn-default" %>
+        <%= link_to "Mark confirmed", admin_reconfirm_state_path(@lesson), method: :put, class: "btn btn-default" %><span> </span>
+        <%= link_to "Confirm Payment", admin_confirm_deposit_path(@lesson), method: :put, class: "btn btn-default" %>
         <%= link_to "Create Duplicate Booking", duplicate_path(@lesson), method: :put, class: "btn btn-warning" %>
       </div>
       <% end %>

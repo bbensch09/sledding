@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
   after_create :auto_confirm_users
   after_create :set_email_as_name
   after_create :set_provider_to_email
+  has_many :shopping_carts
 
   def self.to_csv(options = {})
     desired_columns = %w{id email name user_type resort_affiliation created_at}
