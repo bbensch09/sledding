@@ -144,7 +144,8 @@
                     <% elsif @lesson.lookup_calendar_period(@lesson.date) == 'Holiday' %>
                       <%= number_to_currency(Product.find(2).price) %></span></h2>
                     <% else %>
-                      <%= number_to_currency(Product.find(1).price) %></span></h2>
+                      <%= number_to_currency(15) %></span></h2>
+                      <!-- %= number_to_currency(Product.find(1).price) %></span></h2> -->
                   <% end %>
                 <div id="calendar-status" class="hidden"><%= @lesson.lookup_calendar_period(@lesson.date) %></div>
             </div>
