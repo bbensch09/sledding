@@ -543,7 +543,9 @@ class Lesson < ActiveRecord::Base
     # elsif self.package_info == "NYE Special Sled Ticket"
         price = self.students.count * 12.50
     else
-      price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
+      # special price for Thanksgiving 2021
+      price = 15 * [1,(self.students.count - self.participants_3_and_under)].max
+      # price = product.price * [1,(self.students.count - self.participants_3_and_under)].max
     end
     if self.promo_code
       case self.promo_code.discount_type
