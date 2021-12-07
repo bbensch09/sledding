@@ -542,15 +542,21 @@ class LessonsController < ApplicationController
   def confirm_reservation
     @lesson = Lesson.find(params[:id])
     if @lesson.deposit_status != 'confirmed'
-        @amount = @lesson.price.to_i
-        if @amount > 0
+        if @lesson.lesson_siblings.count >= 2
+          amount_in_cents = (@lesson.lesson_shopping_cart_total.to_f*100).to_i
+        elsif @lesson.lesson_price.nil?
+          amount_in_cents = (@lesson.price.to_f*100).to_i
+        else
+          amount_in_cents= (@lesson.lesson_price.to_f*100).to_i
+        end
+        if amount_in_cents > 0
           customer = Stripe::Customer.create(
             :email => params[:stripeEmail],
             :source  => params[:stripeToken]
           )
           charge = Stripe::Charge.create(
             :customer    => customer.id,
-            :amount      => @amount*100,
+            :amount      => amount_in_cents,
             :description => 'Sledding Hill Ticket',
             :currency    => 'usd'
           )

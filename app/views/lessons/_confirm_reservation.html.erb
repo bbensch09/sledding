@@ -110,7 +110,7 @@
               <label class="amount">
               </label>
               <!-- %= link_to 'Edit Reservation', edit_lesson_path(@lesson), class: "center btn btn-sm btn-primary" %> -->
-              <% if (@lesson.package_info == "Night Sledding" && @lesson.date.non_weekend? || (@lesson.package_info == "Afterschool Special" && @lesson.date.wday != 3)%>
+              <% if (@lesson.package_info == "Night Sledding" && @lesson.lesson_time.non_weekend?) || (@lesson.package_info == "Afterschool Special" && @lesson.date.wday != 3)%>
                 <h3 class="text-danger">
                   Unfortunately you've attempted to book a special rate but have selected the wrong date. Please edit your reservation and select an appropriate date.            
                 </h3>

@@ -47,6 +47,19 @@ class Lesson < ActiveRecord::Base
     self.shopping_cart.lessons
   end
 
+  def lesson_shopping_cart_total
+    if self.lesson_siblings.count <= 1
+      return self.price.to_i
+    else
+      total = 0
+      self.lesson_siblings.each do |lesson|
+          puts "!!! lesson siblings found in cart. cart item price of #{lesson.price} is being added to total"
+          total += lesson.price.to_i
+          end
+      return total
+    end
+  end  
+
   def update_lesson_state_of_siblings
     return true if self.state != "confirmed"
     self.lesson_siblings.each do |l|
