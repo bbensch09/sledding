@@ -326,8 +326,8 @@ class LessonsController < ApplicationController
         @lesson.activity = 'sledding'
       end
       @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
-    if @lesson.slot == 'Saturday Dusk (4:30-6pm)' || @lesson.slot == 'Spicy Saturday Night (6:30-8pm)'
-          @lesson.package_info = "Spicy Saturdays"
+    if @lesson.slot == 'Twilight (5pm-6:30pm)' || @lesson.slot == 'Night Sledding (7pm-8:30pm)'
+          @lesson.package_info = "Night Sledding"
     end
     if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
       puts "!!!current user is admin, preparing to set skip_validations boolean to true."
@@ -361,7 +361,7 @@ class LessonsController < ApplicationController
     }
     @lesson = Lesson.new
     @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(nye_params)
-    @lesson.package_info = "Spicy Saturdays"
+    @lesson.package_info = "Night Sledding"
     @lesson.activity = "sledding"
     @slot = @lesson_time.slot
     @lesson.requested_location = 24
@@ -377,12 +377,12 @@ class LessonsController < ApplicationController
 
   def complete_nye_2020
     @lesson = Lesson.find(params[:id])
-    @product_name = "Spicy Saturdays"
+    @product_name = "Night Sledding"
     # @date = "2020-12-31"
     # @slot = NYE_SLOTS.first
-    @promo_code = "Saturday"
+    @promo_code = "Night Sledding"
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
-    flash.now[:notice] = "Thanks for planning to spend Saturday Night at Granlibakken. We just need a few more details."
+    flash.now[:notice] = "Thanks for planning to join us for Night Sledding at Granlibakken. We just need a few more details."
     flash[:complete_form] = 'TRUE'
     render 'full_sledding_form'
 
@@ -432,8 +432,8 @@ class LessonsController < ApplicationController
       @date = @lesson.lesson_time.date
       @slot = @lesson.slot
     end
-    if @lesson.package_info == "Spicy Saturdays"
-          @promo_code = "Saturday"
+    if @lesson.package_info == "Night Sledding"
+          @promo_code = "Night Sledding"
         else
       @promo_code = PromoCode.new
     end
