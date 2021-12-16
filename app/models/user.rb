@@ -3,7 +3,7 @@ require 'csv'
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :lockable, :timeoutable, :confirmable,
+         :lockable, :timeoutable,
          :omniauthable, :omniauth_providers => [:facebook]
 
   validates :password, length: { in: 5..128 }, on: :create
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   belongs_to :location
   has_many :lesson_times, through: :lessons
   after_create :send_admin_notification
-  after_create :auto_confirm_users
+  # after_create :auto_confirm_users
   after_create :set_email_as_name
   after_create :set_provider_to_email
   has_many :shopping_carts
@@ -44,20 +44,20 @@ class User < ActiveRecord::Base
     email_for_sort = "   #{email_text}_#{rand(100)}"
   end
 
-  def auto_confirm_users
-    User.confirm_all_users
-  end
+  # def auto_confirm_users
+  #   User.confirm_all_users
+  # end
 
   def send_admin_notification
       @user = User.last
       LessonMailer.new_user_signed_up(@user).deliver
   end
 
-  def self.confirm_all_users
-    User.all.each do |user|
-      user.confirm
-    end
-  end
+  # def self.confirm_all_users
+  #   User.all.each do |user|
+  #     user.confirm
+  #   end
+  # end
 
   def self.instructors
     self.where('instructor = true')
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
     puts auth
     if self.where(email: auth.info.email).exists?
       user = self.where(email: auth.info.email).first
-      user.skip_confirmation!
+      # user.skip_confirmation!
       return user
       # user.provider = auth.provider
       # user.uid = auth.uid
@@ -115,7 +115,7 @@ class User < ActiveRecord::Base
         user.name = auth.info.name
         user.instructor = false
         user.image = auth.info.image
-        user.skip_confirmation!
+        # user.skip_confirmation!
         user.save!
       end
     end
