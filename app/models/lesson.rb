@@ -44,7 +44,13 @@ class Lesson < ActiveRecord::Base
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
   def lesson_siblings
-    self.shopping_cart.lessons
+    if self.shopping_cart
+      return self.shopping_cart.lessons
+    else
+      siblings = []
+      siblings << self
+      return siblings
+    end
   end
 
   def lesson_shopping_cart_total

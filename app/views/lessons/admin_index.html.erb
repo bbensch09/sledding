@@ -28,7 +28,7 @@
 
 <h1> Roster for Early Bird Session </h1>
 
-    <% @lessons1 = @lessons.select{|lesson| lesson.slot == "Early-bird (8:30-10am)"} %>
+    <% @lessons1 = @lessons.select{|lesson| lesson.slot == "Early-bird 9am-10:30am"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
@@ -75,9 +75,9 @@
   </tbody>
 </table>
 
-<h1> Roster for Morning 10:30am Session </h1>
+<h1> Roster for Morning 11am Session </h1>
 
-    <% @lessons2 = @lessons.select{|lesson| lesson.slot == "Morning (10:30am-12pm)"} %>
+    <% @lessons2 = @lessons.select{|lesson| lesson.slot == "Morning (11am-12:30pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
@@ -127,7 +127,7 @@
 
 <h1> Roster for Midday Session </h1>
 
-    <% @lessons3 = @lessons.select{|lesson| lesson.slot == "Midday (12:30-2pm)"} %>
+    <% @lessons3 = @lessons.select{|lesson| lesson.slot == "Midday (1pm-2:30pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
@@ -175,9 +175,9 @@
 </table>
 
 
-<h1> Roster for Closing Session (including Wednesday Promo Tix) </h1>
+<h1> Roster for Closing Session </h1>
 
-    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Closing(2:30-4pm)" || lesson.slot =="Wed Afternoon(2:30-4pm)"} %>
+    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Closing(3pm-4:30pm)" || lesson.slot =="Wed Afternoon(2:30-4pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
@@ -224,9 +224,9 @@
   </tbody>
 </table>
 
-<h1> Roster for Sat 430-6pm Session </h1>
+<h1> Roster for Sat Twilight Session </h1>
 
-    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Saturday Dusk (4:30-6pm)"} %>
+    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Twilight (5pm-6:30pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
@@ -275,7 +275,7 @@
 
 <h1> Roster for Sat late night 630-8pm Session </h1>
 
-    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Spicy Saturday Night (6:30-8pm)"} %>
+    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Night Sledding (7pm-8:30pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>
