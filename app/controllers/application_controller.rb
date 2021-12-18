@@ -109,7 +109,11 @@ def houston_we_have_an_exceptional_problem
 end
 
 def confirm_admin_permissions
-  return if (current_user.email == 'brian@snowschoolers.com' ||current_user.email == 'AlexDominguez@granlibakken.com' ||current_user.email == 'stephanie@granlibakken.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee")
+  unless current_user
+    flash[:notice] = 'You must be signed in as an administrator to view this page.'
+    return false
+  end
+  return if (current_user.email == 'brian@snowschoolers.com' ||current_user.email == 'AlexDominguez@granlibakken.com' ||current_user.email == 'brian+sledding@granlibakken.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee")
   redirect_to root_path, notice: 'You do not have permission to view that page.'
 end
 
