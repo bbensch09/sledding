@@ -22,7 +22,7 @@
       <!-- <script src="https://www.smartwaiver.com/m/webpl/f.js?webpl_waiver=584daa0c8f287&webpl_title=Please%20now%20sign%20your%20waiver&webpl_align=Left&webpl_fontsize=20&webpl_background=%2355c9b2&webpl_fontcolor=%23ffffff&webpl_font=Verdana" type="text/javascript"></script> -->
       <% end %>
 
-      <% if current_user && current_user.email == @lesson.guest_email || current_user && current_user.user_type == "Granlibakken Employee" %>
+      <% if (current_user && current_user.email == @lesson.guest_email) || (current_user && current_user.id == @lesson.requester_id) || (current_user && current_user.user_type == "Granlibakken Employee") %>
       <%= render partial: 'lesson_details' %>
         <% else %>
           <h2 class="notice">To view details of this lesson reservation, you must first sign in using the email address that was attached to the reservation. </h2>
