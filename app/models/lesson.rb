@@ -1225,7 +1225,7 @@ class Lesson < ActiveRecord::Base
     puts "!!!checking to see if user is trying to book night sledding for any day but Fri/Saturdays"
     weekday = self.date.strftime('%A')
     non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday']
-    if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm)' || self.slot == 'Twilight (5pm-6:30pm)')
+    if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm)' || self.slot == 'Night Sledding (7pm-8:30pm)')
           puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
           errors.add(:lesson, "Nightime sledding sessions are only available on Friday and Saturday. Please select another session time or date.")
           return false
