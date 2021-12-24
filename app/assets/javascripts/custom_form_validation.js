@@ -22,5 +22,8 @@ $(document).ready(function(){
           }
       });
 
+    console.log("changing error codes to remove lesson from header");
+    $('.error-list > li').text().replace("Lesson ","")
+
 
 });

@@ -29,6 +29,7 @@ class Lesson < ActiveRecord::Base
   validate :check_session_capacity
   validate :block_midweek_early_bird_sessions
   validate :block_night_sessions_unless_fri_or_saturday
+  validate :check_night_sledding_against_blocked_dates
   before_save :check_session_capacity
   before_save :confirm_valid_promo_code
   after_update :update_lesson_state_of_siblings
@@ -1228,6 +1229,17 @@ class Lesson < ActiveRecord::Base
     if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm)' || self.slot == 'Night Sledding (7pm-8:30pm)')
           puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
           errors.add(:lesson, "Nightime sledding sessions are only available on Friday and Saturday. Please select another session time or date.")
+          return false
+    else
+      return true
+    end
+  end
+
+  def check_night_sledding_against_blocked_dates
+    puts "!!!checking to see if dates selected are blocked"
+    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Night Sledding (7pm-8:30pm)')
+          puts "!!!!!guest tried to book a nighttime session on a blocked date"
+          errors.add(:lesson, "Unfortunately due to the heavy snow we will not have night time sledding available Christmas Eve and Christmas Day the 24/25th.")
           return false
     else
       return true
