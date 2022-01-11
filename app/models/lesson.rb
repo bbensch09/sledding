@@ -244,7 +244,9 @@ class Lesson < ActiveRecord::Base
   end
 
   def date
-    lesson_time.date
+    unless lesson_time.nil?
+      lesson_time.date
+    end
   end
 
   def self.set_all_lessons_to_Homewood
@@ -257,7 +259,9 @@ class Lesson < ActiveRecord::Base
   end
 
   def slot
-    lesson_time.slot
+    unless lesson_time.nil?
+      lesson_time.slot
+    end
   end
 
   def product
@@ -1211,28 +1215,36 @@ class Lesson < ActiveRecord::Base
 
   def block_midweek_early_bird_sessions
     puts "!!!checking to see if user is trying to book Tues-Thurs at 8:30am"
-    weekday = self.date.strftime('%A')
-    midweek_blocked = ['Monday','Tuesday','Wednesday','Thursday','Friday']
-    if midweek_blocked.include?(weekday) && self.slot == "Early-bird (8:30-10am)"
-          puts "!!!!!guest tried to book a midweek 830am session. "
-          errors.add(:lesson, "The 8:30am session start time is not available midweek (Mon-Fri), but is available on weekends. Please select another slot.")
-          return false
+    if self.date.nil?
+      return false
     else
-      return true
+      weekday = self.date.strftime('%A')
+      midweek_blocked = ['Monday','Tuesday','Wednesday','Thursday','Friday']
+      if midweek_blocked.include?(weekday) && self.slot == "Early-bird (8:30-10am)"
+            puts "!!!!!guest tried to book a midweek 830am session. "
+            errors.add(:lesson, "The 8:30am session start time is not available midweek (Mon-Fri), but is available on weekends. Please select another slot.")
+            return false
+      else
+        return true
+      end
     end
   end
 
   def block_night_sessions_unless_fri_or_saturday
     puts "!!!checking to see if user is trying to book night sledding for any day Saturdays"
-    weekday = self.date.strftime('%A')
-    return true if SPECIAL_NIGHT_SLEDDING_DATES.include?(self.date.to_s)
-    non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday']
-    if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm)' || self.slot == 'Night Sledding (7pm-8:30pm)')
-          puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
-          errors.add(:lesson, "Nightime sledding sessions are only available on Saturday. Please select another session time or date.")
-          return false
+    if self.date.nil?
+      return false
     else
-      return true
+      weekday = self.date.strftime('%A')
+      return true if SPECIAL_NIGHT_SLEDDING_DATES.include?(self.date.to_s)
+      non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday']
+      if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm)' || self.slot == 'Night Sledding (7pm-8:30pm)')
+            puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
+            errors.add(:lesson, "Nightime sledding sessions are only available on Saturday. Please select another session time or date.")
+            return false
+      else
+        return true
+      end
     end
   end
 
