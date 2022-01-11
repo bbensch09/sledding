@@ -327,7 +327,17 @@ class LessonsController < ApplicationController
         else
         @lesson.activity = 'sledding'
       end
-      @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+      puts "!!!!checking to see if lesson_time_params for date is valid"
+      valid_date = DateTime.parse(lesson_time_params[:date]) rescue nil
+      if valid_date
+        puts "!!! determined that #{lesson_time_params[:date]} is a date"
+        @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+        flag_for_valid_date = true
+        else
+          puts "!!! determined that an invalid date was entered"
+          puts "!!! determined that #{lesson_time_params[:date]} is NOT a date"
+        flag_for_valid_date = false
+      end
     if @lesson.slot == 'Twilight (5pm-6:30pm)' || @lesson.slot == 'Night Sledding (7pm-8:30pm)'
           @lesson.package_info = "Night Sledding"
     end
@@ -337,7 +347,7 @@ class LessonsController < ApplicationController
       @lesson.skip_validations = true
     end
 
-    if @lesson.save
+    if @lesson.save && flag_for_valid_date == true
       @user_email = current_user ? current_user.email : "unknown"
       if @lesson.activity == 'sledding'
         redirect_to complete_lesson_path(@lesson)
@@ -348,7 +358,9 @@ class LessonsController < ApplicationController
         # LessonMailer.notify_admin_lesson_request_begun(@lesson, @user_email).deliver
       end
       else
-      flash[:notice] = 'Unfortunately, there has been a problem.'
+      # flash[:notice] = 'Unfortunately, there has been a problem.'
+      session[:lesson_time_params] = nil
+      flash[:alert] = 'You have entered an invalid date. Please try again.'
       render 'new'
     end
 
@@ -627,49 +639,63 @@ class LessonsController < ApplicationController
 
   def update
     puts "!!!!!!begin update action -- shouuld have already passed validations"
-    puts "!!!! counting the number of students attached to this order: #{params[:lesson][:students_attributes].keys.count}"
-    cookies[:student_count] = {
-      value: params[:lesson][:students_attributes].keys.count,
-      expires: 1.year.from_now
-    }
-    @lesson = Lesson.find(params[:id])
-    if session[:promo_code]
-      puts "!!!!INSERT NEW LOGIC FOR PROMO CODE STRINGS"
-      puts "lesson objectives string = #{@lesson.objectives}"
-      if PromoCode.where(promo_code:@lesson.objectives).count >= 1
-        puts "!!!found PromoCode matching lesson.objectives"
-        pc_id = PromoCode.where(promo_code:@lesson.objectives).first.id
-        @lesson.promo_code_id = pc_id
-      end
-    end
-    @original_lesson = @lesson.dup
-    @lesson.assign_attributes(lesson_params)
-    @lesson.num_days = params[:lesson][:students_attributes].keys.count
-    @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
-    unless current_user && current_user.user_type == "Granlibakken Employee"
-      @lesson.requester = current_user
-    end
-    unless @lesson.deposit_status == 'confirmed'
-      @lesson.state = 'ready_to_book'
-    end
-    unless current_user && current_user == "Granlibakken Employee"
-      @shopping_cart = current_shopping_cart
-      @lesson.shopping_cart_id = @shopping_cart.id
-    end
-    if @lesson.save
-      # GoogleAnalyticsApi.new.event('lesson-requests', 'full_sledding_form-updated', params[:ga_client_id])
-      @user_email = current_user ? current_user.email : "unknown"
-      if @lesson.state == "ready_to_book"
-      # LessonMailer.notify_admin_lesson_full_sledding_form_updated(@lesson, @user_email).deliver!
-      end
-      puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
-    redirect_to @lesson
+    valid_date = DateTime.parse(lesson_time_params[:date]) rescue nil
+    if params[:lesson][:students_attributes].nil? && valid_date
+        @lesson = Lesson.new(lesson_params)
+        @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+        @lesson.save
+        flash[:alert] = nil
+        render 'complete'
+    elsif params[:lesson][:students_attributes].nil?
+      puts "!!! session params existed, redirecting to new_lesson_path" 
+      puts "!!! params found: #{params[:lesson_time]}" 
+      @lesson = Lesson.new
+      render 'new'
     else
-      determine_update_state
-      @date = @lesson.lesson_time.date
-      puts "!!!!!Lesson NOT saved, update notices determined by 'determine update state' method...?"
-      # flash[:error] = 'Please enter a valid reservation id.'
-      render 'edit'
+      puts "!!!! counting the number of students attached to this order: #{params[:lesson][:students_attributes].keys.count}"
+      cookies[:student_count] = {
+        value: params[:lesson][:students_attributes].keys.count,
+        expires: 1.year.from_now
+      }
+      @lesson = Lesson.find(params[:id])
+      if session[:promo_code]
+        puts "!!!!INSERT NEW LOGIC FOR PROMO CODE STRINGS"
+        puts "lesson objectives string = #{@lesson.objectives}"
+        if PromoCode.where(promo_code:@lesson.objectives).count >= 1
+          puts "!!!found PromoCode matching lesson.objectives"
+          pc_id = PromoCode.where(promo_code:@lesson.objectives).first.id
+          @lesson.promo_code_id = pc_id
+        end
+      end
+      @original_lesson = @lesson.dup
+      @lesson.assign_attributes(lesson_params)
+      @lesson.num_days = params[:lesson][:students_attributes].keys.count
+      @lesson.lesson_time = @lesson_time = LessonTime.find_or_create_by(lesson_time_params)
+      unless current_user && current_user.user_type == "Granlibakken Employee"
+        @lesson.requester = current_user
+      end
+      unless @lesson.deposit_status == 'confirmed'
+        @lesson.state = 'ready_to_book'
+      end
+      unless current_user && current_user == "Granlibakken Employee"
+        @shopping_cart = current_shopping_cart
+        @lesson.shopping_cart_id = @shopping_cart.id
+      end
+      if @lesson.save
+        # GoogleAnalyticsApi.new.event('lesson-requests', 'full_sledding_form-updated', params[:ga_client_id])
+        @user_email = current_user ? current_user.email : "unknown"
+        if @lesson.state == "ready_to_book"
+        # LessonMailer.notify_admin_lesson_full_sledding_form_updated(@lesson, @user_email).deliver!
+        end
+        puts "!!!! Lesson update saved; lesson state is #{@lesson.state}"
+      redirect_to @lesson
+      else
+        determine_update_state
+        @date = @lesson.lesson_time.date
+        puts "!!!!!Lesson NOT saved, update notices determined by 'determine update state' method...?"
+        # flash[:error] = 'Please enter a valid reservation id.'
+        render 'edit'
+      end
     end
   end
 
