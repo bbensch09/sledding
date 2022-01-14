@@ -87,7 +87,7 @@
               <td colspan="1" class="lessons-table-cells"><%= number_to_percentage((day_slot_tickets*100)/SLEDHILL_CAPACITY, precision:0) %> full </td>
             </tr>
         <!-- [Sat night] sledding session #1 -->
-            <% if date.wday == 5 || date.wday == 6 %>
+            <% if date.wday == 5 || date.wday == 6 || SPECIAL_NIGHT_SLEDDING_DATES.include?(date.to_s) %>
             <tr>
               <td colspan="1" class="lessons-table-cells"><%=date %> </td>
               <td colspan="1" class="lessons-table-cells">Twilight (5pm-6:30pm)</td>
