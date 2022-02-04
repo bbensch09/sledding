@@ -127,7 +127,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <li> <a href="/sledding/calendar" class="btn-success"> Capacity Calendar</a></li>
            <li> <a href="/sledding/index" class="btn-success"> All Sledding Sales</a></li>
            <li> <a href="/lift-tickets/index" class="btn-success"> All Ticket Sales</a></li>
-           <li> <a href="/export-contacts" class="btn-success"> Export Contacts</a></li>
+           <li> <a href="/export-contacts" class="btn-success"> View Contacts</a></li>
+           <li><%= link_to "Export Export", export_contacts_path(format: "csv"), class: 'btn btn-primary' %></li>
            <li> <a href="/disable-ticket-sales" class="btn-success btn-danger"> Disable Sales</a></li>
            <li> <a href="/enable-ticket-sales" class="btn-success btn-success"> Enable Sales</a></li>
            <% if current_user.instructor %>
