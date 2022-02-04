@@ -7,7 +7,7 @@
 <div id="all-lessons" class="">
 <h1>All Sledding Reservations - Winter 2020/21</h1>
 
-<% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") && @show_search_options == true%>
+<% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.email == "brian+sledding@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") %>
 <div class="admin-viewable">
   <ul>
     <li>Total Tickets Booked: <%=Location.find(24).lifetime_lessons.count %></li>
