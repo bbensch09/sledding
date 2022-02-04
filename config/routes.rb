@@ -131,6 +131,7 @@ Rails.application.routes.draw do
   get 'sledding/calendar' => 'lessons#capacity_last_next_14', as: :capacity_calendar
   get 'sledding/admin_index' => 'lessons#admin_index', as: :sledding_admin_index
   get 'sledding/index' => 'lessons#all_sledding_sales', as: :all_sledding_sales
+  get 'export-contacts' => 'lessons#export_contacts', as: :export_contacts
   get 'sledding/roster-today' => 'lessons#roster_today', as: :sledding_roster_today
   get 'sledding/roster-today-print' => 'lessons#roster_today_print', as: :sledding_roster_today_print
   get 'sledding/roster-tomorrow' => 'lessons#roster_tomorrow', as: :sledding_roster_tomorrow

@@ -207,6 +207,14 @@ class LessonsController < ApplicationController
       render 'index'
   end
 
+  def export_contacts
+    @lessons = Lesson.where(state:"confirmed")
+    respond_to do |format|
+          format.html {render 'export_contacts'}
+          format.csv { send_data @lessons.to_csv, filename: "sledding-emails-export-#{Date.today}.csv" }
+    end
+  end
+
   def index
     if current_user && (current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee" || current_user.email == 'brian@snowschoolers.com')
       all_days = Section.select(:date).distinct.sort{|a,b| a.date <=> b.date}
