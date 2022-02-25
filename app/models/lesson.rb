@@ -1219,10 +1219,10 @@ class Lesson < ActiveRecord::Base
       return false
     else
       weekday = self.date.strftime('%A')
-      midweek_blocked = ['Monday','Tuesday','Wednesday','Thursday','Friday']
-      if midweek_blocked.include?(weekday) && self.slot == "Early-bird (8:30-10am)"
+      midweek_blocked = ['Tuesday','Wednesday','Thursday']
+      if midweek_blocked.include?(weekday) && self.slot == "Early-bird 9am-10:30am"
             puts "!!!!!guest tried to book a midweek 830am session. "
-            errors.add(:lesson, "The 8:30am session start time is not available midweek (Mon-Fri), but is available on weekends. Please select another slot.")
+            errors.add(:lesson, "The 9am session start time is not available midweek (Tues-Thurs), but is available on weekends. Please select another slot.")
             return false
       else
         return true
