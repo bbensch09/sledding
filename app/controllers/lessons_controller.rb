@@ -48,14 +48,23 @@ class LessonsController < ApplicationController
 
   def all_sledding_sales
     # Lesson.set_dates_for_sample_bookings
-    @lessons = Lesson.where(state:"confirmed")
+      @year = params[:year].to_i
+  if current_user && current_user.email == 'brian+sledding@snowschoolers.com'
+      puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
+      @lessons = Lesson.where(state:"confirmed")
+      puts "!!!! There are #{@lessons.count} completed bookings found across all-time."
+      @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.year == @year}
+      puts "!!!! There are #{@lessons.count} sled bookings found for the requested year."
     # could modify this manually if we want a full export of all bookings to be loaded in the browser
     # @lessons = Lesson.last(2)
     # @lessons = @lessons.sort! { |a,b| b.lesson_time.date <=> a.lesson_time.date }
+    else
+    @lessons = Lesson.where(state:"confirmed")
     respond_to do |format|
           format.html {render 'all_sledding_sales'}
           format.csv { send_data @lessons_to_export.to_csv, filename: "sledding-emails-export-#{Date.today}.csv" }
     end
+  end
   end
   
 

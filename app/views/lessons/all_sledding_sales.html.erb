@@ -14,6 +14,8 @@
     <li>Total Revenue Booked: <%= number_to_currency(Location.find(24).lifetime_revenue) %></li>
     <li>Tickets Today: <%= Location.find(24).today_lessons.count %></li>
     <li>Revenue Today: <%= number_to_currency(Location.find(24).today_revenue) %></li>
+    <li>Tickets in requested batch: <%= @lessons.count %></li>
+    <li>Current user: <%= current_user.email %></li>
   </ul>
    <%= link_to "View all reservations", sledding_admin_index_all_path, class: 'btn btn-warning' %>   
 </div>
