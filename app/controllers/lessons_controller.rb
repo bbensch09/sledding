@@ -48,8 +48,8 @@ class LessonsController < ApplicationController
 
   def all_sledding_sales
     # Lesson.set_dates_for_sample_bookings
-      @year = params[:year].to_i
   if current_user && current_user.email == 'brian+sledding@snowschoolers.com'
+      @year = params[:year].to_i
       puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
       @lessons = Lesson.where(state:"confirmed")
       puts "!!!! There are #{@lessons.count} completed bookings found across all-time."
