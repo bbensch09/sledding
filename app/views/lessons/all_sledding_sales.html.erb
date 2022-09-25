@@ -10,10 +10,10 @@
 <% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.email == "brian+sledding@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") %>
 <div class="admin-viewable">
   <ul>
-    <li>Total Tickets Booked: <%=Location.find(24).lifetime_lessons.count %></li>
-    <li>Total Revenue Booked: <%= number_to_currency(Location.find(24).lifetime_revenue) %></li>
-    <li>Tickets Today: <%= Location.find(24).today_lessons.count %></li>
-    <li>Revenue Today: <%= number_to_currency(Location.find(24).today_revenue) %></li>
+    <!-- <li>Total Tickets Booked: %=Location.find(24).lifetime_lessons.count %></li> -->
+    <!-- <li>Total Revenue Booked: %= number_to_currency(Location.find(24).lifetime_revenue) %></li> -->
+    <!-- <li>Tickets Today: %= Location.find(24).today_lessons.count %></li> -->
+    <!-- <li>Revenue Today: %= number_to_currency(Location.find(24).today_revenue) %></li> -->
     <li>Tickets in requested batch: <%= @lessons.count %></li>
     <!-- <li>Current user: <%= current_user.email %></li> -->
   </ul>
@@ -49,11 +49,11 @@
             <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.created_at %></td>
             <!-- <td class="lessons-table-cells"><%= lesson.students.count %></td> -->
             <td class="lessons-table-cells lesson-instructor"><%= link_to lesson.confirmation_number, lesson, class: "btn btn-sledding-admin" %></td>
-            <% if lesson.check_in_status.nil? %>
+            <!-- % if lesson.check_in_status.nil? %> -->
             <!-- <td class="lessons-table-cells">%= link_to 'Check-in', sledding_check_in_path(lesson.id), method: :put, class:"btn btn-default btn-sledding-admin" %> -->
-              <% else %>
+              <!-- % else %> -->
             <!-- <td class="lessons-table-cells roster-smaller">%= lesson.check_in_status %></td> -->
-            <% end %>
+            <!-- % end %> -->
             <td class="lessons-table-cells roster-smaller"><%= lesson.students.count %></td>
             <!-- <td class="lessons-table-cells"><%= link_to 'Print', release_of_liability_path(lesson.id), target:"_blank", class:"btn btn-sledding-admin" %> -->
             <!-- <td class="lessons-table-cells roster-smaller"><%= lesson.phone_number %></td> -->
