@@ -51,14 +51,20 @@ class LessonsController < ApplicationController
   if current_user && current_user.email == 'brian+sledding@snowschoolers.com'
       @year = params[:year].to_i
       @month = params[:month].to_i
+      @day_min = params[:day_min].to_i
+      @day_max = params[:day_max].to_i
       puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
       @lessons = Lesson.where(state:"confirmed")
       puts "!!!! There are #{@lessons.count} completed bookings found across all-time."
       @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.year == @year}
       unless @month == 0
-        @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.month == @month}
+        @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.month == @month }
       end
       puts "!!!! There are #{@lessons.count} sled bookings found for the requested year."
+      unless @day_min == 0
+        @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.day >=@day_min && lesson.created_at.day <=@day_max }
+      end
+      puts "!!!! There are #{@lessons.count} sled bookings found for the requested dates."
     # could modify this manually if we want a full export of all bookings to be loaded in the browser
     # @lessons = Lesson.last(2)
     # @lessons = @lessons.sort! { |a,b| b.lesson_time.date <=> a.lesson_time.date }
