@@ -48,7 +48,8 @@
             <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.slot %></td>
             <td class="lessons-table-cells lesson-date roster-smaller"><%= lesson.created_at %></td>
             <!-- <td class="lessons-table-cells"><%= lesson.students.count %></td> -->
-            <td class="lessons-table-cells lesson-instructor"><%= link_to lesson.confirmation_number, lesson, class: "btn btn-sledding-admin" %></td>
+            <td class="lessons-table-cells lesson-instructor"><%= lesson.confirmation_number %></td>
+            <!-- <td class="lessons-table-cells lesson-instructor"> %= link_to lesson.confirmation_number, lesson, class: "btn btn-sledding-admin" %></td> -->
             <!-- % if lesson.check_in_status.nil? %> -->
             <!-- <td class="lessons-table-cells">%= link_to 'Check-in', sledding_check_in_path(lesson.id), method: :put, class:"btn btn-default btn-sledding-admin" %> -->
               <!-- % else %> -->
