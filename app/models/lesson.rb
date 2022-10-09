@@ -562,7 +562,7 @@ class Lesson < ActiveRecord::Base
       end
     elsif self.package_info == "Night Sledding"
     # elsif self.package_info == "NYE Special Sled Ticket"
-        price = 40 * [1,(self.students.count - self.participants_3_and_under)].max
+        price = 45 * [1,(self.students.count - self.participants_3_and_under)].max
     elsif self.package_info == "Afterschool Special"
     # elsif self.package_info == "NYE Special Sled Ticket"
         price = self.students.count * 12.50
@@ -1217,6 +1217,10 @@ class Lesson < ActiveRecord::Base
     puts "!!!checking to see if user is trying to book Tues-Thurs at 8:30am"
     if self.date.nil?
       return false
+    elsif EARLY_SEASON_DATES.include?(self.date.to_s) && self.slot == "Early-bird 9am-10:30am"
+      puts "!!!!!guest tried to book a 9am session in the early season. on these days sledding will start at 11am"
+            errors.add(:lesson, "The 9am session start time is not available on this date. Please select another slot starting at 11am or later.")
+            return false
     else
       weekday = self.date.strftime('%A')
       midweek_blocked = ['Tuesday','Wednesday','Thursday']
@@ -1238,9 +1242,9 @@ class Lesson < ActiveRecord::Base
       weekday = self.date.strftime('%A')
       return true if SPECIAL_NIGHT_SLEDDING_DATES.include?(self.date.to_s)
       non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday']
-      if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm)' || self.slot == 'Night Sledding (7pm-8:30pm)')
+      if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm) - *Saturdays ONLY*' || self.slot == 'Night Sledding (7pm-8:30pm)')
             puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
-            errors.add(:lesson, "Nightime sledding sessions are only available on Saturday. Please select another session time or date.")
+            errors.add(:lesson, "Twilight and nightime sledding is not available on this date. Please select another session time or date, or email tickets@granlibakken.com with questions.")
             return false
       else
         return true
