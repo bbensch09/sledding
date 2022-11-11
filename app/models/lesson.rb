@@ -1217,9 +1217,11 @@ class Lesson < ActiveRecord::Base
     puts "!!!checking to see if user is trying to book Tues-Thurs at 8:30am"
     if self.date.nil?
       return false
+    elsif HOLIDAYS.include?(self.date.to_s)
+      return true
     elsif EARLY_SEASON_DATES.include?(self.date.to_s) && self.slot == "Early-bird 9am-10:30am"
       puts "!!!!!guest tried to book a 9am session in the early season. on these days sledding will start at 11am"
-            errors.add(:lesson, "The 9am session start time is not available on this date. Please select another slot starting at 11am or later.")
+            errors.add(:lesson, "The 9am session start time is not available for most November and early December find_by_date_and_slot. Please select another slot starting at 11am or later.")
             return false
     else
       weekday = self.date.strftime('%A')
