@@ -12,7 +12,7 @@ var month = dt.getMonth() + 1;
 var year = dt.getYear() +1900;
 var date = year + "-" + month + "-" + day;
 // var opening_date = new Date("2022-11-24");
-var opening_date = new Date("2022-12-11"); //need to set one day in advance because it will set UTC and then convert to 4pm the day before
+var opening_date = new Date("2022-11-25"); //need to set one day in advance because it will set UTC and then convert to 4pm the day before
 
 // logs today's date
 console.log(date);
@@ -124,7 +124,7 @@ var LESSON = {
       var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
       return [ blocked_dates_lift_tickets.indexOf(string) == -1 ]
     },
-    minDate: MIN_DATE,
+    minDate: '2022-12-16',
     maxDate: '2023-04-16',
     dateFormat: 'yy-mm-dd'
     });
