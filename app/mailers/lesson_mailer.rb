@@ -146,17 +146,17 @@ class LessonMailer < ActionMailer::Base
 
   def sledding_tickets_confirmation(lesson)
     @lesson = lesson
-    mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+    mail(to: @lesson.customer_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Sledding Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
   end
 
   def snowplay_tickets_confirmation(lesson)
     @lesson = lesson
-    mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Snowplay Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+    mail(to: @lesson.customer_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Snowplay Hill Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
   end
 
   def lift_tickets_confirmation(lesson)
     @lesson = lesson
-    mail(to: @lesson.guest_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Ski Hill Lift Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
+    mail(to: @lesson.customer_email, cc:"Front Desk<#{ENV['SUPERVISOR_EMAIL']}>", subject: "Purchase Confirmation: Ski Hill Lift Tickets at Granlibakken on #{@lesson.date.strftime("%b %-d")}")
   end
 
   def send_promo_redemption_notification(lesson)

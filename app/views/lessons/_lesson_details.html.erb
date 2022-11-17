@@ -35,7 +35,7 @@
       <div class="col-md-12 col-xs-12">
       <h4 class="slot-details-mobile">
         <span class="lesson-detail-topic"><b>Reservation Name:</b></span> <%= @lesson.requester_name %> <br>
-        <span class="lesson-detail-topic"><b>Email:</b></span> <%= @lesson.guest_email %> <br>
+        <span class="lesson-detail-topic"><b>Email:</b></span> <%= @lesson.customer_email %> <br>
         <span class="lesson-detail-topic"><b>Date:</b></span> <%= @lesson.date.strftime("%A %b #{@lesson.date.day.ordinalize}, %Y") %><br>
         <% if @lesson.activity == "lift_ticket" %>
             <span class="lesson-detail-topic"><b>Type:</b></span> <%= @lesson.slot %><br>
