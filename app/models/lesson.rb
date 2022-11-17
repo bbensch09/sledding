@@ -44,6 +44,16 @@ class Lesson < ActiveRecord::Base
   # after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
+  def customer_email
+    if self.requester && !self.requester.email.nil?
+      return self.requester.email
+    elsif self.guest_email
+      return self.guest_email
+    else
+      return "hello+not_found@snowschooler.scom"
+    end
+  end
+
   def lesson_siblings
     if self.shopping_cart
       return self.shopping_cart.lessons
