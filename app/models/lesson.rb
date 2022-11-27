@@ -1266,9 +1266,9 @@ class Lesson < ActiveRecord::Base
 
   def check_night_sledding_against_blocked_dates
     puts "!!!checking to see if dates selected are blocked"
-    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Twilight (5pm-6:30pm)')
+    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Twilight (5pm-6:30pm) - *Saturdays ONLY*')
           puts "!!!!!guest tried to book a nighttime session on a blocked date"
-          errors.add(:lesson, "Unfortunately while night-time sledding is usually available every Fri/Sat night, it will not be happening on this date. Please contact guest services for more information.")
+          errors.add(:lesson, "Unfortunately while night-time sledding is usually available every Sat night, it will not be happening on this date. Please contact guest services for more information.")
           return false
     else
       return true
