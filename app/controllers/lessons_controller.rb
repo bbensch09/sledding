@@ -611,15 +611,15 @@ class LessonsController < ApplicationController
     if @lesson.save
       if @lesson.activity == 'sledding'
           LessonMailer.sledding_tickets_confirmation(@lesson).deliver!
-          flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email tickets@granlibakken.com.'
           flash[:conversion] = 'TRUE'
         elsif @lesson.activity == 'snowplay'
           LessonMailer.snowplay_tickets_confirmation(@lesson).deliver!
-          flash[:notice] = 'Thank you, your snowplay tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:notice] = 'Thank you, your snowplay tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email tickets@granlibakken.com.'
           flash[:conversion] = 'TRUE'
         elsif @lesson.activity == 'lift_ticket'
           LessonMailer.lift_tickets_confirmation(@lesson).deliver!
-          flash[:notice] = 'Thank you, your lift tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:notice] = 'Thank you, your lift tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email tickets@granlibakken.com.'
           flash[:conversion] = 'TRUE'
         else
       end
