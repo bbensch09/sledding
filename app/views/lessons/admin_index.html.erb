@@ -224,9 +224,9 @@
   </tbody>
 </table>
 
-<h1> Roster for Sat Twilight Session (closed for Spring after 3/6/22)</h1>
+<h1> Roster for Sat Twilight Session</h1>
 
-    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Twilight (5pm-6:30pm)" || lesson.slot == "Twilight (5pm-9:00pm)"} %>
+    <% @lessons4 = @lessons.select{|lesson| lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only" || lesson.slot == "Twilight (5pm-9:00pm)"} %>
 
 <table class="instructors-table daily-roster">
   <thead>

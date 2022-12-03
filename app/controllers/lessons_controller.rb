@@ -365,7 +365,7 @@ class LessonsController < ApplicationController
           puts "!!! determined that #{lesson_time_params[:date]} is NOT a date"
         flag_for_valid_date = false
       end
-    if @lesson.slot == 'Twilight (5pm-6:30pm)' || @lesson.slot == 'Night Sledding (7pm-8:30pm)'
+    if @lesson.slot == 'Night (5:00 PM - 6:30 PM) - special dates only' || @lesson.slot == 'Night Sledding (7pm-8:30pm)'
           @lesson.package_info = "Night Sledding"
     end
     if current_user && (current_user.email == 'brian@snowschoolers.com' || current_user.user_type == 'Granlibakken Employee')
@@ -611,15 +611,15 @@ class LessonsController < ApplicationController
     if @lesson.save
       if @lesson.activity == 'sledding'
           LessonMailer.sledding_tickets_confirmation(@lesson).deliver!
-          flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:notice] = 'Thank you, your sledding tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email tickets@granlibakken.com.'
           flash[:conversion] = 'TRUE'
         elsif @lesson.activity == 'snowplay'
           LessonMailer.snowplay_tickets_confirmation(@lesson).deliver!
-          flash[:notice] = 'Thank you, your snowplay tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:notice] = 'Thank you, your snowplay tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email tickets@granlibakken.com.'
           flash[:conversion] = 'TRUE'
         elsif @lesson.activity == 'lift_ticket'
           LessonMailer.lift_tickets_confirmation(@lesson).deliver!
-          flash[:notice] = 'Thank you, your lift tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email frontdesk@granlibakken.com.'
+          flash[:notice] = 'Thank you, your lift tickets have been purchased successfully. You will receive an email notification momentarily. If you have any questions about your reservation, please email tickets@granlibakken.com.'
           flash[:conversion] = 'TRUE'
         else
       end

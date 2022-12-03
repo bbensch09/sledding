@@ -973,7 +973,7 @@ class Lesson < ActiveRecord::Base
       recipient = self.available_instructors.any? ? self.available_instructors.first.phone_number : "4083152900"
       case self.state
         when 'new'
-          body = "A lesson booking was begun and not finished. Please contact an admin or email frontdesk@granlibakken.com if you intended to complete the lesson booking."
+          body = "A lesson booking was begun and not finished. Please contact an admin or email tickets@granlibakken.com if you intended to complete the lesson booking."
         when 'booked'
           body = "#{self.available_instructors.first.first_name}, You have a new lesson request from #{self.requester.name} at #{self.lesson_time.slot} on #{self.lesson_time.date.strftime("%b %d")} at #{self.location.name}. They are a level #{self.level.to_s} #{self.athlete}. Are you available? Please visit #{ENV['HOST_DOMAIN']}/lessons/#{self.id} to confirm."
         when 'seeking replacement instructor'
@@ -1138,7 +1138,7 @@ class Lesson < ActiveRecord::Base
         return current_day_lift_tickets_sold
       else
         puts "!!! reservation rejected due to lift tickets being sold out"
-        errors.add(:lesson,"Unfortunately there are no more lift tickets available. Please try another day. To see what days are not sold out, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
+        errors.add(:lesson,"Unfortunately there are no more lift tickets available. Please try another day. To see what days are not sold out, please contact us at tickets@granlibakken.com or call us at 530-583-4242.")
         return false
       end
     elsif self.activity == 'sledding'
@@ -1146,7 +1146,7 @@ class Lesson < ActiveRecord::Base
         return current_session_tickets_sold
       else
         puts "!!! reservation rejected due to sledding session capacity being sold out"
-        errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, please contact us at frontdesk@granlibakken.com or call us at 530-583-4242.")
+        errors.add(:lesson,"Unfortunately this sledding session is sold out. Please try another time slot. To see which sessions still have capacity, please contact us at tickets@granlibakken.com or call us at 530-583-4242.")
         return false
       end
     elsif self.activity == 'snowplay'
@@ -1195,7 +1195,7 @@ class Lesson < ActiveRecord::Base
   private
 
   def instructors_must_be_available
-    errors.add(:instructor, " unfortunately not available at that time. Please email frontdesk@granlibakken.com to be notified if we have any instructors that become available.") unless available_instructors.any?
+    errors.add(:instructor, " unfortunately not available at that time. Please email tickets@granlibakken.com to be notified if we have any instructors that become available.") unless available_instructors.any?
   end
 
   def requester_must_not_be_instructor
@@ -1254,7 +1254,7 @@ class Lesson < ActiveRecord::Base
       weekday = self.date.strftime('%A')
       return true if SPECIAL_NIGHT_SLEDDING_DATES.include?(self.date.to_s)
       non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday']
-      if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm) - *Saturdays ONLY*' || self.slot == 'Night Sledding (7pm-8:30pm)')
+      if non_night_sledding_days.include?(weekday) && (self.slot == 'Night (5:00 PM - 6:30 PM) - special dates only' || self.slot == 'Night Sledding (7pm-8:30pm)')
             puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
             errors.add(:lesson, "Twilight and nightime sledding is not available on this date. Please select another session time or date, or email tickets@granlibakken.com with questions.")
             return false
@@ -1266,7 +1266,7 @@ class Lesson < ActiveRecord::Base
 
   def check_night_sledding_against_blocked_dates
     puts "!!!checking to see if dates selected are blocked"
-    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Twilight (5pm-6:30pm) - *Saturdays ONLY*')
+    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Night (5:00 PM - 6:30 PM) - special dates only')
           puts "!!!!!guest tried to book a nighttime session on a blocked date"
           errors.add(:lesson, "Unfortunately while night-time sledding is usually available every Sat night, it will not be happening on this date. Please contact guest services for more information.")
           return false
