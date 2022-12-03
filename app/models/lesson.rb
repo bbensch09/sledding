@@ -1254,7 +1254,7 @@ class Lesson < ActiveRecord::Base
       weekday = self.date.strftime('%A')
       return true if SPECIAL_NIGHT_SLEDDING_DATES.include?(self.date.to_s)
       non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday']
-      if non_night_sledding_days.include?(weekday) && (self.slot == 'Twilight (5pm-6:30pm) - *Saturdays ONLY*' || self.slot == 'Night Sledding (7pm-8:30pm)')
+      if non_night_sledding_days.include?(weekday) && (self.slot == 'Night (5:00 PM - 6:30 PM) - special dates only' || self.slot == 'Night Sledding (7pm-8:30pm)')
             puts "!!!!!guest tried to book a nighttime session but not on Fri or Saturday."
             errors.add(:lesson, "Twilight and nightime sledding is not available on this date. Please select another session time or date, or email tickets@granlibakken.com with questions.")
             return false
@@ -1266,7 +1266,7 @@ class Lesson < ActiveRecord::Base
 
   def check_night_sledding_against_blocked_dates
     puts "!!!checking to see if dates selected are blocked"
-    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Twilight (5pm-6:30pm) - *Saturdays ONLY*')
+    if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Night (5:00 PM - 6:30 PM) - special dates only')
           puts "!!!!!guest tried to book a nighttime session on a blocked date"
           errors.add(:lesson, "Unfortunately while night-time sledding is usually available every Sat night, it will not be happening on this date. Please contact guest services for more information.")
           return false

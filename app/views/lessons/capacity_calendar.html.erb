@@ -90,9 +90,9 @@
             <% if date.wday == 5 || date.wday == 6 || SPECIAL_NIGHT_SLEDDING_DATES.include?(date.to_s) %>
             <tr>
               <td colspan="1" class="lessons-table-cells"><%=date %> </td>
-              <td colspan="1" class="lessons-table-cells">Twilight (5pm-6:30pm)</td>
-              <td colspan="1" class="lessons-table-cells"><%= @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.slot == "Twilight (5pm-6:30pm)"}.count %> </td>
-                <% day_slot_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.slot == "Twilight (5pm-6:30pm)"} %>
+              <td colspan="1" class="lessons-table-cells">Night (5:00 PM - 6:30 PM)</td>
+              <td colspan="1" class="lessons-table-cells"><%= @lessons.select{|lesson| lesson.date.to_s == date.to_s && (lesson.slot == "Twilight (5pm-6:30pm)" | lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only"}.count %> </td>
+                <% day_slot_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && (lesson.slot == "Twilight (5pm-6:30pm)" | lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only"} %>
                 <% day_slot_tickets = 0 %>
                 <% day_slot_bookings.each do |b| day_slot_tickets += b.students.count end %>
               <td colspan="1" class="lessons-table-cells"><%=day_slot_tickets %> sold </td>
