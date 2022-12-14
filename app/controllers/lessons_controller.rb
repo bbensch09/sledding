@@ -53,7 +53,7 @@ class LessonsController < ApplicationController
         # @day_max = params[:day_max].to_i
         if params[:date]
             min_date = params[:date].to_date
-            else min_date = Date.today - 3
+            else min_date = Date.today - 8
         end
 
         puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
@@ -65,7 +65,7 @@ class LessonsController < ApplicationController
         end
         puts "!!!! There are #{@lessons.count} sled bookings found for the requested year."
         dates = []
-        (0..16).each do |x|
+        (0..15).each do |x|
           dates << min_date + x
         end
         @dates = dates    
