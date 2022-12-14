@@ -2,7 +2,7 @@
   <div id="all-lessons" class="">
     <h1>Upcoming Sledding Capacity</h1>
 
-    <% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") && @show_search_options == true%>
+    <% if current_user && current_user.user_type == "Granlibakken Employee" && @show_search_options == true %>
     <div class="admin-viewable">
       <ul>
         <li>Total Tickets Booked: <%=Location.find(24).lifetime_lessons.count %></li>
@@ -47,7 +47,7 @@
               <td colspan="1" class="lessons-table-cells"><%= SLEDHILL_CAPACITY - day_slot_tickets %> left </td>
               <td colspan="1" class="lessons-table-cells"><%= number_to_percentage((day_slot_tickets*100)/SLEDHILL_CAPACITY, precision:0) %> full </td>
             </tr>
-        <!-- 2ne sledding session -->
+        <!-- 2nd sledding session -->
             <tr>
               <td colspan="1" class="lessons-table-cells"><%=date %> </td>
               <td colspan="1" class="lessons-table-cells">Morning (11am-12:30pm) </td>
@@ -89,30 +89,17 @@
         <!-- [Sat night] sledding session #1 -->
             <% if date.wday == 5 || date.wday == 6 || SPECIAL_NIGHT_SLEDDING_DATES.include?(date.to_s) %>
             <tr>
-              <td colspan="1" class="lessons-table-cells"><%=date %> </td>
+              <td colspan="1" class="lessons-table-cells"><%= date %> </td>
               <td colspan="1" class="lessons-table-cells">Night (5:00 PM - 6:30 PM)</td>
-              <td colspan="1" class="lessons-table-cells"><%= @lessons.select{|lesson| lesson.date.to_s == date.to_s && (lesson.slot == "Twilight (5pm-6:30pm)" | lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only"}.count %> </td>
-                <% day_slot_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && (lesson.slot == "Twilight (5pm-6:30pm)" | lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only"} %>
+              <td colspan="1" class="lessons-table-cells"><%= @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only"}.count %> </td>
+                <% day_slot_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.slot == "Night (5:00 PM - 6:30 PM) - special dates only"} %>
                 <% day_slot_tickets = 0 %>
                 <% day_slot_bookings.each do |b| day_slot_tickets += b.students.count end %>
               <td colspan="1" class="lessons-table-cells"><%=day_slot_tickets %> sold </td>
               <td colspan="1" class="lessons-table-cells"><%= SLEDHILL_CAPACITY %> max </td>
               <td colspan="1" class="lessons-table-cells"><%= SLEDHILL_CAPACITY - day_slot_tickets %> left </td>
               <td colspan="1" class="lessons-table-cells"><%= number_to_percentage((day_slot_tickets*100)/SLEDHILL_CAPACITY, precision:0) %> full </td>
-            </tr>
-        <!-- [Sat night evening only] sledding session #2 -->
-            <!-- <tr>
-              <td colspan="1" class="lessons-table-cells"><%=date %> </td>
-              <td colspan="1" class="lessons-table-cells">Saturday Late night session (6:30-8pm)</td>
-              <td colspan="1" class="lessons-table-cells"><%= @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.slot == "Spicy Saturday Night (6:30-8pm)"}.count %> </td>
-                <% day_slot_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.slot == "Spicy Saturday Night (6:30-8pm)"} %>
-                <% day_slot_tickets = 0 %>
-                <% day_slot_bookings.each do |b| day_slot_tickets += b.students.count end %>
-              <td colspan="1" class="lessons-table-cells"><%=day_slot_tickets %> sold </td>
-              <td colspan="1" class="lessons-table-cells"><%= SLEDHILL_CAPACITY %> max </td>
-              <td colspan="1" class="lessons-table-cells"><%= SLEDHILL_CAPACITY - day_slot_tickets %> left </td>
-              <td colspan="1" class="lessons-table-cells"><%= number_to_percentage((day_slot_tickets*100)/SLEDHILL_CAPACITY, precision:0) %> full </td>
-            </tr> -->
+            </tr>    
             <% end %>
         <tr>
           <td colspan="7" class="daily-roster-section-break"><span>---</span></td>

@@ -46,35 +46,61 @@ class LessonsController < ApplicationController
     end
   end
 
-  def all_sledding_sales
-    # Lesson.set_dates_for_sample_bookings
-  if current_user && current_user.email == 'brian+sledding@snowschoolers.com'
-      @year = params[:year].to_i
-      @month = params[:month].to_i
-      @day_min = params[:day_min].to_i
-      @day_max = params[:day_max].to_i
-      puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
-      @lessons = Lesson.where(state:"confirmed")
-      puts "!!!! There are #{@lessons.count} completed bookings found across all-time."
-      @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.year == @year}
-      unless @month == 0
-        @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.month == @month }
-      end
-      puts "!!!! There are #{@lessons.count} sled bookings found for the requested year."
-      unless @day_min == 0
-        @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.day >=@day_min && lesson.created_at.day <=@day_max }
-      end
-      puts "!!!! There are #{@lessons.count} sled bookings found for the requested dates."
-    # could modify this manually if we want a full export of all bookings to be loaded in the browser
-    # @lessons = Lesson.last(2)
-    # @lessons = @lessons.sort! { |a,b| b.lesson_time.date <=> a.lesson_time.date }
-    else
-    @lessons = Lesson.where(state:"confirmed")
-    respond_to do |format|
-          format.html {render 'all_sledding_sales'}
-          format.csv { send_data @lessons_to_export.to_csv, filename: "sledding-emails-export-#{Date.today}.csv" }
-    end
+  def sales_report
+        # @year = params[:year].to_i      
+        @month.nil? ? @month = Date.today.strftime("%m").to_i : @month.to_i
+        # @day_min = params[:day_min].to_i
+        # @day_max = params[:day_max].to_i
+        if params[:date]
+            min_date = params[:date].to_date
+            else min_date = Date.today - 3
+        end
+
+        puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
+        @lessons = Lesson.where(state:"confirmed")
+        puts "!!!! There are #{@lessons.count} completed bookings found across all-time."
+        @lessons = @lessons.to_a.keep_if{|lesson|lesson.this_season?}
+        unless @month == 0
+          @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.month == @month }
+        end
+        puts "!!!! There are #{@lessons.count} sled bookings found for the requested year."
+        dates = []
+        (0..16).each do |x|
+          dates << min_date + x
+        end
+        @dates = dates    
+        render 'sales_report'
   end
+
+  def all_sledding_sales
+      # Lesson.set_dates_for_sample_bookings
+      if current_user && current_user.email == 'brian+sledding@snowschoolers.com'
+        @year = params[:year].to_i
+        @month = params[:month].to_i
+        @day_min = params[:day_min].to_i
+        @day_max = params[:day_max].to_i
+        puts "!!!! There are #{Lesson.count} sled bookings found in the database. Begin filtering for only booked lessons to then display results."
+        @lessons = Lesson.where(state:"confirmed")
+        puts "!!!! There are #{@lessons.count} completed bookings found across all-time."
+        @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.year == @year}
+        unless @month == 0
+          @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.month == @month }
+        end
+        puts "!!!! There are #{@lessons.count} sled bookings found for the requested year."
+        unless @day_min == 0
+          @lessons = @lessons.to_a.keep_if{|lesson|lesson.created_at.day >=@day_min && lesson.created_at.day <=@day_max }
+        end
+        puts "!!!! There are #{@lessons.count} sled bookings found for the requested dates."
+      # could modify this manually if we want a full export of all bookings to be loaded in the browser
+      # @lessons = Lesson.last(2)
+      # @lessons = @lessons.sort! { |a,b| b.lesson_time.date <=> a.lesson_time.date }
+    else
+      @lessons = Lesson.where(state:"confirmed")
+      respond_to do |format|
+        format.html {render 'all_sledding_sales'}
+        format.csv { send_data @lessons_to_export.to_csv, filename: "sledding-emails-export-#{Date.today}.csv" }
+      end
+    end
   end
   
 

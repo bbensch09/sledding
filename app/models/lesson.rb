@@ -44,6 +44,11 @@ class Lesson < ActiveRecord::Base
   # after_save :check_if_sections_are_full
   before_save :calculate_actual_lesson_duration, if: :just_finalized?
 
+  def this_season?
+    return true if self.lesson_time.date.to_s >= '2022-11-01'
+  end
+
+
   def customer_email
     if self.requester && !self.requester.email.nil?
       return self.requester.email

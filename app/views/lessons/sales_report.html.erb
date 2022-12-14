@@ -1,0 +1,68 @@
+<div class="wide-container">
+<!--
+<h3> Current User ID: <%= current_user.id %> </h3>
+<h3> Current User.email: <%= current_user.email %> </h3>
+ -->
+<!-- SECTION 0 - AVAILABLE LESSON REQUESTS FOR INSTRUCTORS -->
+<div id="all-lessons" class="">
+<h1>All Sales - Winter 2022/23</h1>
+
+<% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.email == "brian+sledding@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") %>
+<div class="admin-viewable">
+  <ul>
+    <!-- <li>Total Tickets Booked: %=Location.find(24).lifetime_lessons.count %></li> -->
+    <!-- <li>Total Revenue Booked: %= number_to_currency(Location.find(24).lifetime_revenue) %></li> -->
+    <!-- <li>Tickets Today: %= Location.find(24).today_lessons.count %></li> -->
+    <!-- <li>Revenue Today: %= number_to_currency(Location.find(24).today_revenue) %></li> -->
+    <li>Tickets in requested batch: <%= @lessons.count %></li>
+    <!-- <li>Current user: <%= current_user.email %></li> -->
+  </ul>
+   <%= link_to "View all reservations", sledding_admin_index_all_path, class: 'btn btn-warning' %>   
+</div>
+<% end %>
+
+<table class="instructors-table daily-roster">
+      <thead>
+        <tr>
+          <th class="lessons-table-cells lesson-date">Date</th>
+          <th class="lessons-table-cells lesson-date">Sledding Bookings</th>
+          <th class="lessons-table-cells lesson-date">Sledding Tickets</th>
+          <th class="lessons-table-cells lesson-instructor"> Sledding Revenue</th>
+          <th class="lessons-table-cells">Lift Ticket Bookings</th>
+          <th class="lessons-table-cells">Lift Tickets Sold</th>
+          <th class="lessons-table-cells lesson-instructor"> Lift Ticket Revenue</th>
+          <th class="lessons-table-cells lesson-instructor"> Total Revenue</th>
+          <!-- <th class="lessons-table-cells"></th> -->
+        </tr>
+      </thead>
+
+<tbody>
+        <% @dates.each do |date| %>
+        <!-- 1st sledding session -->
+            <tr>
+              <td colspan="1" class="lessons-table-cells"><%=date %> </td>
+              <td colspan="1" class="lessons-table-cells"><%= @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.activity == "sledding"}.count %> </td>
+                <% sledding_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.activity == "sledding"} %>
+                <% sledding_tickets = 0 %>
+                <% sledding_bookings.each do |b| sledding_tickets += b.students.count end %>
+                <% sledding_revenue = 0 %>
+                <% sledding_bookings.each do |b| sledding_revenue += b.price.to_i end %>
+              <td colspan="1" class="lessons-table-cells"><%=sledding_tickets %> tickets </td>
+              <td colspan="1" class="lessons-table-cells"><%= number_to_currency(sledding_revenue) %> </td>
+                <% lift_ticket_bookings =  @lessons.select{|lesson| lesson.date.to_s == date.to_s && lesson.activity == "lift_ticket"} %>
+                <% lift_ticket_tickets = 0 %>
+                <% lift_ticket_bookings.each do |b| lift_ticket_tickets += b.students.count end %>
+                <% lift_ticket_revenue = 0 %>
+                <% lift_ticket_bookings.each do |b| lift_ticket_revenue += b.price.to_i end %>
+              <td colspan="1" class="lessons-table-cells"><%= lift_ticket_bookings.count %> </td>
+              <td colspan="1" class="lessons-table-cells"><%= lift_ticket_tickets %> tickets </td>
+              <td colspan="1" class="lessons-table-cells"><%= number_to_currency(lift_ticket_revenue) %> </td>
+              <td colspan="1" class="lessons-table-cells"><%= number_to_currency(lift_ticket_revenue+sledding_revenue) %> </td>
+            </tr>
+        <% end %> 
+  </tbody>
+</table>    
+
+</div>
+<hr>
+</div>
