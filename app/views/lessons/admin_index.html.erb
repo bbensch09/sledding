@@ -1,11 +1,16 @@
+<% title "GB Sched - #{@date}" %>
+
 <div class="wide-container">
 <!--
+
 <h3> Current User ID: <%= current_user.id %> </h3>
 <h3> Current User.email: <%= current_user.email %> </h3>
  -->
 <!-- SECTION 0 - AVAILABLE LESSON REQUESTS FOR INSTRUCTORS -->
 <div id="all-lessons" class="">
-<h1>Sledding Reservations</h1>
+<h1>Sledding Reservations for <%= @date %></h1>
+
+<!-- <h2 class="warning">TESING: today's date is <%= Date.today %> and the time is <%= Time.now %></h2> -->
 
 <% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") && @show_search_options == true%>
 <div class="admin-viewable">

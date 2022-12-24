@@ -106,6 +106,8 @@ class LessonsController < ApplicationController
 
   def roster_today
     # Lesson.set_dates_for_sample_bookings
+    @date = params[:date]
+    @date.nil? ? @date = Date.today : @date.to_date
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == Date.today}
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
     @lessons = @lessons.select{ |lesson| lesson.date == Date.today}
@@ -128,7 +130,7 @@ class LessonsController < ApplicationController
   def roster_tomorrow
     # Lesson.set_dates_for_sample_bookings
     @date = params[:date]
-    @date.nil? ? @date = Date.today+2 : @date.to_date
+    @date.nil? ? @date = Date.today+1 : @date.to_date
     @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date}
     @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date}
     # @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed"}
@@ -150,6 +152,8 @@ class LessonsController < ApplicationController
 
   def lift_tickets_today
     # Lesson.set_dates_for_sample_bookings
+    @date = params[:date]
+    @date.nil? ? @date = Date.today : @date.to_date
     @tickets_to_export = Lesson.all.select{|lesson| lesson.deposit_status == "confirmed" && lesson.activity == "lift_ticket" && lesson.date == Date.today}
     @tickets = @tickets_to_export
     @tickets = @tickets.sort! { |a,b| a.id <=> b.id }
