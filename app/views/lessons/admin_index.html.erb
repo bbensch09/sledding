@@ -10,6 +10,7 @@
 <div id="all-lessons" class="">
 <h1>Sledding Reservations for <%= @date %></h1>
 
+<!-- <h2 class="warning">TESING: the count of sledding bookings on this day is <%= @lessons.count %></h2> -->
 <!-- <h2 class="warning">TESING: today's date is <%= Date.today %> and the time is <%= Time.now %></h2> -->
 
 <% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") && @show_search_options == true%>

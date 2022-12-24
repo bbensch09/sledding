@@ -108,9 +108,9 @@ class LessonsController < ApplicationController
     # Lesson.set_dates_for_sample_bookings
     @date = params[:date]
     @date.nil? ? @date = Date.today : @date.to_date
-    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date}
+    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date.to_s }
     @lessons = Lesson.all.select{|lesson| lesson.completed? || lesson.completable? || lesson.confirmable? || lesson.confirmed? || lesson.finalizing? || lesson.booked? || lesson.payment_complete? || lesson.waiting_for_review?}
-    @lessons = @lessons.select{ |lesson| lesson.date == @date}
+    @lessons = @lessons.select{ |lesson| lesson.date.to_s == @date.to_s }
     @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'admin_index'}
@@ -131,8 +131,8 @@ class LessonsController < ApplicationController
     # Lesson.set_dates_for_sample_bookings
     @date = params[:date]
     @date.nil? ? @date = Date.today+1 : @date.to_date
-    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date == @date}
-    @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date}
+    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.date.to_s == @date.to_s }
+    @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date.to_s }
     # @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed"}
     @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
@@ -154,12 +154,12 @@ class LessonsController < ApplicationController
     # Lesson.set_dates_for_sample_bookings
     @date = params[:date]
     @date.nil? ? @date = Date.today : @date.to_date
-    @tickets_to_export = Lesson.all.select{|lesson| lesson.deposit_status == "confirmed" && lesson.activity == "lift_ticket" && lesson.date == @date}
+    @tickets_to_export = Lesson.all.select{|lesson| lesson.deposit_status == "confirmed" && lesson.activity == "lift_ticket" && lesson.date.to_s == @date.to_s}
     @tickets = @tickets_to_export
     @tickets = @tickets.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'lift_tickets_roster'}
-          format.csv { send_data @tickets_to_export.to_csv, filename: "lift-tickets-export-#{Date.today}.csv" }
+          format.csv { send_data @tickets_to_export.to_csv, filename: "lift-tickets-export-#{@date.to_s}.csv" }
     end
   end
 
@@ -169,7 +169,7 @@ class LessonsController < ApplicationController
     @tickets = @tickets.sort! { |a,b| a.id <=> b.id }
     respond_to do |format|
           format.html {render 'lift_tickets_roster'}
-          format.csv { send_data @tickets_to_export.to_csv, filename: "lift-tickets-export-#{Date.today}.csv" }
+          format.csv { send_data @tickets_to_export.to_csv, filename: "lift-tickets-export-#{Date.today.to_s}.csv" }
     end
 
   end
