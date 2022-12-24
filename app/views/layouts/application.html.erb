@@ -135,9 +135,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <nav class="nav-main">
         <ul class="nav nav-pills nav-main scroll-menu" id="topMain">
           <% if current_user && (current_user.user_type == "Granlibakken Employee" || current_user.user_type == "Ski Area Partner" || current_user.email == "brian@snowschoolers.com") %>           
-           <li> <a href="/sledding/roster-today" class="btn-success"> Sledding Roster Today</a></li>
-           <li> <a href="/sledding/roster-tomorrow" class="btn-success"> Sledding Tomorrow</a></li>
-           <li> <a href="/lift-tickets/roster-today" class="btn-success"> Lift Tickets Today</a></li>
+           <li> <a href="/sledding/roster-today?date=<%=Date.today.to_s%>" class="btn-success"> Sledding Roster Today</a></li>
+           <li> <a href="/sledding/roster-tomorrow?date=<%=Date.tomorrow.to_s%>" class="btn-success"> Sledding Tomorrow</a></li>
+           <li> <a href="/lift-tickets/roster-today?date=<%=Date.today.to_s%>" class="btn-success"> Lift Tickets Today</a></li>
            <li> <a href="/sledding/calendar" class="btn-success"> Capacity Calendar</a></li>
            <li> <a href="/sales-report" class="btn-primary"> Sales Report</a></li>
            <li> <a href="/sledding/index" class="btn-success"> All Sledding Sales</a></li>

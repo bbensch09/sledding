@@ -5,7 +5,7 @@
  -->
 <!-- SECTION 0 - AVAILABLE LESSON REQUESTS FOR INSTRUCTORS -->
 <div id="all-lessons" class="">
-<h1>Today's Reservations</h1>
+<h1>Lift Ticket Reservations for <%= @date %></h1>
 
 <% if current_user && (current_user.email == "brian@snowschoolers.com" || current_user.user_type == "Granlibakken Employee") && @show_search_options == true%>
 <div class="admin-viewable">
