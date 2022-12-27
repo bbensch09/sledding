@@ -131,7 +131,7 @@ class LessonsController < ApplicationController
     # Lesson.set_dates_for_sample_bookings
     @date = params[:date]
     @date.nil? ? @date = Date.today+1 : @date.to_date
-    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.date.to_s == @date.to_s }
+    @lessons_to_export = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date.to_s }
     @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed" && lesson.date.to_s == @date.to_s }
     # @lessons = Lesson.all.select{|lesson| lesson.state == "confirmed"}
     @lessons = @lessons.sort! { |a,b| a.id <=> b.id }
