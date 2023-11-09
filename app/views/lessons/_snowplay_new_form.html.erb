@@ -29,7 +29,7 @@
             <% end %>
 
               <%= f.input :state, as: :hidden, input_html: { value: 'new' } %>
-              <%= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %>
+              <!-- %= hidden_field_tag 'ga_client_id', '', :class => 'ga-client-id' %> -->
             <div class="col-md-12">
                 <h1 class="new-lesson-ctas-list center">
                       <%= f.action :submit, :label => "BOOK TICKETS", as: :input, button_html: { class: 'btn btn-default btn-lg' } %>
