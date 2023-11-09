@@ -1,5 +1,13 @@
 source 'https://rubygems.org'
-ruby "~> 2.6.8"
+ruby "~> 2.6.6"
+# ruby "~> 2.7.3"
+
+gem 'rails-assets-jquery', :source => 'https://rails-assets.org/'
+
+
+#gems for bipassing localhost issues fall 2023
+gem 'mimemagic', '~> 0.3.10'
+
 
 #Gems for new mobile-friendly calendar w/ gCal support
 gem 'fullcalendar-rails'
@@ -79,7 +87,7 @@ gem 'coffee-rails'
 # gem 'therubyracer', platforms: :ruby
 # added Oct2020 in order to get local server running
 gem 'execjs'
-gem 'therubyracer'
+# gem 'therubyracer'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
