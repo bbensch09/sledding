@@ -30,7 +30,7 @@ class Product < ActiveRecord::Base
   def self.import(file)
     CSV.foreach(file.path, headers:true) do |row|
       product = Product.find_or_create_by(id: row['id'])
-      product.update_attributes(row.to_hash)
+      product.update(row.to_hash)
       puts "new product created with name: #{Product.last.name}"
     end
   end

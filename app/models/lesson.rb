@@ -555,7 +555,7 @@ class Lesson < ActiveRecord::Base
 
   def price
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
-      # puts "!!!!lookup calendar period status, it is: #{calendar_period}"
+      puts "!!!!lookup calendar period status, it is: #{calendar_period}"
       product = Product.where(location_id:24,calendar_period:calendar_period).first
     if product.nil?
       return "Lesson price or product not found" #99 #default lesson price - temporary
@@ -577,7 +577,7 @@ class Lesson < ActiveRecord::Base
       end
     elsif self.package_info == "Night Sledding"
     # elsif self.package_info == "NYE Special Sled Ticket"
-        price = 45 * [1,(self.students.count - self.participants_3_and_under)].max
+        price = 35 * [1,(self.students.count - self.participants_3_and_under)].max
     elsif self.package_info == "Afterschool Special"
     # elsif self.package_info == "NYE Special Sled Ticket"
         price = self.students.count * 12.50
