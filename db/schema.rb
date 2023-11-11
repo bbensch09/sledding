@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "applicants", id: :serial, force: :cascade do |t|
+  create_table "applicants", force: :cascade do |t|
     t.integer "user_id"
     t.string "first_name"
     t.string "last_name"
@@ -28,40 +28,40 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.string "preferred_locations"
     t.string "how_did_you_hear"
     t.boolean "work_authorization"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "beta_users", id: :serial, force: :cascade do |t|
+  create_table "beta_users", force: :cascade do |t|
     t.string "email"
     t.string "user_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "phone_number"
   end
 
-  create_table "blogs", id: :serial, force: :cascade do |t|
+  create_table "blogs", force: :cascade do |t|
     t.string "author"
     t.string "title"
     t.date "published"
     t.text "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "cover_photo_file_name"
     t.string "cover_photo_content_type"
     t.bigint "cover_photo_file_size"
     t.datetime "cover_photo_updated_at"
   end
 
-  create_table "calendar_blocks", id: :serial, force: :cascade do |t|
+  create_table "calendar_blocks", force: :cascade do |t|
     t.integer "instructor_id"
     t.integer "lesson_time_id"
     t.string "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "ckeditor_assets", id: :serial, force: :cascade do |t|
+  create_table "ckeditor_assets", force: :cascade do |t|
     t.string "data_file_name", null: false
     t.string "data_content_type"
     t.integer "data_file_size"
@@ -71,13 +71,13 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.string "type", limit: 30
     t.integer "width"
     t.integer "height"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable"
     t.index ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type"
   end
 
-  create_table "contestants", id: :serial, force: :cascade do |t|
+  create_table "contestants", force: :cascade do |t|
     t.string "username"
     t.string "hometown"
     t.integer "user_id"
@@ -85,18 +85,18 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.string "avatar_content_type"
     t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "conversations", id: :serial, force: :cascade do |t|
+  create_table "conversations", force: :cascade do |t|
     t.integer "instructor_id"
     t.integer "requester_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "delayed_jobs", id: :serial, force: :cascade do |t|
+  create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -106,12 +106,12 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.datetime "failed_at"
     t.string "locked_by"
     t.string "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "instructors", id: :serial, force: :cascade do |t|
+  create_table "instructors", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "username"
@@ -123,8 +123,8 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.text "intro"
     t.string "status"
     t.integer "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "city"
     t.integer "adults_initial_rank"
     t.integer "kids_initial_rank"
@@ -143,46 +143,46 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
   end
 
   create_table "instructors_locations", id: false, force: :cascade do |t|
-    t.integer "instructor_id", null: false
-    t.integer "location_id", null: false
+    t.bigint "instructor_id", null: false
+    t.bigint "location_id", null: false
   end
 
   create_table "instructors_ski_levels", id: false, force: :cascade do |t|
-    t.integer "instructor_id", null: false
-    t.integer "ski_level_id", null: false
+    t.bigint "instructor_id", null: false
+    t.bigint "ski_level_id", null: false
   end
 
   create_table "instructors_snowboard_levels", id: false, force: :cascade do |t|
-    t.integer "instructor_id", null: false
-    t.integer "snowboard_level_id", null: false
+    t.bigint "instructor_id", null: false
+    t.bigint "snowboard_level_id", null: false
   end
 
   create_table "instructors_sports", id: false, force: :cascade do |t|
-    t.integer "instructor_id", null: false
-    t.integer "sport_id", null: false
+    t.bigint "instructor_id", null: false
+    t.bigint "sport_id", null: false
   end
 
-  create_table "lesson_actions", id: :serial, force: :cascade do |t|
+  create_table "lesson_actions", force: :cascade do |t|
     t.integer "lesson_id"
     t.integer "instructor_id"
     t.string "action"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "lesson_times", id: :serial, force: :cascade do |t|
+  create_table "lesson_times", force: :cascade do |t|
     t.date "date"
     t.string "slot"
   end
 
-  create_table "lessons", id: :serial, force: :cascade do |t|
+  create_table "lessons", force: :cascade do |t|
     t.integer "requester_id"
     t.integer "instructor_id"
     t.string "ability_level"
     t.string "deposit_status"
-    t.integer "lesson_time_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.bigint "lesson_time_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "activity"
     t.string "requested_location"
     t.string "phone_number"
@@ -226,6 +226,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.integer "promo_code_id"
     t.boolean "skip_validations"
     t.integer "shopping_cart_id"
+    t.index ["lesson_time_id"], name: "index_lessons_on_lesson_time_id"
   end
 
   create_table "lessons_shopping_carts", id: false, force: :cascade do |t|
@@ -233,10 +234,10 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.bigint "shopping_cart_id", null: false
   end
 
-  create_table "locations", id: :serial, force: :cascade do |t|
+  create_table "locations", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "partner_status"
     t.string "calendar_status"
     t.string "region"
@@ -259,38 +260,38 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.date "opening_date"
   end
 
-  create_table "messages", id: :serial, force: :cascade do |t|
+  create_table "messages", force: :cascade do |t|
     t.integer "author_id"
     t.integer "conversation_id"
     t.text "content"
     t.boolean "unread"
     t.integer "recipient_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "pre_season_location_requests", id: :serial, force: :cascade do |t|
+  create_table "pre_season_location_requests", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "product_calendars", id: :serial, force: :cascade do |t|
+  create_table "product_calendars", force: :cascade do |t|
     t.integer "product_id"
     t.integer "price"
     t.date "date"
     t.string "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "products", id: :serial, force: :cascade do |t|
+  create_table "products", force: :cascade do |t|
     t.string "name"
     t.float "price"
     t.integer "location_id"
     t.string "calendar_period"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "length"
     t.string "slot"
     t.string "start_time"
@@ -309,7 +310,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.string "url"
   end
 
-  create_table "promo_codes", id: :serial, force: :cascade do |t|
+  create_table "promo_codes", force: :cascade do |t|
     t.string "promo_code"
     t.string "status"
     t.float "discount"
@@ -317,22 +318,22 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.integer "redemptions"
     t.string "description"
     t.boolean "single_use"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "reviews", id: :serial, force: :cascade do |t|
+  create_table "reviews", force: :cascade do |t|
     t.integer "instructor_id"
     t.integer "lesson_id"
     t.integer "reviewer_id"
     t.integer "rating"
     t.text "review"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.integer "nps"
   end
 
-  create_table "sections", id: :serial, force: :cascade do |t|
+  create_table "sections", force: :cascade do |t|
     t.string "age_group"
     t.string "lesson_type"
     t.integer "sport_id"
@@ -341,31 +342,31 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.string "level"
     t.integer "capacity"
     t.date "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.integer "shift_id"
     t.string "slot"
   end
 
-  create_table "selfies", id: :serial, force: :cascade do |t|
+  create_table "selfies", force: :cascade do |t|
     t.string "link"
     t.integer "location_id"
     t.integer "contestant_id"
     t.date "date"
     t.string "social_network"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "shifts", id: :serial, force: :cascade do |t|
+  create_table "shifts", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
     t.string "name"
     t.string "status"
     t.integer "instructor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "shopping_carts", force: :cascade do |t|
@@ -378,28 +379,28 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "ski_levels", id: :serial, force: :cascade do |t|
+  create_table "ski_levels", force: :cascade do |t|
     t.string "name"
     t.integer "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "snowboard_levels", id: :serial, force: :cascade do |t|
+  create_table "snowboard_levels", force: :cascade do |t|
     t.string "name"
     t.integer "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "sports", id: :serial, force: :cascade do |t|
+  create_table "sports", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "students", id: :serial, force: :cascade do |t|
-    t.integer "lesson_id"
+  create_table "students", force: :cascade do |t|
+    t.bigint "lesson_id"
     t.string "name"
     t.string "age_range"
     t.string "gender"
@@ -410,22 +411,23 @@ ActiveRecord::Schema.define(version: 2021_11_15_002226) do
     t.string "most_recent_experience"
     t.string "most_recent_level"
     t.text "other_sports_experience"
+    t.index ["lesson_id"], name: "index_students_on_lesson_id"
   end
 
-  create_table "transactions", id: :serial, force: :cascade do |t|
+  create_table "transactions", force: :cascade do |t|
     t.integer "lesson_id"
     t.integer "requester_id"
     t.float "base_amount"
     t.float "tip_amount"
     t.float "final_amount"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

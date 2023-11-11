@@ -27,7 +27,7 @@ class Lesson < ActiveRecord::Base
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
   validate :check_session_capacity
-  validate :block_midweek_early_bird_sessions
+  # validate :block_midweek_early_bird_sessions #disabled for winter 2024, can re-enable if desired to block 9am sessions
   validate :block_night_sessions_unless_fri_or_saturday
   validate :check_night_sledding_against_blocked_dates
   before_save :check_session_capacity
@@ -555,7 +555,7 @@ class Lesson < ActiveRecord::Base
 
   def price
       calendar_period = self.lookup_calendar_period(self.lesson_time.date)
-      # puts "!!!!lookup calendar period status, it is: #{calendar_period}"
+      puts "!!!!lookup calendar period status, it is: #{calendar_period}"
       product = Product.where(location_id:24,calendar_period:calendar_period).first
     if product.nil?
       return "Lesson price or product not found" #99 #default lesson price - temporary
@@ -577,7 +577,7 @@ class Lesson < ActiveRecord::Base
       end
     elsif self.package_info == "Night Sledding"
     # elsif self.package_info == "NYE Special Sled Ticket"
-        price = 45 * [1,(self.students.count - self.participants_3_and_under)].max
+        price = 35 * [1,(self.students.count - self.participants_3_and_under)].max
     elsif self.package_info == "Afterschool Special"
     # elsif self.package_info == "NYE Special Sled Ticket"
         price = self.students.count * 12.50

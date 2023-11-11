@@ -33,6 +33,14 @@
                 <div class="col-xs-8 col-md-8">
                     <span class="left">
                       <%= cart_item.product_name %>
+<!--                       <hr>
+                      <h1>TESTING MUST DELETE</h1>
+                      ID:<%= cart_item.id %>
+                      <br> price: <%= cart_item.price %>
+                      <br> date: <%= cart_item.date %>
+                      <br> lesson_price: <%= cart_item.lesson_price %>
+                      <hr>
+ -->                    
                     </span>
                 </div>
               </div>
@@ -81,10 +89,10 @@
                       <li><%= student.name %>, age <%= student.age_range %></li>
                     <% end %>
                   </ul>
-                  <% if cart_item.participants_3_and_under > 0 %>
-                      <h4 class="text-danger" id="age-warning">Note: Kids age 3 and under are FREE.</h4>
+                  <% if cart_item.participants_3_and_under.to_i > 0 %>
+                      <h4 class="text-warning" id="age-warning">Note: Kids age 3 and under are FREE are included on this reservation.</h4>
                       <% else %>
-                      <h4 class="text-danger text-smaller" id="age-warning">Note: Children age 3 and under must be registered but sled at no charge</h4>
+                      <h4 class="text-black text-smaller" id="age-warning">Note: If you have toddlers age 3 or under their tickets will be free, but you must first go back and enter their names on the previous page to include them on your reservation.</h4>
                   <% end %>
                 </div>
               </div>

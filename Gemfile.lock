@@ -186,7 +186,6 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     jwt (1.5.6)
-    libv8 (3.16.14.19)
     loofah (2.12.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -290,7 +289,6 @@ GEM
     rake (13.0.6)
     rdoc (6.3.2)
     redis (4.4.0)
-    ref (2.0.0)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -326,9 +324,6 @@ GEM
     stripe (5.38.0)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thor (1.1.0)
     tilt (2.0.10)
     tinymce-rails (5.9.0)
@@ -385,12 +380,14 @@ DEPENDENCIES
   jquery-timepicker-rails
   jquery-turbolinks
   jquery-ui-rails
+  mimemagic (~> 0.3.10)
   momentjs-rails
   omniauth-facebook (~> 4.0.0)
   paperclip
   pg
   puma
   rails-assets-datetimepicker!
+  rails-assets-jquery!
   rails-controller-testing
   rails_12factor
   railties
@@ -401,7 +398,6 @@ DEPENDENCIES
   simple_calendar (~> 2.0)
   sitemap_generator
   stripe
-  therubyracer
   tinymce-rails
   turbolinks
   twilio-ruby (= 4.13.0)

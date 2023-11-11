@@ -56,9 +56,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
       // property ID for localhost:3000
-      ga('create', 'UA-80641194-2', {'cookieDomain': 'none'});
-      ga('require', 'GTM-W96NFKG');
-      ga('send', 'pageview');
+      // ga('create', 'UA-80641194-2', {'cookieDomain': 'none'});
+      // ga('require', 'GTM-W96NFKG');
+      // ga('send', 'pageview');
     </script>
   
   <% elsif ENV['HOST_DOMAIN'] == "demo.snowschoolers.com" %>
@@ -71,9 +71,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
     // property ID for demo.snowschoolers.com
-      ga('create', 'UA-80641194-3', 'auto');
-      ga('require', 'GTM-PKBC5NX');
-      ga('send', 'pageview');
+      // ga('create', 'UA-80641194-3', 'auto');
+      // ga('require', 'GTM-PKBC5NX');
+      // ga('send', 'pageview');
     </script>
 
   <% end %> 
@@ -233,7 +233,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
                 <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
               <% end -%>
-              <a href="#" data-toggle="modal" data-target="#registerModal">New user? First register your Account</a>
+              <a href="/users/sign_up" data-toggle="modal" >New user? First register your Account</a>
             </div>
       </div>
     </div>
@@ -283,9 +283,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </noscript>
 
       <!-- Facebook Pixel Code for IniatiateCheckout -->
-          <script>
+          <!-- <script>
             fbq('track', 'InitiateCheckout');
-          </script>          
+          </script>       -->    
       <!-- End Facebook Pixel Code -->
 
   <% end %>
