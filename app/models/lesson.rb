@@ -27,7 +27,7 @@ class Lesson < ActiveRecord::Base
   # validate :age_validator, on: :update
   validate :room_reservation_validator, on: :update
   validate :check_session_capacity
-  validate :block_midweek_early_bird_sessions
+  # validate :block_midweek_early_bird_sessions #disabled for winter 2024, can re-enable if desired to block 9am sessions
   validate :block_night_sessions_unless_fri_or_saturday
   validate :check_night_sledding_against_blocked_dates
   before_save :check_session_capacity
