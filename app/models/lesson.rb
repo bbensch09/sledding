@@ -30,6 +30,7 @@ class Lesson < ActiveRecord::Base
   # validate :block_midweek_early_bird_sessions #disabled for winter 2024, can re-enable if desired to block 9am sessions
   validate :block_night_sessions_unless_fri_or_saturday
   validate :check_night_sledding_against_blocked_dates
+  validate :check_preseason_against_blocked_dates
   before_save :check_session_capacity
   before_save :confirm_valid_promo_code
   after_update :update_lesson_state_of_siblings
@@ -1274,6 +1275,17 @@ class Lesson < ActiveRecord::Base
     if BLOCKED_NIGHT_SLEDDING_DATES.include?(self.date.to_s) && (self.slot == 'Night (5:00 PM - 6:30 PM) - special dates only')
           puts "!!!!!guest tried to book a nighttime session on a blocked date"
           errors.add(:lesson, "Unfortunately while night-time sledding is usually available every Sat night, it will not be happening on this date. Please contact guest services for more information.")
+          return false
+    else
+      return true
+    end
+  end
+
+  def check_preseason_against_blocked_dates
+    puts "!!!checking to see if dates selected are blocked"
+    if BLOCKED_EARLY_SEASON_DATES.include?(self.date.to_s)
+          puts "!!!!!guest tried to book a sled session on a blocked date"
+          errors.add(:lesson, "Unfortunately we are not expecting to have enough snow to have the sled hill open yet on this date. Please contact guest services for more information.")
           return false
     else
       return true
