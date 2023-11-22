@@ -12,7 +12,7 @@ var month = dt.getMonth() + 1;
 var year = dt.getYear() +1900;
 var date = year + "-" + month + "-" + day;
 // var opening_date = new Date("2022-11-24");
-var opening_date = new Date("2023-12-03"); //need to set one day in advance because it will set UTC and then convert to 4pm the day before
+var opening_date = new Date("2023-11-24"); //need to set one day in advance because it will set UTC and then convert to 4pm the day before
 
 // logs today's date
 console.log(date);
@@ -66,24 +66,24 @@ var LESSON = {
 
   setDatepicker: function() {
   var blocked_dates_array = [
-  '2022-11-23','2022-11-24','2022-11-25','2022-11-26','2022-11-27','2022-11-28','2022-11-29','2022-11-30','2022-12-01', //not expecting to open for Thanksgiving due to low snow
-  // '2022-12-05','2022-12-06','2022-12-07','2022-12-08','2022-12-09', //not expecting to open week 2nd week december
-  // '2022-12-12','2022-12-13','2022-12-14','2022-12-15', //not expecting to open midweek week the 3rd week december
+  '2023-11-27','2023-11-28','2023-11-29','2023-11-30', //not expecting to open the week after Thanksgiving due to low snow
+  '2023-12-04','2023-12-05','2023-12-06','2023-12-07', //not expecting to open week 2nd week december
+  '2023-12-11','2023-12-12','2023-12-13','2023-12-14', //not expecting to open midweek week the 3rd week december
   // '2023-01-04','2023-01-05',//stay open Tues after NYE based on some schools being open, but closed Thu/Fri and resuming normal schedule
-  // '2023-01-10','2023-01-11','2023-01-12',
-  // '2023-01-17','2023-01-18','2023-01-19',
-  // '2023-01-24','2023-01-25','2023-01-26',
-  // '2023-01-31','2023-02-01','2023-02-02',
-  // '2023-02-07','2023-02-08','2023-02-09',
-  // '2023-02-14','2023-02-15','2023-02-16', //last year opened Thurs before P-week; not necessary this year
-  // // '2023-02-21','2023-02-22', '2023-02-23'// -- presidents day + ski and skate week
-  // '2023-02-28','2023-03-01','2023-03-02',
-  // '2023-03-07','2023-03-08','2023-03-09',
-  // '2023-03-14','2023-03-15','2023-03-16',
-  // '2023-03-21','2023-03-22','2023-03-23',
-  // '2023-03-28','2023-03-29','2023-03-30',
-  // '2023-04-03','2023-04-04','2023-04-05','2023-04-06','2023-04-07', //closed M-Fri midweek during April
-  // '2023-04-10','2023-04-11','2023-04-12','2023-04-13','2023-04-14', //closed M-Fri midweek during April
+  // '2024-01-09','2024-01-10','2024-01-11',
+  // '2024-01-16','2024-01-17','2024-01-18',
+  // '2024-01-23','2024-01-24','2024-01-25',
+  // '2024-01-30','2024-01-31','2024-02-01',
+  // '2024-02-06','2024-02-07','2024-02-08',
+  // '2024-02-13','2024-02-14','2024-02-15',
+  // // '2024-02-21','2024-02-22', '2024-02-23'// -- presidents day + ski and skate week
+  // '2024-02-27','2024-02-28','2024-02-29',
+  // '2024-03-05','2024-03-06','2024-03-07',
+  // '2024-03-12','2024-03-13','2024-03-14',
+  // '2024-03-19','2024-03-20','2024-03-21',
+  // '2024-03-26','2024-03-27','2024-03-28',
+  // '2024-04-02','2024-04-02','2024-04-03','2024-04-04','2024-04-05', //closed M-Fri midweek during April
+  // '2024-04-08','2024-04-09','2024-04-10','2024-04-11','2024-04-12'  //closed M-Fri midweek during April
   ];
 
 
