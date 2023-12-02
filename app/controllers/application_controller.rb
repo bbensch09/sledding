@@ -113,7 +113,7 @@ def confirm_admin_permissions
     flash[:notice] = 'You must be signed in as an administrator to view this page.'
     return false
   end
-  return if (current_user.email == 'brian@snowschoolers.com' ||current_user.email == 'AlexDominguez@granlibakken.com' ||current_user.email == 'brian+sledding@granlibakken.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee")
+  return if (current_user.email == 'brian@snowschoolers.com' ||current_user.email == 'AlexDominguez@granlibakken.com' || current_user.email == 'brian+sledding@snowschoolers.com' || current_user.user_type == 'Ski Area Partner' || current_user.user_type == "Granlibakken Employee")
   redirect_to root_path, notice: 'You do not have permission to view that page.'
 end
 
