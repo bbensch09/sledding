@@ -22,7 +22,7 @@ EARLY_SEASON_DATES = []
 BLOCKED_EARLY_SEASON_DATES = [
   '2023-11-27','2023-11-28','2023-11-29','2023-11-30', #not expecting the midweek after thanksgiving
   '2023-12-04','2023-12-05','2023-12-06','2023-12-07', #//not expecting to open week 2nd week december
-  '2023-12-11','2023-12-12','2023-12-13','2023-12-14' #//not expecting to open midweek week the 3rd week december
+  # '2023-12-11','2023-12-12','2023-12-13','2023-12-14' #//not expecting to open midweek week the 3rd week december
 ]
 
 # *Dec 18th - Jan 6th, Jan 13-16th, Feb 17-24th
