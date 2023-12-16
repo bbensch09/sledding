@@ -215,11 +215,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Login with either Facebook, or your email and password.</h4>
+          <h4 class="center modal-title" id="myModalLabel">Login with your email and password, or register your account.</h4>
       </div>
       <div class="modal-body">
           <h3 class="center">
-            <%= link_to image_tag("fb-login.png", class:"fb-login-btn"), user_facebook_omniauth_authorize_path %>
+            <%# %= link_to image_tag("fb-login.png", class:"fb-login-btn"), user_facebook_omniauth_authorize_path %>
           </h3>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
             <div class="field center">
@@ -232,12 +232,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <%= f.submit "Log in", class: "btn btn-success" %>
             <% end %>
             </div>
-            <div class="center">
-              <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-                <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
-              <% end -%>
-              <a href="/users/sign_up" data-toggle="modal" >New user? First register your Account</a>
-            </div>
+              <div class="center">
+                <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+                <%= link_to "Forgot your password? Click here to request a password reset.", new_password_path(resource_name) %><br />
+                <% end -%>
+                If you do not have an account already: <br>
+                <a href="/users/sign_up" class="btn btn-tertiary">Register your Account</a>
+              </div>
       </div>
     </div>
   </div>
