@@ -14,9 +14,9 @@ class LessonTime < ActiveRecord::Base
   end
 
   def non_weekend?
-    weekday = self.date.strftime('%A')
+    day_of_week = self.date.strftime('%A')
     non_night_sledding_days = ['Sunday','Monday','Tuesday','Wednesday','Thursday']
-    if non_night_sledding_days.include?(weekday)
+    if non_night_sledding_days.include?(day_of_week) && !SPECIAL_NIGHT_SLEDDING_DATES.include?(self.date.to_s)
       return true 
     else
       return false
