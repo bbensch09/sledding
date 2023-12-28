@@ -424,8 +424,9 @@ class LessonsController < ApplicationController
   end
 
   def create_nye_sledding_ticket
-    days_til_sat = 6 - Date.today.wday
-    promo_date = Date.today + days_til_sat
+    # days_til_sat = 6 - Date.today.wday
+    # promo_date = Date.today + days_til_sat
+    promo_date = "2023-12-31"
     nye_params = {
       date:promo_date.to_s,
       slot:NYE_SLOTS.first,
@@ -436,6 +437,7 @@ class LessonsController < ApplicationController
     @lesson.activity = "sledding"
     @slot = @lesson_time.slot
     @lesson.requested_location = 24
+    @promo_code = "NYE 2023"
     if @lesson.save
         redirect_to complete_nye_2020_path(@lesson)
         # flash[:notice] = "Almost there! We just need a few more details."
@@ -451,7 +453,7 @@ class LessonsController < ApplicationController
     @product_name = "Night Sledding"
     # @date = "2020-12-31"
     # @slot = NYE_SLOTS.first
-    @promo_code = "Night Sledding"
+    @promo_code = "NYE 2023"
     # GoogleAnalyticsApi.new.event('lesson-requests', 'load-full-form')
     flash.now[:notice] = "Thanks for planning to join us for Night Sledding at Granlibakken. We just need a few more details."
     flash[:complete_form] = 'TRUE'
