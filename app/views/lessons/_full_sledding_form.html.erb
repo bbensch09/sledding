@@ -158,7 +158,7 @@
               </div>
               <div class="col-md-6">
                 <label>Time Slot</label>
-                <% if @promo_code && @promo_code == "Saturday" %>
+                <% if @promo_code && @promo_code == "NYE 2023" %>
                   <%= lt_f.input :slot, as: :select, collection: NYE_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
                     <% elsif @promo_code && @promo_code == "Afterschool Special" %>
                   <%= lt_f.input :slot, as: :select, collection: AFTERSCHOOL_SLOTS, selected:@lesson.slot, include_blank: 'Select Time', label: false, required:true %>
