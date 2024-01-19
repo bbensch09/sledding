@@ -89,10 +89,12 @@
                       <li><%= student.name %>, age <%= student.age_range %></li>
                     <% end %>
                   </ul>
+                  <% if cart_item.activity == "sledding" %>
                   <% if cart_item.participants_3_and_under.to_i > 0 %>
                       <h4 class="text-warning" id="age-warning">Note: Kids age 3 and under are FREE are included on this reservation.</h4>
                       <% else %>
                       <h4 class="text-black text-smaller" id="age-warning">Note: If you have toddlers age 3 or under their tickets will be free, but you must first go back and enter their names on the previous page to include them on your reservation.</h4>
+                  <% end %>
                   <% end %>
                 </div>
               </div>
