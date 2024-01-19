@@ -129,7 +129,7 @@
                 <%= lt_f.input :date, as: :string, input_html: { id: 'datepicker2', value:@lesson.date, required:true, autocomplete:"off" }, placeholder: 'Pick a date', label: false %>
               </div>
               <div class="col-md-6">
-                <label>Time Slot</label>
+                <label>Ticket Type</label>
                 <%= lt_f.input :slot, as: :select, collection: LIFT_TICKET_SLOTS, selected:@lesson.lesson_time.slot, include_blank: 'Select Time', label: false, required:true %>
               </div>
           <% end %>
