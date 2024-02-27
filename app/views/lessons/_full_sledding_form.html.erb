@@ -17,6 +17,7 @@
                   <% if @lesson.requester %>
                     <%= @lesson.requester.email %>
                   <% elsif @lesson.guest_email %>
+                    <%= @lesson.guest_email %>
                   <% else %>
                     <span>No email found</span>
                   <% end %>
