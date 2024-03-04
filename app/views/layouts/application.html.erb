@@ -148,7 +148,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
            <li> <a href="/export-contacts" class="btn-success"> View Contacts</a></li>
            <li><%= link_to "Export Contacts", export_contacts_path(format: "csv"), class: 'btn btn-primary' %></li>
            <li> <a href="/disable-ticket-sales" class="btn-success btn-danger"> Disable Sales</a></li>
-           <li> <a href="#nothingHappens" class="btn-success btn-warning"> Test Admin Button</a></li>
+           <%# <li> <a href="#nothingHappens" class="btn-success btn-warning"> Test Admin Button</a></li> %>
            <li> <a href="/enable-ticket-sales" class="btn-success btn-success"> Enable Sales</a></li>
            <% if current_user.instructor %>
            <li><%= link_to current_user.instructor.first_name %></li>
