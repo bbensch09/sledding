@@ -14,9 +14,9 @@
             <li>
                 <a href="https://dashboard.stripe.com/payments" id="stripe-refund" target="_blank" class="btn btn-danger">First Issue Refund in Stripe</a> <br><br>
                 <p>Customer email (to search in stripe): 
-                  <% if @lesson.requester %>
+                  <% if !@lesson.requester.nil? %>
                     <%= @lesson.requester.email %>
-                  <% elsif @lesson.guest_email %>
+                  <% elsif !@lesson.guest_email.nil? %>
                     <%= @lesson.guest_email %>
                   <% else %>
                     <span>No email found</span>
