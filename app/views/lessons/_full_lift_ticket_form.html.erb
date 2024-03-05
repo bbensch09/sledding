@@ -13,7 +13,15 @@
           <ol>
             <li>
                 <a href="https://dashboard.stripe.com/payments" id="stripe-refund" target="_blank" class="btn btn-danger">First Issue Refund in Stripe</a> <br><br>
-                <p>Customer email (to search in stripe): <%= @lesson.requester.email %></p>
+                <p>Customer email (lookup via stripe - lift ticket customer): 
+                  <% if !@lesson.requester.nil? %>
+                    <%= @lesson.requester.email %>
+                  <% elsif !@lesson.guest_email.nil? %>
+                    <%= @lesson.guest_email %>
+                  <% else %>
+                    <span>No email found</span>
+                  <% end %>
+                  </p>
             </li>
             <li><%= link_to 'Mark Lesson as Canceled', issue_full_refund_path(@lesson), method: :post, class: "btn btn-danger" %></li>
           </ol>
