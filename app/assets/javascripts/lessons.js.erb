@@ -85,6 +85,7 @@ var LESSON = {
   // '2024-03-26','2024-03-27','2024-03-28',
   // '2024-04-02','2024-04-02','2024-04-03','2024-04-04','2024-04-05', //closed M-Fri midweek during April
   // '2024-04-08','2024-04-09','2024-04-10','2024-04-11','2024-04-12'  //closed M-Fri midweek during April
+  '2024-04-16','2024-04-17','2024-04-18','2024-04-19'  //closed M-Fri midweek during April
   ];
 
 
@@ -106,7 +107,8 @@ var LESSON = {
   '2024-03-19','2024-03-20','2024-03-21',
   '2024-03-26','2024-03-27','2024-03-28',
   '2024-04-02','2024-04-03','2024-04-04', //closed M-Fri midweek during April
-  '2024-04-09','2024-04-10','2024-04-11'  //closed M-Fri midweek during April
+  '2024-04-09','2024-04-10','2024-04-11',  //closed M-Fri midweek during April
+  '2024-04-16','2024-04-17','2024-04-18','2024-04-19'  //closed M-Fri midweek during April
   ];
 
 
@@ -116,7 +118,7 @@ var LESSON = {
       return [ blocked_dates_array.indexOf(string) == -1 ]
     },
     minDate: MIN_DATE,
-    maxDate: '2024-04-15',
+    maxDate: '2024-04-21',
     dateFormat: 'yy-mm-dd'
   });
   LESSON._date2.datepicker({
@@ -124,7 +126,7 @@ var LESSON = {
       var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
       return [ blocked_dates_lift_tickets.indexOf(string) == -1 ]
     },
-    minDate: '2023-12-15',
+    minDate: MIN_DATE,
     maxDate: '2024-04-15',
     dateFormat: 'yy-mm-dd'
     });
